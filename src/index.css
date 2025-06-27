@@ -20,6 +20,7 @@ body {
   min-height: 100vh;
   line-height: 1.5;
   background-color: #f3f4f6;
+  font-family: "Inter", sans-serif;
 }
 
 /* 4. 리스트 스타일 제거 */
@@ -79,8 +80,6 @@ body {
   @apply bg-black text-white;
 }
 
-
-
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -136,8 +135,6 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
-
-
 
 @layer base {
   * {

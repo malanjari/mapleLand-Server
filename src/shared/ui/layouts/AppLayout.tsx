@@ -9,9 +9,8 @@ const AppLayout = () => {
       <main className="max-w-[1440px] flex-col items-center w-full mx-auto flex-grow  py-6 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 ">
         <Outlet />
       </main>
-      <footer className="w-full bg-neutral-900 text-neutral-500 text-sm border-t border-neutral-800 py-6 text-center">
-        <Footer />
-      </footer>
+
+      <Footer />
     </div>
   );
 };
