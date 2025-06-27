@@ -13,12 +13,12 @@ const worlds = [
 
 const Home = () => {
   return (
-    <div className="py-10 flex flex-col justify-center items-center gap-10">
-      <div className="bg-[#5865F2] text-white px-8 py-4 rounded-lg text-lg font-semibold shadow-md hover:bg-[#4752c4] transition">
+    <div className="py-10 flex flex-col gap-10">
+      <div className="self-start max-w-[300px] bg-[#5865F2] text-white px-4 py-2 rounded-md text-xs xs:text-sm font-medium shadow hover:bg-[#4752c4] transition cursor-pointer">
         메렌자리.kr을 사용하기 위한 디스코드 설정!
       </div>
 
-      <div className="text-center">
+      <div>
         <h2 className="text-xl font-bold mb-5">월드별 검색</h2>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
