@@ -61,7 +61,7 @@ const Home = () => {
       <div>
         <h2 className="text-lg font-semibold mb-4">🔥 인기 사냥터</h2>
 
-        <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-3 gap-4 text-center">
+        <div className="grid grid-cols-3  gap-4 text-center">
           {hotSpot.map((spot) => (
             <div
               key={spot.name}
@@ -70,7 +70,7 @@ const Home = () => {
               <img
                 src={spot.image}
                 alt={spot.name}
-                className="w-14 h-14 sm:w-13 sm:h-16 object-cover rounded-md transition duration-100 hover:scale-105"
+                className="w-14 h-18 sm:w-13 sm:h-20 object-cover rounded-md transition duration-100 hover:scale-105"
               />
               <p className="text-sm">{spot.name}</p>
             </div>
