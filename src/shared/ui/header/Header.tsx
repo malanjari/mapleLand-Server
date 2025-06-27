@@ -11,7 +11,7 @@ const Header = () => {
       <div>
         <Link className="flex gap-2 items-center" to="/">
           <img src={logo} alt="Logo" className="h-10 w-10" />
-          <p className="font-bold">메렌자리.kr</p>
+          <p className="font-bold hidden mb:block ">메렌자리.kr</p>
         </Link>
       </div>
       <div className="w-1/2 max-w-[500px] relative">
@@ -23,7 +23,7 @@ const Header = () => {
       </div>
       <Button size="sm" className="bg-[#5865F2] hover:bg-[#4752c4]">
         <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
-        <span className="text-xs">로그인</span>
+        <span className="text-xs hidden mb:block">로그인</span>
       </Button>
     </header>
   );
