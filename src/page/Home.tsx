@@ -40,6 +40,9 @@ const Home = () => {
           ))}
         </div>
       </div>
+      <div>
+        <h2 className="text-xl font-bold mb-5">주요 자리</h2>
+      </div>
     </div>
   );
 };
