@@ -1,6 +1,6 @@
 import logo from "@/shared/assets/logo.png";
 import { Link } from "react-router-dom";
-import { Input } from "../input/input";
+import { Input } from "../Input/input";
 import { Search } from "lucide-react";
 const Header = () => {
   return (
