@@ -66,7 +66,7 @@ const Home = () => {
             <Link
               to={`/jari/${spot.name}`}
               key={spot.name}
-              className="flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-800 transition hover:bg-gray-700"
+              className="flex flex-col rounded-xl items-center justify-center gap-1 cursor-pointer bg-gray-800 transition hover:bg-gray-700"
             >
               <img
                 src={spot.image}
