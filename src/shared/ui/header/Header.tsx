@@ -6,6 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { Button } from "../button/Button";
 const Header = () => {
+  const handleDiscordLogin = () => {
+    window.location.href =
+      "https://f368-175-119-53-38.ngrok-free.app/oauth2/authorization/discord";
+  };
   return (
     <header className="sticky top-0 z-50 w-full bg-neutral-900 flex items-center justify-between border-b py-6 px-4 sm:px-4 md:px-6 lg:px-8 xl:px-12 border-neutral-800  ">
       <div>
@@ -21,7 +25,11 @@ const Header = () => {
           <Search className="w-4 h-4 text-muted-foreground cursor-pointer" />
         </div>
       </div>
-      <Button size="sm" className="bg-[#5865F2] hover:bg-[#4752c4]">
+      <Button
+        onClick={handleDiscordLogin}
+        size="sm"
+        className="bg-[#5865F2] hover:bg-[#4752c4]"
+      >
         <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
         <span className="text-xs hidden mb:block">로그인</span>
       </Button>
