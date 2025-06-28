@@ -11,6 +11,7 @@ const OAuthSuccessPage = () => {
     if (token) {
       setToken(token); // or cookies
       navigate("/"); // 홈으로 이동
+      console.log("hi");
     }
   }, [token, navigate, setToken]);
 

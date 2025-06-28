@@ -5,11 +5,14 @@ import { Search } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { Button } from "../button/Button";
+import { useUser } from "@/lib/hooks/useUser";
 const Header = () => {
   const handleDiscordLogin = () => {
     window.location.href =
-      "https://f368-175-119-53-38.ngrok-free.app/oauth2/authorization/discord";
+      "https://3604-175-119-53-38.ngrok-free.app/oauth2/authorization/discord";
   };
+  const user = useUser();
+  console.log(user);
   return (
     <header className="sticky top-0 z-50 w-full bg-neutral-900 flex items-center justify-between border-b py-6 px-4 sm:px-4 md:px-6 lg:px-8 xl:px-12 border-neutral-800  ">
       <div>

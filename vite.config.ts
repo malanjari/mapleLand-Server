@@ -9,4 +9,7 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    allowedHosts: ["lizard-fair-cougar.ngrok-free.app"],
+  },
 });
