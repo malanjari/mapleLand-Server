@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import 루더스니할 from "@/shared/assets/루더스니할.jpg";
-import 리프레 from "@/shared/assets/리프레.jpg";
-import 빅토리아 from "@/shared/assets/빅토리아.jpg";
-import 엘나스 from "@/shared/assets/엘나스.jpg";
+import 루더스니할 from "@/shared/assets/world/루더스니할.jpg";
+import 리프레 from "@/shared/assets/world/리프레.jpg";
+import 빅토리아 from "@/shared/assets/world/빅토리아.jpg";
+import 엘나스 from "@/shared/assets/world/엘나스.jpg";
 
 import {
   coolieZombie,
@@ -59,21 +59,22 @@ const Home = () => {
         </div>
       </div>
       <div>
-        <h2 className="text-lg font-semibold mb-4">🔥 인기 사냥터</h2>
+        <h2 className="text-xl font-bold mb-5">🔥 인기 사냥터</h2>
 
         <div className="grid grid-cols-3  gap-4 text-center">
           {hotSpot.map((spot) => (
-            <div
+            <Link
+              to={`/jari/${spot.name}`}
               key={spot.name}
               className="flex flex-col items-center justify-center gap-1 cursor-pointer bg-gray-800 transition hover:bg-gray-700"
             >
               <img
                 src={spot.image}
                 alt={spot.name}
-                className="w-14 h-18 sm:w-13 sm:h-20 object-cover rounded-md transition duration-100 hover:scale-105"
+                className="w-14 h-18 sm:w-15 sm:h-20 object-cover rounded-md transition duration-100 hover:scale-105"
               />
               <p className="text-sm">{spot.name}</p>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

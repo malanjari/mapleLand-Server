@@ -1,4 +1,4 @@
-import logo from "@/shared/assets/logo.png";
+import logo from "@/shared/assets/logo/logo.png";
 import { Link } from "react-router-dom";
 import { Input } from "@/shared/ui/input/Input";
 import { Search } from "lucide-react";
