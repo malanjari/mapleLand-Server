@@ -4,15 +4,19 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import AppLayout from "@/shared/ui/layouts/AppLayout";
 import Home from "@/page/Home";
 import NotFound from "@/page/NotFound";
+import JariDetail from "@/page/JariDetail";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <AppLayout />,
-    children: [{ index: true, element: <Home /> }],
+    children: [
+      { index: true, element: <Home /> },
+      { path: "jari/:name", element: <JariDetail /> },
+    ],
   },
   {
-    path: "*", // ❗️AppLayout 바깥에서 처리됨
+    path: "*", //
     element: <NotFound />,
   },
 ]);
