@@ -5,6 +5,7 @@ import AppLayout from "@/shared/ui/layouts/AppLayout";
 import Home from "@/page/Home";
 import NotFound from "@/page/NotFound";
 import JariDetail from "@/page/JariDetail";
+import OAuthSuccessPage from "@/page/OAuthSuccess";
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "jari/:name", element: <JariDetail /> },
+      { path: "oauth2/success", element: <OAuthSuccessPage /> },
     ],
   },
   {
