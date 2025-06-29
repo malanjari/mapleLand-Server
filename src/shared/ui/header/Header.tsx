@@ -35,7 +35,7 @@ const Header = () => {
       <div>
         <Link className="flex gap-2 items-center" to="/">
           <img src={logo} alt="Logo" className="h-10 w-10" />
-          <p className="font-bold hidden mb:block ">메렌자리.kr</p>
+          <p className="font-bold hidden mb:block ">메랜자리.kr</p>
         </Link>
       </div>
       <div className="w-1/2 max-w-[500px] relative">
