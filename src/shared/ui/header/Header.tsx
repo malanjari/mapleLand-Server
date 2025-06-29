@@ -6,16 +6,30 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { Button } from "../button/Button";
 import { useAuthActions, useUser } from "@/lib/hooks/useUser";
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 const Header = () => {
   const handleDiscordLogin = () => {
     window.location.href =
       "https://5f4f-175-119-53-38.ngrok-free.app/oauth2/authorization/discord";
   };
   const [menuOpen, setMenuOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const user = useUser();
   const { logout } = useAuthActions();
+  // 바깥 클릭 감지
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    };
 
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   return (
     <header className="sticky top-0 z-50 w-full bg-neutral-900 flex items-center justify-between border-b py-6 px-4 sm:px-4 md:px-6 lg:px-8 xl:px-12 border-neutral-800  ">
       <div>
@@ -31,7 +45,7 @@ const Header = () => {
           <Search className="w-4 h-4 text-muted-foreground cursor-pointer" />
         </div>
       </div>
-      <div className="relative">
+      <div ref={dropdownRef} className="relative">
         {" "}
         <Button
           onClick={() => {
