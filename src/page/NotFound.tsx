@@ -1,5 +1,5 @@
 import notFoundImg from "@/shared/assets/notFoundImg.png";
-const NotFound = () => {
+const NotFoundPage = () => {
   return (
     <div className="h-dvh flex flex-col items-center justify-center text-center px-4">
       <img src={notFoundImg} alt="Logo" className="w-16 h-16 mb-6" />
@@ -15,4 +15,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundPage;

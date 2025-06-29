@@ -29,7 +29,7 @@ const hotSpot = [
   { name: "레드 와이번의 둥지", image: redWyvern },
 ];
 
-const Home = () => {
+const HomePage = () => {
   return (
     <div className="py-10 flex flex-col gap-10">
       <div className="self-start max-w-[300px] bg-[#5865F2] text-white px-4 py-2 rounded-md text-xs xs:text-sm font-medium shadow hover:bg-[#4752c4] transition cursor-pointer">
@@ -82,4 +82,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
