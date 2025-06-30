@@ -1,5 +1,5 @@
 // src/lib/hooks/useUser.ts
-import { useAuthStore } from "@/lib/store/useAuthStore";
+import { useAuthStore } from "@/entity/user/store/useAuthStore";
 
 export const useUser = () => {
   const user = useAuthStore((state) => state.user);

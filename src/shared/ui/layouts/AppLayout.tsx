@@ -3,7 +3,7 @@ import Footer from "../footer/Footer";
 import Header from "../header/Header";
 import { useEffect } from "react";
 
-import { useAuthActions } from "@/lib/hooks/useUser";
+import { useAuthActions } from "@/entity/user/hooks/useUser";
 import ScrollToTop from "@/app/ScrollToTop";
 const AppLayout = () => {
   const { initialize } = useAuthActions();

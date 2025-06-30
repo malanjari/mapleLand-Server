@@ -5,12 +5,12 @@ import { Search } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { Button } from "../button/Button";
-import { useAuthActions, useUser } from "@/lib/hooks/useUser";
+import { useAuthActions, useUser } from "@/entity/user/hooks/useUser";
 import { useRef, useState, useEffect } from "react";
+import { API_BASE_URL } from "@/shared/config/api";
 const Header = () => {
   const handleDiscordLogin = () => {
-    window.location.href =
-      "https://5f4f-175-119-53-38.ngrok-free.app/oauth2/authorization/discord";
+    window.location.href = `${API_BASE_URL}/oauth2/authorization/discord`;
   };
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -30,6 +30,7 @@ const Header = () => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
   return (
     <header className="sticky top-0 z-50 w-full bg-neutral-900 flex items-center justify-between border-b py-6 px-4 sm:px-4 md:px-6 lg:px-8 xl:px-12 border-neutral-800  ">
       <div>
@@ -55,11 +56,24 @@ const Header = () => {
           size="sm"
           className="bg-[#5865F2] hover:bg-[#4752c4]"
         >
-          <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
           {user ? (
-            <span className="text-xs hidden mb:block">{user.globalName}</span>
+            <>
+              {/* 유저 정보가 있을 때 */}
+              {user.avatar ? (
+                // 아바타 이미지가 있으면 보여줌
+                <img src={user.avatar}></img>
+              ) : (
+                // 아바타가 없으면 디스코드 아이콘을 대신 보여줌
+                <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
+              )}
+              {/* 유저 이름 표시 (모바일에서만 block) */}
+              <span className="text-xs hidden mb:block">{user.globalName}</span>
+            </>
           ) : (
-            <span className="text-xs hidden mb:block">로그인</span>
+            <>
+              <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
+              <span className="text-xs hidden mb:block">로그인</span>
+            </>
           )}
         </Button>
         {user && (

@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import TradeList from "./TradeList";
-import { JariItem } from "@/entity/trade/model";
+import { JariItem } from "@/entity/trade/model/type";
 interface Props {
   title: string;
   color: "blue" | "red"; // or just `string` if 자유롭게
