@@ -5,4 +5,5 @@ export interface User {
   role: string;
   avatar?: string;
   exp: number;
+  id: string;
 }

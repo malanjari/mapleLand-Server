@@ -5,7 +5,7 @@ import { useUser } from "@/entity/user/hooks/useUser";
 
 export const HeaderProfileButton = ({ onClick }: { onClick: () => void }) => {
   const user = useUser();
-
+  console.log(user);
   return (
     <Button
       onClick={onClick}
@@ -16,7 +16,11 @@ export const HeaderProfileButton = ({ onClick }: { onClick: () => void }) => {
       {user ? (
         <>
           {user.avatar ? (
-            <img src={user.avatar} />
+            <img
+              src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
+              alt="avatar"
+              className="w-5 h-5 rounded-full"
+            />
           ) : (
             <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
           )}

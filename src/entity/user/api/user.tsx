@@ -2,7 +2,7 @@ import { User } from "../model/type";
 import { API_BASE_URL } from "@/shared/config/api";
 export const getCurrentUser = async (): Promise<User> => {
   const token = localStorage.getItem("accessToken");
-  console.log(token);
+
   const res = await fetch(`${API_BASE_URL}/userAccount`, {
     method: "GET",
     headers: {
@@ -17,5 +17,6 @@ export const getCurrentUser = async (): Promise<User> => {
   }
 
   const data = await res.json();
+
   return data;
 };
