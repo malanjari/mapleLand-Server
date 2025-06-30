@@ -1,4 +1,4 @@
-import { JariItem } from "@/entity/trade/model/";
+import { JariItem } from "@/entity/trade/model/type";
 import mesoIcon from "@/shared/assets/icon/mesoIcon.png";
 
 interface Props {
