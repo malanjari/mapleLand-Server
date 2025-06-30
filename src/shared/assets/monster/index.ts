@@ -4,7 +4,7 @@ import jrNewtie from "./jrNewtie.gif";
 import blackKentaurus from "./blackKentaurus.gif";
 import skelosaurus from "./skelosaurus.gif";
 import redWyvern from "./redWyvern.gif";
-
+import shark from "./shark.gif";
 export {
   coolieZombie,
   starPixie,
@@ -12,4 +12,5 @@ export {
   blackKentaurus,
   skelosaurus,
   redWyvern,
+  shark,
 };
