@@ -7,6 +7,7 @@ import NotFound from "@/page/NotFound";
 import JariDetail from "@/page/JariDetail";
 import OAuthSuccessPage from "@/page/OAuthSuccess";
 import JariRegisterPage from "@/page/JariRegister";
+import JariRegisterDetailPage from "@/page/JariRegisterDetail";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "jari/:name", element: <JariDetail /> },
       { path: "jari/register", element: <JariRegisterPage /> },
+      { path: "jari/register/:name", element: <JariRegisterDetailPage /> },
       { path: "oauth2/success", element: <OAuthSuccessPage /> },
     ],
   },

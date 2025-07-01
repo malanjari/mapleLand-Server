@@ -57,6 +57,7 @@ export default {
       },
     },
     screens: {
+      xmb: "300px",
       mb: "450px",
       sm: "640px",
       md: "768px",

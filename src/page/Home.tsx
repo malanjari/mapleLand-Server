@@ -55,7 +55,7 @@ const HomePage = () => {
         </div>
       </div>
       <div>
-        <h2 className="text-xl font-bold mb-5">🔥 인기 사냥터</h2>
+        <h2 className="text-xl font-bold mb-5">🔥 인기 자리</h2>
 
         <div className="grid grid-cols-3  gap-4 text-center">
           {hotSpot.map((spot) => (
