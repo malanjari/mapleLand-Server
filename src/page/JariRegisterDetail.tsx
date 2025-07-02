@@ -1,28 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
 import { Button } from "@/shared/ui/button/Button";
 import { Input } from "@/shared/ui/input/Input";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/entity/user/hooks/useUser";
-// 🚨 userId는 실제 로그인 정보에서 가져와야 함
-const mockUserId = 123;
+import { fetchAutocomplete, MapItem } from "@/feature/jari/api/autocomplete";
 
 const JariRegisterDetailPage = () => {
   const { name } = useParams();
+  const [mapData, setMapData] = useState<MapItem | null>(null);
 
   const user = useUser();
 
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    user: user?.id,
+    userId: user?.user.id,
     mapName: name,
     mapColor: null as "red" | "yellow" | "green" | null,
     comment: "",
     price: "",
     negotiationOption: false,
     area: "",
-    userId: mockUserId,
+
     tradeType: null as "SELL" | "BUY" | null,
   });
 
@@ -65,6 +65,30 @@ const JariRegisterDetailPage = () => {
 
     return parts.join(" ") + "메소";
   };
+  useEffect(() => {
+    const fetchMap = async () => {
+      if (!name) return;
+      try {
+        const data = await fetchAutocomplete(name); // string → MapItem[]
+        console.log(data);
+        const matched = data.find(
+          (map) => map.mapName === decodeURIComponent(name)
+        );
+        if (matched) {
+          setMapData(matched); // ✅ 원하는 맵 정보 저장
+          setForm((prev) => ({
+            ...prev,
+            mapName: matched.mapName,
+          }));
+        }
+      } catch (err) {
+        console.error("맵 정보 불러오기 실패:", err);
+      }
+    };
+
+    fetchMap();
+  }, [name]);
+  console.log("useParams name:", name);
   return (
     <div className="flex flex-col items-center pt-10 h-full gap-5 px-4 pb-20">
       {/* 안내 박스 */}
@@ -97,7 +121,18 @@ const JariRegisterDetailPage = () => {
           }}
         />
       </div>
-
+      {mapData && (
+        <div className="flex items-center gap-2 text-sm text-white">
+          <img
+            src={mapData.miniMapImageLogoUrl}
+            alt="맵로고"
+            className="w-6 h-6"
+          />
+          <span>
+            {mapData.region} / {mapData.subRegion}
+          </span>
+        </div>
+      )}
       {/* tradeType */}
       <div className="w-full max-w-2xl space-y-2">
         <p className="text-white text-sm font-medium text-center">
