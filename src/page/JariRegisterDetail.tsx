@@ -1,13 +1,22 @@
 import { useState } from "react";
-import { SearchInputWithSuggestions } from "@/shared/ui/SearchInputWithSuggestions/SearchInputWithSuggestions";
+import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
 import { Button } from "@/shared/ui/button/Button";
-
+import { Input } from "@/shared/ui/input/Input";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "@/entity/user/hooks/useUser";
 // 🚨 userId는 실제 로그인 정보에서 가져와야 함
 const mockUserId = 123;
 
 const JariRegisterDetailPage = () => {
+  const { name } = useParams();
+
+  const user = useUser();
+
+  const navigate = useNavigate();
   const [form, setForm] = useState({
-    mapName: "",
+    user: user?.id,
+    mapName: name,
     mapColor: null as "red" | "yellow" | "green" | null,
     comment: "",
     price: "",
@@ -18,8 +27,8 @@ const JariRegisterDetailPage = () => {
   });
 
   const handleSubmit = () => {
-    const { mapName, mapColor, comment, price, area, tradeType } = form;
-    if (!mapName || !mapColor || !comment || !price || !area || !tradeType) {
+    const { mapName, mapColor, price, area, tradeType } = form;
+    if (!mapName || !mapColor || !price || !area || !tradeType) {
       alert("모든 필수 항목을 입력해주세요.");
       return;
     }
@@ -33,6 +42,29 @@ const JariRegisterDetailPage = () => {
     alert("등록 완료 (콘솔 확인)");
   };
 
+  const formatToWonStyle = (value: number | string): string => {
+    let num = Number(value);
+    if (isNaN(num) || num <= 0) return "";
+
+    const units = [
+      { label: "억", value: 100000000 },
+      { label: "만", value: 10000 },
+      { label: "", value: 1 },
+    ];
+
+    const parts: string[] = [];
+
+    for (const unit of units) {
+      const unitAmount = Math.floor(num / unit.value);
+      if (unitAmount > 0 || unit.label === "") {
+        const formatted = unitAmount.toLocaleString();
+        parts.push(`${formatted}${unit.label}`);
+      }
+      num %= unit.value;
+    }
+
+    return parts.join(" ") + "메소";
+  };
   return (
     <div className="flex flex-col items-center pt-10 h-full gap-5 px-4 pb-20">
       {/* 안내 박스 */}
@@ -55,12 +87,14 @@ const JariRegisterDetailPage = () => {
         </p>
       </div>
 
-      {/* mapName */}
+      {/* 서치바*/}
       <div className="w-full max-w-2xl">
         <SearchInputWithSuggestions
           placeholder="자리를 입력해주세요"
           className="w-full"
-          onSelect={(val) => setForm((prev) => ({ ...prev, mapName: val }))}
+          onSelect={(val) => {
+            navigate(`/jari/register/${encodeURIComponent(val)}`);
+          }}
         />
       </div>
 
@@ -103,7 +137,7 @@ const JariRegisterDetailPage = () => {
             <p className="text-sm font-medium mb-2">맵 상태를 선택해주세요</p>
             <div className="flex gap-4">
               <label className="flex items-center gap-2 cursor-pointer">
-                <input
+                <Input
                   type="radio"
                   name="mapColor"
                   value="red"
@@ -111,12 +145,12 @@ const JariRegisterDetailPage = () => {
                   onChange={() =>
                     setForm((prev) => ({ ...prev, mapColor: "red" }))
                   }
-                  className="accent-red-500"
+                  className="accent-red-500 w-3 cursor-pointer"
                 />
                 <span className="text-white">빨강</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
-                <input
+                <Input
                   type="radio"
                   name="mapColor"
                   value="yellow"
@@ -124,12 +158,12 @@ const JariRegisterDetailPage = () => {
                   onChange={() =>
                     setForm((prev) => ({ ...prev, mapColor: "yellow" }))
                   }
-                  className="accent-yellow-400"
+                  className="accent-yellow-400 w-3 cursor-pointer"
                 />
                 <span className="text-white">노랑</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
-                <input
+                <Input
                   type="radio"
                   name="mapColor"
                   value="green"
@@ -137,7 +171,7 @@ const JariRegisterDetailPage = () => {
                   onChange={() =>
                     setForm((prev) => ({ ...prev, mapColor: "green" }))
                   }
-                  className="accent-green-500"
+                  className="accent-green-500 w-3 cursor-pointer"
                 />
                 <span className="text-white">초록</span>
               </label>
@@ -156,6 +190,11 @@ const JariRegisterDetailPage = () => {
               className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
               placeholder="거래 가격을 입력해주세요"
             />
+            {form.price && (
+              <p className="mt-1 px-2 text-sm text-white">
+                {formatToWonStyle(form.price)}
+              </p>
+            )}
           </div>
 
           {/* area */}
@@ -169,16 +208,16 @@ const JariRegisterDetailPage = () => {
               className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
             >
               <option value="">지역 선택</option>
-              <option value="Victoria">Victoria</option>
-              <option value="Ellanas">Ellanas</option>
-              <option value="LudusNihal">LudusNihal</option>
-              <option value="Leafre">Leafre</option>
+              <option value="빅토리아">빅토리아</option>
+              <option value="엘나스">엘나스</option>
+              <option value="루더스니할">루더스니할</option>
+              <option value="리프레">리프레</option>
             </select>
           </div>
 
           {/* negotiationOption */}
           <div className="flex items-center gap-2">
-            <input
+            <Input
               type="checkbox"
               checked={form.negotiationOption}
               onChange={(e) =>
@@ -188,8 +227,9 @@ const JariRegisterDetailPage = () => {
                 }))
               }
               id="negotiation"
+              className="w-3 cursor-pointer"
             />
-            <label htmlFor="negotiation" className="text-sm">
+            <label htmlFor="negotiation" className="text-sm cursor-pointer">
               흥정 가능
             </label>
           </div>
@@ -203,8 +243,8 @@ const JariRegisterDetailPage = () => {
                 setForm((prev) => ({ ...prev, comment: e.target.value }))
               }
               className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
-              placeholder="거래 관련 안내 메시지 (5~60자)"
-              minLength={5}
+              placeholder="거래 관련 안내 메시지"
+              minLength={0}
               maxLength={60}
             />
           </div>

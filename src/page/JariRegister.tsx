@@ -1,4 +1,4 @@
-import { SearchInputWithSuggestions } from "@/shared/ui/SearchInputWithSuggestions/SearchInputWithSuggestions";
+import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
 import { useNavigate } from "react-router-dom";
 const JariRegisterPage = () => {
   const navigate = useNavigate();
@@ -9,11 +9,11 @@ const JariRegisterPage = () => {
           자리 등록 페이지입니다.
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base">
-          원하는 사냥터를 검색해주세요.
+          등록하길 원하는 자리를 검색해주세요.
         </p>
 
         <SearchInputWithSuggestions
-          placeholder="예: 구름공원, 죽은나무숲2..."
+          placeholder="예: 구름 공원1, 죽은 나무의 숲1..."
           className="max-w-lg mx-auto"
           onSelect={(val) => {
             navigate(`/jari/register/${encodeURIComponent(val)}`);

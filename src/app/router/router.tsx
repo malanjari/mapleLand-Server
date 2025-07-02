@@ -8,6 +8,7 @@ import JariDetail from "@/page/JariDetail";
 import OAuthSuccessPage from "@/page/OAuthSuccess";
 import JariRegisterPage from "@/page/JariRegister";
 import JariRegisterDetailPage from "@/page/JariRegisterDetail";
+import { RequireAuth } from "../guard/RequireAuth";
 
 const router = createBrowserRouter([
   {
@@ -16,13 +17,27 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "jari/:name", element: <JariDetail /> },
-      { path: "jari/register", element: <JariRegisterPage /> },
-      { path: "jari/register/:name", element: <JariRegisterDetailPage /> },
+      {
+        path: "jari/register",
+        element: (
+          <RequireAuth>
+            <JariRegisterPage />
+          </RequireAuth>
+        ),
+      },
+      {
+        path: "jari/register/:name",
+        element: (
+          <RequireAuth>
+            <JariRegisterDetailPage />
+          </RequireAuth>
+        ),
+      },
       { path: "oauth2/success", element: <OAuthSuccessPage /> },
     ],
   },
   {
-    path: "*", //
+    path: "*",
     element: <NotFound />,
   },
 ]);

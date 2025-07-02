@@ -4,10 +4,10 @@ import {
   HeaderLogo,
   HeaderProfileButton,
   HeaderTradeButton,
-  useProfileMenu,
-} from "./index";
+} from "./ui/index";
+import { useProfileMenu } from "../hook/useProfileMenu";
 import { useLocation } from "react-router-dom";
-import { SearchInputWithSuggestions } from "@/shared/ui/SearchInputWithSuggestions/SearchInputWithSuggestions";
+import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
 import { useNavigate } from "react-router-dom";
 const Header = () => {
   const user = useUser();

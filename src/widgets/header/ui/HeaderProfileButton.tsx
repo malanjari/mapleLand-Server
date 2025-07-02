@@ -1,4 +1,4 @@
-import { Button } from "../../shared/ui/button/Button";
+import { Button } from "../../../shared/ui/button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDiscord } from "@fortawesome/free-brands-svg-icons";
 import { useUser } from "@/entity/user/hooks/useUser";
