@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { API_BASE_URL } from "@/shared/config/api";
+import { handleDiscordLogin } from "@/shared/utils/auth/discord";
 
 export function useProfileMenu() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -7,10 +7,6 @@ export function useProfileMenu() {
 
   const closeMenu = () => setMenuOpen(false);
   const toggleMenu = () => setMenuOpen((prev) => !prev);
-
-  const handleDiscordLogin = () => {
-    window.location.href = `${API_BASE_URL}/oauth2/authorization/discord`;
-  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

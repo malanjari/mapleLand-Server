@@ -5,7 +5,7 @@ import { useUser } from "@/entity/user/hooks/useUser";
 
 export const HeaderProfileButton = ({ onClick }: { onClick: () => void }) => {
   const user = useUser();
-  console.log(user);
+
   return (
     <Button
       onClick={onClick}
