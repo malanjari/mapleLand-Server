@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ludusNihal, leafre, victoria, elnath } from "@/shared/assets/world";
-
+import { handleDiscordLogin } from "@/shared/utils/auth/discord";
 import {
   jrNewtie,
   blackKentaurus,
@@ -49,8 +49,9 @@ const HomePage = () => {
       ) : (
         <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
           <img
+            onClick={handleDiscordLogin}
             src="https://cdn.discordapp.com/embed/avatars/0.png"
-            className="w-6 h-6 rounded-full"
+            className="w-6 h-6 rounded-full cursor-pointer"
             alt="default avatar"
           />
           <span>디스코드 로그인을 통해 더 많은 기능을 이용해보세요!</span>
