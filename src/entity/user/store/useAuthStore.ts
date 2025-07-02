@@ -3,7 +3,8 @@ import { getCurrentUser } from "@/entity/user/api/user";
 import { AuthResponse } from "@/entity/user/model/type";
 
 interface AuthStore {
-  user: AuthResponse | null; // ✅ null 허용
+  user: AuthResponse | null;
+  initialized: boolean;
   setToken: (accessToken: string) => void;
   logout: () => void;
   initialize: () => void;
@@ -11,26 +12,35 @@ interface AuthStore {
 
 export const useAuthStore = create<AuthStore>((set) => ({
   user: null,
+  initialized: false,
+
   setToken: (accessToken: string) => {
     try {
       localStorage.setItem("accessToken", accessToken);
-    } catch (err) {
-      console.error("Invalid access token:", err);
+    } catch (error) {
+      console.error("Failed to set access token:", error);
     }
   },
+
   logout: () => {
     localStorage.removeItem("accessToken");
-    set({ user: null });
+    set({ user: null, initialized: true });
   },
+
   initialize: async () => {
     const token = localStorage.getItem("accessToken");
-    if (!token) return;
+
+    if (!token) {
+      set({ user: null, initialized: true });
+      return;
+    }
 
     try {
-      const authResponse: AuthResponse = await getCurrentUser();
-      set({ user: authResponse }); //
-    } catch (err) {
-      console.error("유저 정보를 가져오지 못했습니다:", err);
+      const user = await getCurrentUser();
+      set({ user, initialized: true });
+    } catch (error) {
+      console.error("유저 정보를 가져오지 못했습니다:", error);
+      set({ user: null, initialized: true });
     }
   },
 }));
