@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
 import { Button } from "@/shared/ui/button/Button";
 import { Input } from "@/shared/ui/input/Input";
@@ -11,13 +11,15 @@ const JariRegisterDetailPage = () => {
   const { name } = useParams();
   const [mapData, setMapData] = useState<MapItem | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [aspectRatio, setAspectRatio] = useState("auto");
+  const imgRef = useRef<HTMLImageElement>(null);
   const user = useUser();
 
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    user: user?.user.id,
+    userId: user?.user.id,
     mapName: name,
-    mapColor: null as "red" | "yellow" | "green" | null,
+    serverColor: null as "red" | "yellow" | "green" | null,
     comment: "",
     price: "",
     negotiationOption: false,
@@ -27,8 +29,8 @@ const JariRegisterDetailPage = () => {
   });
 
   const handleSubmit = () => {
-    const { mapName, mapColor, price, area, tradeType } = form;
-    if (!mapName || !mapColor || !price || !area || !tradeType) {
+    const { mapName, serverColor, price, area, tradeType } = form;
+    if (!mapName || !serverColor || !price || !area || !tradeType) {
       alert("모든 필수 항목을 입력해주세요.");
       return;
     }
@@ -66,7 +68,7 @@ const JariRegisterDetailPage = () => {
     return parts.join(" ") + "메소";
   };
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchMap = async () => {
       if (!name) return;
       try {
         const res = await fetchAutocomplete(name);
@@ -80,8 +82,15 @@ const JariRegisterDetailPage = () => {
       }
     };
 
-    fetchData();
+    fetchMap();
   }, [name]);
+  useEffect(() => {
+    const img = imgRef.current;
+    if (img && img.complete) {
+      const { naturalWidth, naturalHeight } = img;
+      setAspectRatio(`${naturalWidth} / ${naturalHeight}`);
+    }
+  }, [name]); // 이미지 변경 시 다시 측정
   return (
     <div className="flex flex-col items-center pt-10 h-full gap-5 px-4 pb-20">
       {/* 안내 박스 */}
@@ -158,13 +167,15 @@ const JariRegisterDetailPage = () => {
 
               {/* 미니맵 이미지 + 클릭 확대 */}
               <div className="relative">
-                <img
-                  src={mapData.miniMapImageUrl}
-                  alt="맵로고"
-                  className="w-24 h-16 object-cover rounded-md border border-neutral-600 cursor-pointer transition hover:scale-105"
-                  onClick={() => setIsPreviewOpen(true)}
-                />
-
+                <div className="w-96 relative" style={{ aspectRatio }}>
+                  <img
+                    ref={imgRef}
+                    src={mapData.miniMapImageUrl}
+                    alt="맵로고"
+                    className="absolute inset-0 w-full h-full object-contain rounded-md cursor-pointer transition hover:scale-105"
+                    onClick={() => setIsPreviewOpen(true)}
+                  />
+                </div>
                 {isPreviewOpen && (
                   <div
                     className="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center"
@@ -194,53 +205,53 @@ const JariRegisterDetailPage = () => {
           )}
 
           {/* mapColor (빨/노/초 라디오) */}
-          <div>
-            <p className="text-sm font-medium mb-2">맵 상태를 선택해주세요</p>
+          <div className="border-b border-neutral-700 pb-4 mb-4">
+            <p className=" font-medium mb-2">맵 상태를 선택해주세요</p>
             <div className="flex gap-4">
               <label className="flex items-center gap-2 cursor-pointer">
                 <Input
                   type="radio"
                   name="mapColor"
                   value="red"
-                  checked={form.mapColor === "red"}
+                  checked={form.serverColor === "red"}
                   onChange={() =>
                     setForm((prev) => ({ ...prev, mapColor: "red" }))
                   }
                   className="accent-red-500 w-3 cursor-pointer"
                 />
-                <span className="text-white">빨강</span>
+                <span className="text-white">빨채</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <Input
                   type="radio"
                   name="mapColor"
                   value="yellow"
-                  checked={form.mapColor === "yellow"}
+                  checked={form.serverColor === "yellow"}
                   onChange={() =>
                     setForm((prev) => ({ ...prev, mapColor: "yellow" }))
                   }
                   className="accent-yellow-400 w-3 cursor-pointer"
                 />
-                <span className="text-white">노랑</span>
+                <span className="text-white">노채</span>
               </label>
               <label className="flex items-center gap-2 cursor-pointer">
                 <Input
                   type="radio"
                   name="mapColor"
                   value="green"
-                  checked={form.mapColor === "green"}
+                  checked={form.serverColor === "green"}
                   onChange={() =>
                     setForm((prev) => ({ ...prev, mapColor: "green" }))
                   }
                   className="accent-green-500 w-3 cursor-pointer"
                 />
-                <span className="text-white">초록</span>
+                <span className="text-white">초채</span>
               </label>
             </div>
           </div>
 
           {/* price */}
-          <div>
+          <div className="border-b border-neutral-700 pb-4 mb-4">
             <label className="block mb-1 text-sm font-medium">가격</label>
             <input
               type="number"
@@ -259,7 +270,7 @@ const JariRegisterDetailPage = () => {
           </div>
 
           {/* area */}
-          <div>
+          <div className="border-b border-neutral-700 pb-4 mb-4">
             <label className="block mb-1 text-sm font-medium">지역</label>
             <select
               value={form.area}
@@ -277,7 +288,8 @@ const JariRegisterDetailPage = () => {
           </div>
 
           {/* negotiationOption */}
-          <div className="flex items-center gap-2">
+
+          <div className="flex items-center gap-2 border-b border-neutral-700 pb-4 mb-4">
             <Input
               type="checkbox"
               checked={form.negotiationOption}
@@ -296,7 +308,7 @@ const JariRegisterDetailPage = () => {
           </div>
 
           {/* comment */}
-          <div>
+          <div className="border-neutral-700 pb-4 mb-4">
             <label className="block mb-1 text-sm font-medium">거래 메모</label>
             <textarea
               value={form.comment}
