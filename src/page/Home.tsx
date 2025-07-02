@@ -33,7 +33,7 @@ const HomePage = () => {
       <div className="self-start max-w-[300px] bg-[#5865F2] text-white px-4 py-2 rounded-md text-xs xs:text-sm font-medium shadow hover:bg-[#4752c4] transition cursor-pointer">
         메렌자리.kr을 사용하기 위한 디스코드 설정!
       </div>
-      {user && (
+      {user ? (
         <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
           <img
             src={
@@ -45,6 +45,15 @@ const HomePage = () => {
             alt="user avatar"
           />
           <span>{user.globalName}님, 환영합니다 👋</span>
+        </div>
+      ) : (
+        <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
+          <img
+            src="https://cdn.discordapp.com/embed/avatars/0.png"
+            className="w-6 h-6 rounded-full"
+            alt="default avatar"
+          />
+          <span>디스코드 로그인을 통해 더 많은 기능을 이용해보세요!</span>
         </div>
       )}
 

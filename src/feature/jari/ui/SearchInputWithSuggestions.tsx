@@ -37,13 +37,18 @@ export const SearchInputWithSuggestions = ({
 
       {suggestions.length > 0 && (
         <ul className="absolute mt-1 left-0 w-full bg-neutral-800 border text-white rounded-md shadow z-20">
-          {suggestions.map((item, idx) => (
+          {suggestions.map((map, idx) => (
             <li
-              key={idx}
-              className="px-4 py-2 text-sm hover:bg-neutral-700 cursor-pointer rounded-md text-left"
-              onClick={() => handleSelect(item)}
+              key={map.mapleLandMapListId ?? idx}
+              className="px-4 py-2 text-sm hover:bg-neutral-700 cursor-pointer rounded-md text-left flex items-center gap-2"
+              onClick={() => handleSelect(map.mapName)}
             >
-              {item}
+              <img
+                src={map.miniMapImageLogoUrl}
+                alt="미니맵"
+                className="w-5 h-5 object-cover rounded-sm"
+              />
+              <span>{map.mapName}</span>
             </li>
           ))}
         </ul>
