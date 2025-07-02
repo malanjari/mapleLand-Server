@@ -8,6 +8,7 @@ import {
   redWyvern,
   shark,
 } from "@/shared/assets/monster";
+import { useUser } from "@/entity/user/hooks/useUser";
 
 const worlds = [
   { name: "루더스니할", image: ludusNihal },
@@ -26,11 +27,26 @@ const hotSpot = [
 ];
 
 const HomePage = () => {
+  const user = useUser();
   return (
     <div className="py-10 flex flex-col gap-10">
       <div className="self-start max-w-[300px] bg-[#5865F2] text-white px-4 py-2 rounded-md text-xs xs:text-sm font-medium shadow hover:bg-[#4752c4] transition cursor-pointer">
         메렌자리.kr을 사용하기 위한 디스코드 설정!
       </div>
+      {user && (
+        <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
+          <img
+            src={
+              user.avatar
+                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+                : "https://cdn.discordapp.com/embed/avatars/0.png"
+            }
+            className="w-6 h-6 rounded-full"
+            alt="user avatar"
+          />
+          <span>{user.globalName}님, 환영합니다 👋</span>
+        </div>
+      )}
 
       <div>
         <h2 className="text-xl font-bold mb-5">🗺️ 월드별 검색</h2>
