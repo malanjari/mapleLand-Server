@@ -11,11 +11,15 @@ const JariRegisterDetailPage = () => {
   const { name } = useParams();
   const [mapData, setMapData] = useState<MapItem | null>(null);
 
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+
   const user = useUser();
 
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    userId: user?.user.id,
+
+    user: user?.user.id,
+
     mapName: name,
     mapColor: null as "red" | "yellow" | "green" | null,
     comment: "",
@@ -66,29 +70,24 @@ const JariRegisterDetailPage = () => {
     return parts.join(" ") + "메소";
   };
   useEffect(() => {
-    const fetchMap = async () => {
+
+    const fetchData = async () => {
       if (!name) return;
       try {
-        const data = await fetchAutocomplete(name); // string → MapItem[]
-        console.log(data);
-        const matched = data.find(
-          (map) => map.mapName === decodeURIComponent(name)
-        );
+        const res = await fetchAutocomplete(name);
+        const matched = res.find((m) => m.mapName === decodeURIComponent(name));
         if (matched) {
-          setMapData(matched); // ✅ 원하는 맵 정보 저장
-          setForm((prev) => ({
-            ...prev,
-            mapName: matched.mapName,
-          }));
+          setMapData(matched);
+          setForm((prev) => ({ ...prev, mapName: matched.mapName }));
         }
-      } catch (err) {
-        console.error("맵 정보 불러오기 실패:", err);
+      } catch (e) {
+        console.error("맵 정보 불러오기 실패", e);
       }
     };
 
-    fetchMap();
+    fetchData();
   }, [name]);
-  console.log("useParams name:", name);
+
   return (
     <div className="flex flex-col items-center pt-10 h-full gap-5 px-4 pb-20">
       {/* 안내 박스 */}
@@ -167,6 +166,50 @@ const JariRegisterDetailPage = () => {
       {/* 거래 폼 */}
       {form.tradeType && (
         <div className="w-full max-w-2xl space-y-4 mt-4 text-white">
+          {mapData && (
+            <div className="w-full flex flex-col items-center gap-3 text-white relative">
+              {/* 맵 이름 */}
+              <p className="text-base sm:text-lg font-semibold">
+                {mapData.mapName}
+              </p>
+
+              {/* 미니맵 이미지 + 클릭 확대 */}
+              <div className="relative">
+                <img
+                  src={mapData.miniMapImageUrl}
+                  alt="맵로고"
+                  className="w-24 h-16 object-cover rounded-md border border-neutral-600 cursor-pointer transition hover:scale-105"
+                  onClick={() => setIsPreviewOpen(true)}
+                />
+
+                {isPreviewOpen && (
+                  <div
+                    className="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center"
+                    onClick={() => setIsPreviewOpen(false)}
+                  >
+                    <div
+                      className="relative max-w-[90%] max-h-[90%] animate-fade-in"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <img
+                        src={mapData.miniMapImageUrl}
+                        alt="전체 보기"
+                        className="max-w-screen max-h-screen object-contain rounded-lg shadow-2xl border border-neutral-600"
+                      />
+                      <Button
+                        variant="none"
+                        onClick={() => setIsPreviewOpen(false)}
+                        className="absolute top-2 right-2 text-white text-xl bg-black/60 rounded-full px-3 py-1 hover:bg-black/80"
+                      >
+                        ✕
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* mapColor (빨/노/초 라디오) */}
           <div>
             <p className="text-sm font-medium mb-2">맵 상태를 선택해주세요</p>
