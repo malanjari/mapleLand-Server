@@ -1,4 +1,4 @@
-import { Button } from "../../shared/ui/button/Button";
+import { Button } from "../../../shared/ui/button/Button";
 import { useAuthActions } from "@/entity/user/hooks/useUser";
 
 export const HeaderDropdownMenu = ({

@@ -1,28 +1,25 @@
 import { Link } from "react-router-dom";
-import 루더스니할 from "@/shared/assets/world/루더스니할.jpg";
-import 리프레 from "@/shared/assets/world/리프레.jpg";
-import 빅토리아 from "@/shared/assets/world/빅토리아.jpg";
-import 엘나스 from "@/shared/assets/world/엘나스.jpg";
-import { useUser } from "@/entity/user/hooks/useUser";
+import { ludusNihal, leafre, victoria, elnath } from "@/shared/assets/world";
+
 import {
-  coolieZombie,
-  starPixie,
   jrNewtie,
   blackKentaurus,
   skelosaurus,
   redWyvern,
+  shark,
 } from "@/shared/assets/monster";
+import { useUser } from "@/entity/user/hooks/useUser";
 
 const worlds = [
-  { name: "루더스니할", image: 루더스니할 },
-  { name: "리프레", image: 리프레 },
-  { name: "빅토리아", image: 빅토리아 },
-  { name: "엘나스", image: 엘나스 },
+  { name: "루더스니할", image: ludusNihal },
+  { name: "리프레", image: leafre },
+  { name: "빅토리아", image: victoria },
+  { name: "엘나스", image: elnath },
 ];
 
 const hotSpot = [
-  { name: "구름공원1", image: starPixie },
-  { name: "죽은나무숲2", image: coolieZombie },
+  { name: "난파선의 무덤", image: shark },
+  { name: "검은 켄타우로스의 영역", image: blackKentaurus },
   { name: "불과 어둠의 전장", image: blackKentaurus },
   { name: "망가진 용의 둥지", image: jrNewtie },
   { name: "큰 둥지 봉우리", image: skelosaurus },
@@ -83,7 +80,7 @@ const HomePage = () => {
         </div>
       </div>
       <div>
-        <h2 className="text-xl font-bold mb-5">🔥 인기 사냥터</h2>
+        <h2 className="text-xl font-bold mb-5">🔥 인기 자리</h2>
 
         <div className="grid grid-cols-3  gap-4 text-center">
           {hotSpot.map((spot) => (
@@ -95,9 +92,9 @@ const HomePage = () => {
               <img
                 src={spot.image}
                 alt={spot.name}
-                className="w-14 h-18 sm:w-15 sm:h-20 object-cover rounded-md transition duration-100 hover:scale-105"
+                className="w-14 sm:w-18 object-cover rounded-md transition duration-100 hover:scale-105"
               />
-              <p className="text-sm">{spot.name}</p>
+              <p className="text-xs">{spot.name}</p>
             </Link>
           ))}
         </div>
