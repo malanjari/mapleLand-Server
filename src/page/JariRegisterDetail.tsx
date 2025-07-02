@@ -12,7 +12,7 @@ const JariRegisterDetailPage = () => {
   const [mapData, setMapData] = useState<MapItem | null>(null);
 
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [aspectRatio, setAspectRatio] = useState("auto");
+  const [aspectRatio, setAspectRatio] = useState("4 / 3");
   const imgRef = useRef<HTMLImageElement>(null);
   const user = useUser();
 
@@ -70,6 +70,7 @@ const JariRegisterDetailPage = () => {
   };
   useEffect(() => {
     const fetchMap = async () => {
+      console.log(name);
       if (!name) return;
       try {
         const res = await fetchAutocomplete(name);
@@ -85,13 +86,13 @@ const JariRegisterDetailPage = () => {
 
     fetchMap();
   }, [name]);
-  useEffect(() => {
-    const img = imgRef.current;
-    if (img && img.complete) {
-      const { naturalWidth, naturalHeight } = img;
-      setAspectRatio(`${naturalWidth} / ${naturalHeight}`);
+  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const img = e.currentTarget;
+    if (img.naturalWidth && img.naturalHeight) {
+      setAspectRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
     }
-  }, [name]); // 이미지 변경 시 다시 측정
+  };
+
   return (
     <div className="flex flex-col items-center pt-10 h-full gap-5 px-4 pb-20">
       {/* 안내 박스 */}
@@ -124,18 +125,7 @@ const JariRegisterDetailPage = () => {
           }}
         />
       </div>
-      {mapData && (
-        <div className="flex items-center gap-2 text-sm text-white">
-          <img
-            src={mapData.miniMapImageLogoUrl}
-            alt="맵로고"
-            className="w-6 h-6"
-          />
-          <span>
-            {mapData.region} / {mapData.subRegion}
-          </span>
-        </div>
-      )}
+
       {/* tradeType */}
       <div className="w-full max-w-2xl space-y-2">
         <p className="text-white text-sm font-medium text-center">
@@ -169,9 +159,9 @@ const JariRegisterDetailPage = () => {
 
       {/* 거래 폼 */}
       {form.tradeType && (
-        <div className="w-full max-w-2xl space-y-4 mt-4 text-white">
+        <>
           {mapData && (
-            <div className="w-full flex flex-col items-center gap-3 text-white relative">
+            <div className="w-full flex flex-col items-center gap-3  mt-10 mb-10 text-white relative">
               {/* 맵 이름 */}
               <p className="text-base sm:text-lg font-semibold">
                 {mapData.mapName}
@@ -184,7 +174,8 @@ const JariRegisterDetailPage = () => {
                     ref={imgRef}
                     src={mapData.miniMapImageUrl}
                     alt="맵로고"
-                    className="absolute inset-0 w-full h-full object-contain rounded-md cursor-pointer transition hover:scale-105"
+                    onLoad={handleImageLoad}
+                    className="absolute inset-0 w-full h-full object-contain rounded-md cursor-pointer transition "
                     onClick={() => setIsPreviewOpen(true)}
                   />
                 </div>
@@ -215,133 +206,136 @@ const JariRegisterDetailPage = () => {
               </div>
             </div>
           )}
+          <div className="w-full max-w-2xl text-white">
+            {/* mapColor (빨/노/초 라디오) */}
+            <div className="border-b border-neutral-700 pb-4 mb-4">
+              <p className=" font-medium mb-2">맵 상태를 선택해주세요</p>
+              <div className="flex gap-4">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <Input
+                    type="radio"
+                    name="mapColor"
+                    value="red"
+                    checked={form.serverColor === "red"}
+                    onChange={() =>
+                      setForm((prev) => ({ ...prev, serverColor: "red" }))
+                    }
+                    className="accent-red-500 w-5 cursor-pointer"
+                  />
+                  <span className="text-white">빨채</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <Input
+                    type="radio"
+                    name="mapColor"
+                    value="yellow"
+                    checked={form.serverColor === "yellow"}
+                    onChange={() =>
+                      setForm((prev) => ({ ...prev, serverColor: "yellow" }))
+                    }
+                    className="accent-yellow-400 w-5 cursor-pointer"
+                  />
+                  <span className="text-white">노채</span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <Input
+                    type="radio"
+                    name="mapColor"
+                    value="green"
+                    checked={form.serverColor === "green"}
+                    onChange={() =>
+                      setForm((prev) => ({ ...prev, serverColor: "green" }))
+                    }
+                    className="accent-green-500 w-5 cursor-pointer"
+                  />
+                  <span className="text-white">초채</span>
+                </label>
+              </div>
+            </div>
 
-          {/* mapColor (빨/노/초 라디오) */}
-          <div className="border-b border-neutral-700 pb-4 mb-4">
-            <p className=" font-medium mb-2">맵 상태를 선택해주세요</p>
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <Input
-                  type="radio"
-                  name="mapColor"
-                  value="red"
-                  checked={form.serverColor === "red"}
-                  onChange={() =>
-                    setForm((prev) => ({ ...prev, mapColor: "red" }))
-                  }
-                  className="accent-red-500 w-3 cursor-pointer"
-                />
-                <span className="text-white">빨채</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <Input
-                  type="radio"
-                  name="mapColor"
-                  value="yellow"
-                  checked={form.serverColor === "yellow"}
-                  onChange={() =>
-                    setForm((prev) => ({ ...prev, mapColor: "yellow" }))
-                  }
-                  className="accent-yellow-400 w-3 cursor-pointer"
-                />
-                <span className="text-white">노채</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer">
-                <Input
-                  type="radio"
-                  name="mapColor"
-                  value="green"
-                  checked={form.serverColor === "green"}
-                  onChange={() =>
-                    setForm((prev) => ({ ...prev, mapColor: "green" }))
-                  }
-                  className="accent-green-500 w-3 cursor-pointer"
-                />
-                <span className="text-white">초채</span>
+            {/* price */}
+            <div className="border-b border-neutral-700 pb-4 mb-4">
+              <label className="block mb-1 text-sm font-medium">가격</label>
+              <input
+                type="number"
+                value={form.price}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, price: e.target.value }))
+                }
+                className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
+                placeholder="거래 가격을 입력해주세요"
+              />
+              {form.price && (
+                <p className="mt-1 px-2 text-sm text-white">
+                  {formatToWonStyle(form.price)}
+                </p>
+              )}
+            </div>
+
+            {/* area */}
+            <div className="border-b border-neutral-700 pb-4 mb-4">
+              <label className="block mb-1 text-sm font-medium">지역</label>
+              <select
+                value={form.area}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, area: e.target.value }))
+                }
+                className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
+              >
+                <option value="">지역 선택</option>
+                <option value="빅토리아">빅토리아</option>
+                <option value="엘나스">엘나스</option>
+                <option value="루더스니할">루더스니할</option>
+                <option value="리프레">리프레</option>
+              </select>
+            </div>
+
+            {/* negotiationOption */}
+
+            <div className="flex items-center gap-2 border-b border-neutral-700 pb-4 mb-4">
+              <Input
+                type="checkbox"
+                checked={form.negotiationOption}
+                onChange={(e) =>
+                  setForm((prev) => ({
+                    ...prev,
+                    negotiationOption: e.target.checked,
+                  }))
+                }
+                id="negotiation"
+                className="w-3 cursor-pointer"
+              />
+              <label htmlFor="negotiation" className="text-sm cursor-pointer">
+                흥정 가능
               </label>
             </div>
-          </div>
 
-          {/* price */}
-          <div className="border-b border-neutral-700 pb-4 mb-4">
-            <label className="block mb-1 text-sm font-medium">가격</label>
-            <input
-              type="number"
-              value={form.price}
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, price: e.target.value }))
-              }
-              className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
-              placeholder="거래 가격을 입력해주세요"
-            />
-            {form.price && (
-              <p className="mt-1 px-2 text-sm text-white">
-                {formatToWonStyle(form.price)}
-              </p>
-            )}
-          </div>
+            {/* comment */}
+            <div className="border-neutral-700 pb-4 mb-4">
+              <label className="block mb-1 text-sm font-medium">
+                거래 메모
+              </label>
+              <textarea
+                value={form.comment}
+                onChange={(e) =>
+                  setForm((prev) => ({ ...prev, comment: e.target.value }))
+                }
+                className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
+                placeholder="거래 관련 안내 메시지"
+                minLength={0}
+                maxLength={60}
+              />
+            </div>
 
-          {/* area */}
-          <div className="border-b border-neutral-700 pb-4 mb-4">
-            <label className="block mb-1 text-sm font-medium">지역</label>
-            <select
-              value={form.area}
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, area: e.target.value }))
-              }
-              className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
+            {/* 등록 버튼 */}
+            <Button
+              className="w-full bg-green-600 hover:bg-green-700 text-white"
+              onClick={handleSubmit}
             >
-              <option value="">지역 선택</option>
-              <option value="빅토리아">빅토리아</option>
-              <option value="엘나스">엘나스</option>
-              <option value="루더스니할">루더스니할</option>
-              <option value="리프레">리프레</option>
-            </select>
+              등록하기
+            </Button>
           </div>
-
-          {/* negotiationOption */}
-
-          <div className="flex items-center gap-2 border-b border-neutral-700 pb-4 mb-4">
-            <Input
-              type="checkbox"
-              checked={form.negotiationOption}
-              onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
-                  negotiationOption: e.target.checked,
-                }))
-              }
-              id="negotiation"
-              className="w-3 cursor-pointer"
-            />
-            <label htmlFor="negotiation" className="text-sm cursor-pointer">
-              흥정 가능
-            </label>
-          </div>
-
-          {/* comment */}
-          <div className="border-neutral-700 pb-4 mb-4">
-            <label className="block mb-1 text-sm font-medium">거래 메모</label>
-            <textarea
-              value={form.comment}
-              onChange={(e) =>
-                setForm((prev) => ({ ...prev, comment: e.target.value }))
-              }
-              className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
-              placeholder="거래 관련 안내 메시지"
-              minLength={0}
-              maxLength={60}
-            />
-          </div>
-
-          {/* 등록 버튼 */}
-          <Button
-            className="w-full bg-green-600 hover:bg-green-700 text-white"
-            onClick={handleSubmit}
-          >
-            등록하기
-          </Button>
-        </div>
+        </>
       )}
     </div>
   );
