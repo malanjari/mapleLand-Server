@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { getCurrentUser } from "@/entity/user/api/user";
-import { User } from "@/entity/user/model/type";
+import { AuthResponse } from "@/entity/user/model/type";
 
 interface AuthStore {
-  user: User | null;
+  user: AuthResponse | null;
   initialized: boolean;
   setToken: (accessToken: string) => void;
   logout: () => void;
@@ -12,30 +12,35 @@ interface AuthStore {
 
 export const useAuthStore = create<AuthStore>((set) => ({
   user: null,
-  initialized: false, // ✅ 초기값 false
+  initialized: false,
+
   setToken: (accessToken: string) => {
     try {
       localStorage.setItem("accessToken", accessToken);
-    } catch (err) {
-      console.error("Invalid access token:", err);
+    } catch (error) {
+      console.error("Failed to set access token:", error);
     }
   },
+
   logout: () => {
     localStorage.removeItem("accessToken");
-    set({ user: null, initialized: true }); // ✅ 로그아웃 시에도 초기화 완료 상태로
+    set({ user: null, initialized: true });
   },
+
   initialize: async () => {
     const token = localStorage.getItem("accessToken");
+
     if (!token) {
-      set({ user: null, initialized: true }); // ✅ 토큰 없을 경우에도 완료 표시
+      set({ user: null, initialized: true });
       return;
     }
+
     try {
       const user = await getCurrentUser();
       set({ user, initialized: true });
-    } catch (err) {
-      console.error("유저 정보를 가져오지 못했습니다:", err);
-      set({ user: null, initialized: true }); // ✅ 실패해도 초기화는 완료해야 함
+    } catch (error) {
+      console.error("유저 정보를 가져오지 못했습니다:", error);
+      set({ user: null, initialized: true });
     }
   },
 }));

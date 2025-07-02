@@ -1,10 +1,18 @@
 // src/shared/api/map/autocomplete.ts
 import { API_BASE_URL } from "@/shared/config/api";
-
+export interface MapItem {
+  mapleLandMapListId: number;
+  mapName: string;
+  region: string;
+  subRegion: string;
+  monsterImageUrl: string;
+  miniMapImageUrl: string;
+  miniMapImageLogoUrl: string;
+}
 export const fetchAutocomplete = async (
   keyword: string,
   signal?: AbortSignal
-): Promise<string[]> => {
+): Promise<MapItem[]> => {
   const trimmed = keyword.trim();
   if (!trimmed) return [];
 

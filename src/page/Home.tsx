@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ludusNihal, leafre, victoria, elnath } from "@/shared/assets/world";
-
+import { handleDiscordLogin } from "@/shared/utils/auth/discord";
 import {
   jrNewtie,
   blackKentaurus,
@@ -8,6 +8,7 @@ import {
   redWyvern,
   shark,
 } from "@/shared/assets/monster";
+import { useUser } from "@/entity/user/hooks/useUser";
 
 const worlds = [
   { name: "루더스니할", image: ludusNihal },
@@ -26,11 +27,36 @@ const hotSpot = [
 ];
 
 const HomePage = () => {
+  const user = useUser();
   return (
     <div className="py-10 flex flex-col gap-10">
       <div className="self-start max-w-[300px] bg-[#5865F2] text-white px-4 py-2 rounded-md text-xs xs:text-sm font-medium shadow hover:bg-[#4752c4] transition cursor-pointer">
         메렌자리.kr을 사용하기 위한 디스코드 설정!
       </div>
+      {user ? (
+        <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
+          <img
+            src={
+              user.user.avatar
+                ? `https://cdn.discordapp.com/avatars/${user.user.id}/${user.user.avatar}.png`
+                : "https://cdn.discordapp.com/embed/avatars/0.png"
+            }
+            className="w-6 h-6 rounded-full"
+            alt="user avatar"
+          />
+          <span>{user.user.globalName}님, 환영합니다 👋</span>
+        </div>
+      ) : (
+        <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
+          <img
+            onClick={handleDiscordLogin}
+            src="https://cdn.discordapp.com/embed/avatars/0.png"
+            className="w-6 h-6 rounded-full cursor-pointer"
+            alt="default avatar"
+          />
+          <span>디스코드 로그인을 통해 더 많은 기능을 이용해보세요!</span>
+        </div>
+      )}
 
       <div>
         <h2 className="text-xl font-bold mb-5">🗺️ 월드별 검색</h2>

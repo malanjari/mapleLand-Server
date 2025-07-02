@@ -1,10 +1,10 @@
 // shared/hooks/useSearchSuggestions.ts
 import { useEffect, useRef, useState } from "react";
 import { fetchAutocomplete } from "@/feature/jari/api/autocomplete";
-
+import { MapItem } from "@/feature/jari/api/autocomplete";
 export const useSearchSuggestions = () => {
   const [keyword, setKeyword] = useState("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [suggestions, setSuggestions] = useState<MapItem[]>([]);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   // 자동완성 데이터 불러오기
@@ -14,7 +14,7 @@ export const useSearchSuggestions = () => {
     const fetchSuggestions = async () => {
       try {
         const data = await fetchAutocomplete(keyword, controller.signal);
-        data.sort();
+        console.log(data);
         setSuggestions(data);
       } catch (err: unknown) {
         if (err instanceof Error && err.name !== "AbortError") {
