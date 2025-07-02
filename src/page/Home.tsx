@@ -37,14 +37,14 @@ const HomePage = () => {
         <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
           <img
             src={
-              user.avatar
-                ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+              user.user.avatar
+                ? `https://cdn.discordapp.com/avatars/${user.user.id}/${user.user.avatar}.png`
                 : "https://cdn.discordapp.com/embed/avatars/0.png"
             }
             className="w-6 h-6 rounded-full"
             alt="user avatar"
           />
-          <span>{user.globalName}님, 환영합니다 👋</span>
+          <span>{user.user.globalName}님, 환영합니다 👋</span>
         </div>
       ) : (
         <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">

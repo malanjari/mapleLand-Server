@@ -15,16 +15,18 @@ export const HeaderProfileButton = ({ onClick }: { onClick: () => void }) => {
     >
       {user ? (
         <>
-          {user.avatar ? (
+          {user.user.avatar ? (
             <img
-              src={`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`}
+              src={`https://cdn.discordapp.com/avatars/${user.user.id}/${user.user.avatar}.png`}
               alt="avatar"
               className="w-5 h-5 rounded-full"
             />
           ) : (
             <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
           )}
-          <span className="text-xs hidden mb:block">{user.globalName}</span>
+          <span className="text-xs hidden mb:block">
+            {user.user.globalName}
+          </span>
         </>
       ) : (
         <>

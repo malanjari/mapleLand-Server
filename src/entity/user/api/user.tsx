@@ -1,9 +1,9 @@
-import { User } from "../model/type";
+import { AuthResponse } from "../model/type";
 import { API_BASE_URL } from "@/shared/config/api";
-export const getCurrentUser = async (): Promise<User> => {
+export const getCurrentUser = async (): Promise<AuthResponse> => {
   const token = localStorage.getItem("accessToken");
 
-  const res = await fetch(`${API_BASE_URL}/userAccount`, {
+  const res = await fetch(`${API_BASE_URL}/api/user`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
