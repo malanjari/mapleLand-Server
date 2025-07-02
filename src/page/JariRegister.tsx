@@ -1,25 +1,24 @@
-import { Input } from "@/shared/ui/input/Input";
-
-import { Search } from "lucide-react";
+import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
+import { useNavigate } from "react-router-dom";
 const JariRegisterPage = () => {
+  const navigate = useNavigate();
   return (
-    <section className=" flex flex-col items-center  h-full p-20 px-4">
-      <div className="w-full text-center space-y-6 ">
-        <h1 className="text-xl  mb:text-3xl font-bold">
+    <section className="flex flex-col items-center h-full p-20 px-4">
+      <div className="w-full text-center space-y-6">
+        <h1 className="text-xl mb:text-3xl font-bold">
           자리 등록 페이지입니다.
         </h1>
         <p className="text-muted-foreground text-sm sm:text-base">
-          원하는 사냥터를 검색해주세요.
+          등록하길 원하는 자리를 검색해주세요.
         </p>
-        <div className="max-w-lg w-full mx-auto relative">
-          <Input
-            placeholder="예: 구름공원, 죽은나무숲2, 망가진 용의 둥지..."
-            className="h-12 pr-10"
-          />
-          <div className="absolute right-0 top-0 h-full w-10 flex items-center justify-center z-10">
-            <Search className="w-5 h-5 text-muted-foreground cursor-pointer" />
-          </div>
-        </div>
+
+        <SearchInputWithSuggestions
+          placeholder="예: 구름 공원1, 죽은 나무의 숲1..."
+          className="max-w-lg mx-auto"
+          onSelect={(val) => {
+            navigate(`/jari/register/${encodeURIComponent(val)}`);
+          }}
+        />
       </div>
     </section>
   );

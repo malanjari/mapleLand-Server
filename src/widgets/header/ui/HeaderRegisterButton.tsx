@@ -1,4 +1,4 @@
-import { Button } from "../../shared/ui/button/Button";
+import { Button } from "../../../shared/ui/button/Button";
 import mesoIcon from "@/shared/assets/icon/mesoIcon.png";
 import { useNavigate } from "react-router-dom";
 
@@ -9,7 +9,7 @@ export const HeaderTradeButton = () => {
     <Button
       size="sm"
       variant="secondary"
-      title="거래"
+      title="자리 등록"
       className="flex items-center"
       onClick={() => navigate("/jari/register")}
     >
