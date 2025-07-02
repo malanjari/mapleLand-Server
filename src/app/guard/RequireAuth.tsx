@@ -1,15 +1,16 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@/entity/user/hooks/useUser";
+import { useUser, useAuthInitialized } from "@/entity/user/hooks/useUser";
 import { toast } from "@/shared/hooks/use-toast";
 
 export const RequireAuth = ({ children }: { children: React.ReactNode }) => {
   const user = useUser();
+  const initialized = useAuthInitialized();
   const navigate = useNavigate();
   const hasRedirected = useRef(false);
 
   useEffect(() => {
-    if (!user) {
+    if (initialized && !user && !hasRedirected.current) {
       hasRedirected.current = true;
 
       toast({
@@ -18,11 +19,13 @@ export const RequireAuth = ({ children }: { children: React.ReactNode }) => {
         variant: "destructive",
         duration: 4000,
       });
+
       navigate("/", { replace: true });
     }
-  }, [user, navigate]);
+  }, [user, initialized, navigate]);
 
-  if (!user) return null;
+  if (!initialized) return null; // 초기화 안됐으면 아무것도 렌더링 안함
+  if (!user) return null; // 초기화는 됐지만 유저가 없으면 리디렉션 (useEffect 내에서 처리)
 
   return <>{children}</>;
 };

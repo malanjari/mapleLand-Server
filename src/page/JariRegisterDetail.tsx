@@ -10,6 +10,7 @@ import { fetchAutocomplete, MapItem } from "@/feature/jari/api/autocomplete";
 const JariRegisterDetailPage = () => {
   const { name } = useParams();
   const [mapData, setMapData] = useState<MapItem | null>(null);
+
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [aspectRatio, setAspectRatio] = useState("auto");
   const imgRef = useRef<HTMLImageElement>(null);
@@ -123,7 +124,18 @@ const JariRegisterDetailPage = () => {
           }}
         />
       </div>
-
+      {mapData && (
+        <div className="flex items-center gap-2 text-sm text-white">
+          <img
+            src={mapData.miniMapImageLogoUrl}
+            alt="맵로고"
+            className="w-6 h-6"
+          />
+          <span>
+            {mapData.region} / {mapData.subRegion}
+          </span>
+        </div>
+      )}
       {/* tradeType */}
       <div className="w-full max-w-2xl space-y-2">
         <p className="text-white text-sm font-medium text-center">
