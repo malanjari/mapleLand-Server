@@ -1,10 +1,14 @@
-export type TradeType = "sell" | "buy";
+export type TradeType = "BUY" | "SELL";
 
 export interface JariItem {
-  id: string;
-  name: string;
-  seller: string;
+  userMapId: number;
+  mapName: string;
   price: number;
-  postedMinutesAgo: number;
-  type: TradeType;
+  tradeType: TradeType;
+  monsterImageUrl: string;
+  negotiationOption: boolean;
+  area: string;
+  comment: string;
+  serverColor: string;
+  createTime: string;
 }

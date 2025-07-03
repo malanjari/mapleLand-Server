@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
+
 import { Button } from "@/shared/ui/button/Button";
 import { Input } from "@/shared/ui/input/Input";
 import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+
 import { useUser } from "@/entity/user/hooks/useUser";
 import { fetchAutocomplete, MapItem } from "@/feature/jari/api/autocomplete";
 import { JariRegisterPayload } from "@/feature/jari/api/registerJari";
@@ -18,7 +18,6 @@ const JariRegisterDetailPage = () => {
   const imgRef = useRef<HTMLImageElement>(null);
   const user = useUser();
 
-  const navigate = useNavigate();
   const [form, setForm] = useState({
     tradeType: null as "SELL" | "BUY" | null,
     mapName: name,
@@ -37,7 +36,7 @@ const JariRegisterDetailPage = () => {
       price: Number(form.price),
       tradeType: form.tradeType!,
     };
-
+    console.log(payload);
     try {
       await registerJari(payload);
       toast({
@@ -139,8 +138,7 @@ const JariRegisterDetailPage = () => {
           등록해 주세요!
         </p>
       </div>
-
-      {/* 서치바*/}
+      {/* 서치바
       <div className="w-full max-w-2xl">
         <SearchInputWithSuggestions
           placeholder="자리를 입력해주세요"
@@ -149,8 +147,7 @@ const JariRegisterDetailPage = () => {
             navigate(`/jari/register/${encodeURIComponent(val)}`);
           }}
         />
-      </div>
-
+      </div> */}
       {/* tradeType */}
       <div className="w-full max-w-2xl space-y-2">
         <p className="text-white text-sm font-medium text-center">
@@ -181,7 +178,6 @@ const JariRegisterDetailPage = () => {
           </Button>
         </div>
       </div>
-
       {/* 거래 폼 */}
       {form.tradeType && (
         <>

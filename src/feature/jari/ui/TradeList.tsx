@@ -9,7 +9,7 @@ const TradeList = ({ items }: Props) => {
   return (
     <div className="space-y-3">
       {items.map((item) => (
-        <TradeCard key={item.id} item={item} />
+        <TradeCard key={item.createTime} item={item} />
       ))}
     </div>
   );
