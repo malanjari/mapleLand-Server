@@ -1,14 +1,10 @@
 import { Link } from "react-router-dom";
 import { ludusNihal, leafre, victoria, elnath } from "@/shared/assets/world";
 import { handleDiscordLogin } from "@/shared/utils/auth/discord";
-import {
-  jrNewtie,
-  blackKentaurus,
-  skelosaurus,
-  redWyvern,
-  shark,
-} from "@/shared/assets/monster";
+
 import { useUser } from "@/entity/user/hooks/useUser";
+import { useEffect, useState } from "react";
+import { fetchPopularMaps, PopularMap } from "@/feature/jari/api/popularJari";
 
 const worlds = [
   { name: "루더스니할", image: ludusNihal },
@@ -17,24 +13,32 @@ const worlds = [
   { name: "엘나스", image: elnath },
 ];
 
-const hotSpot = [
-  { name: "난파선의 무덤", image: shark },
-  { name: "검은 켄타우로스의 영역", image: blackKentaurus },
-  { name: "불과 어둠의 전장", image: blackKentaurus },
-  { name: "망가진 용의 둥지", image: jrNewtie },
-  { name: "큰 둥지 봉우리", image: skelosaurus },
-  { name: "레드 와이번의 둥지", image: redWyvern },
-];
-
 const HomePage = () => {
   const user = useUser();
+  const [popularMaps, setPopularMaps] = useState<PopularMap[]>([]);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const data = await fetchPopularMaps();
+        console.log(data);
+        setPopularMaps(data);
+      } catch (err) {
+        console.error("인기 맵 로딩 실패:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
   return (
     <div className="py-10 flex flex-col gap-10">
       <div className="self-start max-w-[300px] bg-[#5865F2] text-white px-4 py-2 rounded-md text-xs xs:text-sm font-medium shadow hover:bg-[#4752c4] transition cursor-pointer">
         메렌자리.kr을 사용하기 위한 디스코드 설정!
       </div>
       {user ? (
-        <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
+        <div className="bg-neutral-950   p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
           <img
             src={
               user.user.avatar
@@ -47,7 +51,7 @@ const HomePage = () => {
           <span>{user.user.globalName}님, 환영합니다 👋</span>
         </div>
       ) : (
-        <div className="bg-neutral-900 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
+        <div className="bg-neutral-950  p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
           <img
             onClick={handleDiscordLogin}
             src="https://cdn.discordapp.com/embed/avatars/0.png"
@@ -82,22 +86,35 @@ const HomePage = () => {
       </div>
       <div>
         <h2 className="text-xl font-bold mb-5">🔥 인기 자리</h2>
-
-        <div className="grid grid-cols-3  gap-4 text-center">
-          {hotSpot.map((spot) => (
-            <Link
-              to={`/jari/${spot.name}`}
-              key={spot.name}
-              className="flex flex-col rounded-xl items-center justify-center gap-1 cursor-pointer bg-gray-800 transition hover:bg-gray-700"
-            >
-              <img
-                src={spot.image}
-                alt={spot.name}
-                className="w-14 sm:w-18 object-cover rounded-md transition duration-100 hover:scale-105"
-              />
-              <p className="text-xs">{spot.name}</p>
-            </Link>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          {loading ? (
+            <p className="text-white text-sm col-span-3">로딩 중...</p>
+          ) : (
+            popularMaps.map((spot) => (
+              <div className="flex flex-col">
+                <Link
+                  to={`/jari/${spot.mapName}`}
+                  key={spot.mapName}
+                  className="flex flex-col rounded-xl items-center justify-center gap-1 cursor-pointer bg-gray-800 transition hover:bg-gray-700 p-3 max-w-[500px] h-[130px]"
+                >
+                  <img
+                    src={spot.monsterImageUrl}
+                    alt={spot.mapName}
+                    className="w-20 h-20 object-contain"
+                  />
+                  <p className="text-xs font-semibold ㅈ text-white text-center">
+                    {spot.mapName}
+                  </p>
+                </Link>
+                <p className="mt-2 text-xs text-gray-400 text-center">
+                  거래 횟수 :{" "}
+                  <span className="font-semibold text-white">
+                    {spot.registerCount.toLocaleString()}
+                  </span>
+                </p>
+              </div>
+            ))
+          )}
         </div>
       </div>
     </div>
