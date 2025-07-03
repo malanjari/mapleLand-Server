@@ -19,7 +19,7 @@ dd {
 body {
   min-height: 100vh;
   line-height: 1.5;
-  background-color: #f3f4f6;
+
   font-family: "Inter", sans-serif;
 }
 
@@ -75,10 +75,6 @@ textarea {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-body {
-  @apply bg-black text-white;
-}
 
 @layer base {
   :root {
@@ -141,6 +137,7 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-white; /* 필요 시 */
+    background-color: rgb(2, 7, 21);
   }
 }
