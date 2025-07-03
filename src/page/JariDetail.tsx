@@ -1,112 +1,60 @@
+import { jariList } from "@/feature/jari/api/jariList";
 import TradeSection from "@/feature/jari/ui/TradeSection";
-
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-type TradeType = "sell" | "buy";
+
+type TradeType = "BUY" | "SELL";
 
 interface JariItem {
-  id: string;
-  name: string;
-  seller: string;
+  userMapId: number;
+  mapName: string;
   price: number;
-  postedMinutesAgo: number;
-  type: TradeType;
+  tradeType: TradeType;
+  monsterImageUrl: string;
+  negotiationOption: boolean;
+  area: string;
+  comment: string;
+  serverColor: string;
+  createTime: string;
 }
 
-const items: JariItem[] = [
-  {
-    id: "1",
-    name: "구름공원",
-    seller: "태우",
-    price: 900000,
-    postedMinutesAgo: 0,
-    type: "sell",
-  },
-  {
-    id: "2",
-    name: "구름공원",
-    seller: "몰루용오",
-    price: 1000000,
-    postedMinutesAgo: 40,
-    type: "buy",
-  },
-  {
-    id: "3",
-    name: "구름공원",
-    seller: "태우",
-    price: 900000,
-    postedMinutesAgo: 0,
-    type: "sell",
-  },
-  {
-    id: "4",
-    name: "구름공원",
-    seller: "몰루용오",
-    price: 1000000,
-    postedMinutesAgo: 40,
-    type: "buy",
-  },
-  {
-    id: "5",
-    name: "구름공원",
-    seller: "태우",
-    price: 900000,
-    postedMinutesAgo: 0,
-    type: "sell",
-  },
-  {
-    id: "6",
-    name: "구름공원",
-    seller: "몰루용오",
-    price: 1000000,
-    postedMinutesAgo: 40,
-    type: "buy",
-  },
-  {
-    id: "7",
-    name: "구름공원",
-    seller: "태우",
-    price: 900000,
-    postedMinutesAgo: 0,
-    type: "sell",
-  },
-  {
-    id: "8",
-    name: "구름공원",
-    seller: "몰루용오",
-    price: 1000000,
-    postedMinutesAgo: 40,
-    type: "buy",
-  },
-  {
-    id: "9",
-    name: "구름공원",
-    seller: "태우",
-    price: 900000,
-    postedMinutesAgo: 0,
-    type: "sell",
-  },
-  {
-    id: "10",
-    name: "구름공원",
-    seller: "몰루용오",
-    price: 1000000,
-    postedMinutesAgo: 40,
-    type: "buy",
-  },
-];
-
 const JariDetailPage = () => {
-  const buyItems = items.filter((item) => item.type === "buy");
-  const sellItems = items.filter((item) => item.type === "sell");
-  const params = useParams();
+  const { name } = useParams();
+  const [jari, setJari] = useState<JariItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!name) return;
+
+    const load = async () => {
+      try {
+        const data = await jariList(name);
+        setJari(data);
+      } catch (error) {
+        console.error("자리 리스트 로딩 실패:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, [name]);
+
+  const buyJari = jari.filter((item) => item.tradeType === "BUY");
+  const sellJari = jari.filter((item) => item.tradeType === "SELL");
+  console.log(buyJari);
   return (
     <>
-      <h2 className="text-xl font-bold mb-5">{params.name} 거래 리스트</h2>
+      <h2 className="text-xl font-bold mb-5">{name} 거래 리스트</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <TradeSection title="🔍 삽니다" color="blue" items={buyItems} />
-        <TradeSection title="📦 팝니다" color="red" items={sellItems} />
-      </div>
+      {loading ? (
+        <p className="text-white">로딩 중...</p>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <TradeSection title="🔍 삽니다" color="blue" jari={buyJari} />
+          <TradeSection title="📦 팝니다" color="red" jari={sellJari} />
+        </div>
+      )}
     </>
   );
 };

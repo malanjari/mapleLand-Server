@@ -9,11 +9,11 @@ export const HeaderTradeButton = () => {
     <Button
       size="sm"
       variant="secondary"
+      className="flex items-center gap-2 px-2 py-2 rounded-md bg-gradient-to-r from-green-600 to-emerald-700 text-white font-semibold hover:brightness-110 transition"
       title="자리 등록"
-      className="flex items-center"
       onClick={() => navigate("/jari/register")}
     >
-      <img src={mesoIcon} className="w-5 h-5" />
+      자리 등록
     </Button>
   );
 };

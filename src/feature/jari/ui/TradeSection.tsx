@@ -1,12 +1,14 @@
 import clsx from "clsx";
 import TradeList from "./TradeList";
 import { JariItem } from "@/entity/trade/model/type";
+
 interface Props {
   title: string;
-  color: "blue" | "red"; // or just `string` if 자유롭게
-  items: JariItem[];
+  color: "blue" | "red";
+  jari: JariItem[]; // ← items → jari로 변경
 }
-const TradeSection = ({ title, color, items }: Props) => {
+
+const TradeSection = ({ title, color, jari }: Props) => {
   return (
     <section className="max-h-[600px] overflow-y-auto pr-1">
       <h2
@@ -20,7 +22,7 @@ const TradeSection = ({ title, color, items }: Props) => {
       >
         {title}
       </h2>
-      <TradeList items={items} />
+      <TradeList items={jari} />{" "}
     </section>
   );
 };
