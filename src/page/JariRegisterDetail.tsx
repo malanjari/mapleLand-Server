@@ -6,7 +6,9 @@ import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/entity/user/hooks/useUser";
 import { fetchAutocomplete, MapItem } from "@/feature/jari/api/autocomplete";
-
+import { JariRegisterPayload } from "@/feature/jari/api/registerJari";
+import { registerJari } from "@/feature/jari/api/registerJari";
+import { toast } from "@/shared/hooks/use-toast";
 const JariRegisterDetailPage = () => {
   const { name } = useParams();
   const [mapData, setMapData] = useState<MapItem | null>(null);
@@ -18,31 +20,54 @@ const JariRegisterDetailPage = () => {
 
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    userId: user?.user.id,
-    mapName: name,
-    serverColor: null as "red" | "yellow" | "green" | null,
-    comment: "",
-    price: "",
-    negotiationOption: false,
-    area: "",
-
     tradeType: null as "SELL" | "BUY" | null,
+    mapName: name,
+    serverColor: null as "Red" | "Yellow" | "Green" | null,
+    price: "",
+    comment: "",
+    negotiationOption: false,
   });
 
-  const handleSubmit = () => {
-    const { mapName, serverColor, price, area, tradeType } = form;
-    if (!mapName || !serverColor || !price || !area || !tradeType) {
-      alert("모든 필수 항목을 입력해주세요.");
-      return;
-    }
-
-    const requestBody = {
+  const handleSubmit = async () => {
+    const payload: JariRegisterPayload = {
       ...form,
+      mapName: form.mapName!,
+      userId: Number(user!.user.userId),
+      serverColor: form.serverColor! as "Red" | "Yellow" | "Green",
       price: Number(form.price),
+      tradeType: form.tradeType!,
     };
 
-    console.log("제출할 데이터:", requestBody);
-    alert("등록 완료 (콘솔 확인)");
+    try {
+      await registerJari(payload);
+      toast({
+        title: "자리 등록 완료",
+        description: "성공적으로 등록되었습니다.",
+      });
+
+      setForm({
+        mapName: form.mapName,
+        serverColor: null,
+        price: "",
+        comment: "",
+        negotiationOption: false,
+        tradeType: null,
+      });
+    } catch (err: any) {
+      let message = "알 수 없는 오류가 발생했습니다.";
+
+      if (err?.errors?.comment) {
+        message = err.errors.comment;
+      } else if (err?.error) {
+        message = err.error;
+      }
+
+      toast({
+        variant: "destructive",
+        title: "자리 등록 실패",
+        description: message,
+      });
+    }
   };
 
   const formatToWonStyle = (value: number | string): string => {
@@ -163,10 +188,16 @@ const JariRegisterDetailPage = () => {
           {mapData && (
             <div className="w-full flex flex-col items-center gap-3  mt-10 mb-10 text-white relative">
               {/* 맵 이름 */}
-              <p className="text-base sm:text-lg font-semibold">
-                {mapData.mapName}
-              </p>
-
+              <div className="flex items-center gap-4 p-3 rounded-lg bg-slate-700 shadow-md hover:shadow-lg transition duration-200">
+                <img
+                  src={mapData.miniMapImageLogoUrl}
+                  alt="minimap"
+                  className="w-10 h-10 rounded-md object-contain bg-slate-600 p-1"
+                />
+                <p className="text-lg sm:text-xl font-semibold text-white">
+                  {mapData.mapName}
+                </p>
+              </div>
               {/* 미니맵 이미지 + 클릭 확대 */}
               <div className="relative">
                 <div className="w-96 relative" style={{ aspectRatio }}>
@@ -216,9 +247,9 @@ const JariRegisterDetailPage = () => {
                     type="radio"
                     name="mapColor"
                     value="red"
-                    checked={form.serverColor === "red"}
+                    checked={form.serverColor === "Red"}
                     onChange={() =>
-                      setForm((prev) => ({ ...prev, serverColor: "red" }))
+                      setForm((prev) => ({ ...prev, serverColor: "Red" }))
                     }
                     className="accent-red-500 w-5 cursor-pointer"
                   />
@@ -229,9 +260,9 @@ const JariRegisterDetailPage = () => {
                     type="radio"
                     name="mapColor"
                     value="yellow"
-                    checked={form.serverColor === "yellow"}
+                    checked={form.serverColor === "Yellow"}
                     onChange={() =>
-                      setForm((prev) => ({ ...prev, serverColor: "yellow" }))
+                      setForm((prev) => ({ ...prev, serverColor: "Yellow" }))
                     }
                     className="accent-yellow-400 w-5 cursor-pointer"
                   />
@@ -242,9 +273,9 @@ const JariRegisterDetailPage = () => {
                     type="radio"
                     name="mapColor"
                     value="green"
-                    checked={form.serverColor === "green"}
+                    checked={form.serverColor === "Green"}
                     onChange={() =>
-                      setForm((prev) => ({ ...prev, serverColor: "green" }))
+                      setForm((prev) => ({ ...prev, serverColor: "Green" }))
                     }
                     className="accent-green-500 w-5 cursor-pointer"
                   />
@@ -270,24 +301,6 @@ const JariRegisterDetailPage = () => {
                   {formatToWonStyle(form.price)}
                 </p>
               )}
-            </div>
-
-            {/* area */}
-            <div className="border-b border-neutral-700 pb-4 mb-4">
-              <label className="block mb-1 text-sm font-medium">지역</label>
-              <select
-                value={form.area}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, area: e.target.value }))
-                }
-                className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
-              >
-                <option value="">지역 선택</option>
-                <option value="빅토리아">빅토리아</option>
-                <option value="엘나스">엘나스</option>
-                <option value="루더스니할">루더스니할</option>
-                <option value="리프레">리프레</option>
-              </select>
             </div>
 
             {/* negotiationOption */}
