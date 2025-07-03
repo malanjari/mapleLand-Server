@@ -138,6 +138,6 @@ textarea {
   }
   body {
     @apply text-white; /* 필요 시 */
-    background-color: rgb(2, 7, 21);
+    background-color: rgb(3, 6, 15);
   }
 }
