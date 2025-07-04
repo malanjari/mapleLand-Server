@@ -8,8 +8,8 @@ export const HeaderTradeButton = () => {
   return (
     <Button
       size="sm"
-      variant="secondary"
-      className="flex items-center gap-2 px-2 py-2 rounded-md bg-gradient-to-r from-green-600 to-emerald-700 text-white font-semibold hover:brightness-110 transition"
+      variant="register"
+      className="flex items-center gap-2 p-1 w-sm  rounded-md text-white font-semibold "
       title="자리 등록"
       onClick={() => navigate("/jari/register")}
     >

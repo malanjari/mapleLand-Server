@@ -45,7 +45,7 @@ const TradeSection = ({ title, color, jari }: Props) => {
     sortOrder === "desc" && sortOption === "price" ? "가격↑" : "가격↓";
 
   return (
-    <section className="max-h-[600px] overflow-y-auto pr-1">
+    <section className="max-h-[600px] mb:col-span-1 overflow-y-auto pr-1">
       <div
         className={clsx(
           "text-white text-sm font-semibold px-3 py-5 mb-3 rounded flex justify-between items-center",
@@ -83,6 +83,7 @@ const TradeSection = ({ title, color, jari }: Props) => {
           </Button>
         </div>
       </div>
+
       <TradeList items={sortedItems} />
     </section>
   );

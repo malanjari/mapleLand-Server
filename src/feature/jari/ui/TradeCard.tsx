@@ -8,8 +8,9 @@ interface Props {
 }
 
 const TradeCard = ({ item }: Props) => {
+  console.log(item);
   return (
-    <div className="bg-zinc-900 text-white rounded-md p-4 flex flex-col gap-3 items-start shadow">
+    <div className="bg-neutral-900 text-white rounded-md py-4  px-2 sm:px-2 lg:px-4 flex flex-col gap-3 items-start shadow">
       <div className="flex items-center justify-center gap-3 w-full">
         {/* 몬스터 이미지 */}
         <img
@@ -21,7 +22,7 @@ const TradeCard = ({ item }: Props) => {
         {/* 맵 이름 + 가격 */}
         <div className="flex flex-col   w-full ">
           <div className="flex justify-between items-center border-b border-b-gray-800">
-            <p className="text-sm mb:text-lg font-bold">
+            <p className="text-[10px] lg:text-base font-bold">
               {item.mapName.includes(":")
                 ? item.mapName.split(":")[1].trim()
                 : item.mapName}
@@ -34,13 +35,13 @@ const TradeCard = ({ item }: Props) => {
                     : "https://cdn.discordapp.com/embed/avatars/0.png"
                 }
                 alt="user avatar"
-                className="w-4 h-4 mb:w-6 mb:h-6 rounded-full"
+                className="w-4 h-4 lg:w-6 lg:h-6 rounded-full"
               />{" "}
-              <span className="text-[10px] mb:text-sm">{item.globalName}</span>
+              <span className="text-[10px] lg:text-xs">{item.globalName}</span>
             </div>
           </div>
           <div className="text-sm text-gray-200 flex items-center  justify-between gap-1 border-b border-b-gray-800">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 text-[9px] md:text-[13px]">
               {item.price.toLocaleString()}
               <img src={mesoIcon} alt="메소" />
             </div>
@@ -93,6 +94,13 @@ const TradeCard = ({ item }: Props) => {
               ? "노채"
               : "초채"}
           </span>
+          <div className="flex items-center  text-[9px] md:text-[11px] text-white">
+            <img
+              src={item.miniMapImageLogo}
+              alt="map logo"
+              className="w-5 h-5 object-contain rounded bg-neutral-700 p-[2px]"
+            />
+          </div>
         </div>
       </div>
     </div>

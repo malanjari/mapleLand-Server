@@ -13,7 +13,7 @@ const AppLayout = () => {
     initialize();
   }, [initialize]);
   return (
-    <div className="flex flex-col flex-grow px-4 sm:px-6 md:px-10 lg:px-20 xl:px-28 w-full h-dvh mx-auto  ">
+    <div className="flex flex-col flex-grow px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 w-full h-dvh mx-auto  ">
       <Header />
       <ScrollToTop />
       <Toaster />
