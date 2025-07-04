@@ -17,54 +17,53 @@ const JariRegisterDetailPage = () => {
       <RegisterNoticeBox />
 
       {/* 거래 폼 */}
-      {form.tradeType && (
-        <div className="w-full ">
-          {mapData && (
-            <MapPreview
-              mapName={mapData.mapName}
-              miniMapImageUrl={mapData.miniMapImageUrl}
-              miniMapImageLogoUrl={mapData.miniMapImageLogoUrl}
-            />
-          )}
 
-          <div className="p-8 rounded-lg bg-neutral-900">
-            <ServerColorSelector
-              serverColor={form.serverColor}
-              onChange={(color) =>
-                setForm((prev) => ({ ...prev, serverColor: color }))
-              }
-            />
+      <div className="w-full ">
+        {mapData && (
+          <MapPreview
+            mapName={mapData.mapName}
+            miniMapImageUrl={mapData.miniMapImageUrl}
+            miniMapImageLogoUrl={mapData.miniMapImageLogoUrl}
+          />
+        )}
 
-            <PriceInput
-              price={form.price}
-              onChange={(val) => setForm((prev) => ({ ...prev, price: val }))}
-              formatToWonStyle={formatToWonStyle}
-            />
+        <div className="p-8 rounded-lg bg-neutral-900">
+          <ServerColorSelector
+            serverColor={form.serverColor}
+            onChange={(color) =>
+              setForm((prev) => ({ ...prev, serverColor: color }))
+            }
+          />
 
-            <NegotiationToggle
-              checked={form.negotiationOption}
-              onChange={(checked) =>
-                setForm((prev) => ({ ...prev, negotiationOption: checked }))
-              }
-            />
+          <PriceInput
+            price={form.price}
+            onChange={(val) => setForm((prev) => ({ ...prev, price: val }))}
+            formatToWonStyle={formatToWonStyle}
+          />
 
-            <CommentTextarea
-              comment={form.comment}
-              onChange={(value) =>
-                setForm((prev) => ({ ...prev, comment: value }))
-              }
-            />
-            {/* tradeType */}
-            <TradeTypeSelector
-              tradeType={form.tradeType}
-              onSelect={(type) =>
-                setForm((prev) => ({ ...prev, tradeType: type }))
-              }
-            />
-            <SubmitRegisterButton onClick={handleSubmit} />
-          </div>
+          <NegotiationToggle
+            checked={form.negotiationOption}
+            onChange={(checked) =>
+              setForm((prev) => ({ ...prev, negotiationOption: checked }))
+            }
+          />
+
+          <CommentTextarea
+            comment={form.comment}
+            onChange={(value) =>
+              setForm((prev) => ({ ...prev, comment: value }))
+            }
+          />
+          {/* tradeType */}
+          <TradeTypeSelector
+            tradeType={form.tradeType}
+            onSelect={(type) =>
+              setForm((prev) => ({ ...prev, tradeType: type }))
+            }
+          />
+          <SubmitRegisterButton onClick={handleSubmit} />
         </div>
-      )}
+      </div>
     </div>
   );
 };

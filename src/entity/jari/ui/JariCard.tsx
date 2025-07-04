@@ -14,7 +14,7 @@ export const JariCard = ({ spot, rank }: JariCardProps) => {
   return (
     <Link
       to={`/jari/${spot.mapName}`}
-      className="flex items-center gap-4 bg-gray-800 hover:bg-gray-700 rounded-xl py-4 px-2 sm:px-4 cursor-pointer transition"
+      className="flex items-center gap-4 bg-gray-800 hover:bg-gray-700 rounded-xl py-4 px-4 cursor-pointer transition"
     >
       <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-white font-bold text-lg select-none">
         {rank}
