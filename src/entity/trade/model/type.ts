@@ -11,4 +11,7 @@ export interface JariItem {
   comment: string;
   serverColor: string;
   createTime: string;
+  userImage: string;
+  uniqueId: string;
+  globalName: string;
 }

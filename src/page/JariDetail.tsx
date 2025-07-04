@@ -2,21 +2,7 @@ import { jariList } from "@/feature/jari/api/jariList";
 import TradeSection from "@/feature/jari/ui/TradeSection";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
-type TradeType = "BUY" | "SELL";
-
-interface JariItem {
-  userMapId: number;
-  mapName: string;
-  price: number;
-  tradeType: TradeType;
-  monsterImageUrl: string;
-  negotiationOption: boolean;
-  area: string;
-  comment: string;
-  serverColor: string;
-  createTime: string;
-}
+import { JariItem } from "@/entity/trade/model/type";
 
 const JariDetailPage = () => {
   const { name } = useParams();
@@ -51,8 +37,8 @@ const JariDetailPage = () => {
         <p className="text-white">로딩 중...</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <TradeSection title="🔍 삽니다" color="blue" jari={buyJari} />
           <TradeSection title="📦 팝니다" color="red" jari={sellJari} />
+          <TradeSection title="🔍 삽니다" color="blue" jari={buyJari} />
         </div>
       )}
     </>
