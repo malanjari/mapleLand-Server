@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useUser } from "@/entity/user/hooks/useUser";
 import { fetchAutocomplete, MapItem } from "@/feature/jari/api/autocomplete";
 import {
@@ -24,6 +24,7 @@ export const useJariRegisterForm = () => {
   const { name } = useParams();
   const user = useUser();
   const [mapData, setMapData] = useState<MapItem | null>(null);
+  const navigate = useNavigate();
 
   const [form, setForm] = useState<FormState>({
     tradeType: null,
@@ -69,6 +70,7 @@ export const useJariRegisterForm = () => {
         title: "자리 등록 완료",
         description: "성공적으로 등록되었습니다.",
       });
+      navigate(`/jari/${form.mapName}`);
       setForm((prev) => ({
         ...prev,
         tradeType: null,

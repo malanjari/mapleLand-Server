@@ -49,8 +49,8 @@ const JariDetailPage = () => {
         <>
           {" "}
           <div className="w-full grid grid-cols-5 gap-4  mb-5   rounded-md  ">
-            <div className="col-span-2 sm:col-span-2 border p-4 bg-neutral-900 rounded-md">
-              <h2 className="text-sm font-bold flex items-center gap-2 text-white mb-4">
+            <div className="col-span-2 sm:col-span-2 border border-neutral-700 p-4 bg-neutral-900 rounded-md">
+              <h2 className="text-sm font-bold flex items-center justify-center gap-2 text-white mb-4">
                 {mapMeta?.miniMapImageLogoUrl && (
                   <img
                     src={mapMeta.miniMapImageLogoUrl}

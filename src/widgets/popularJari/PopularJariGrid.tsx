@@ -27,7 +27,7 @@ export const PopularJariGrid = () => {
   const rightColumn = popularMaps.slice(half);
 
   return (
-    <div>
+    <div className="bg-neutral-900 p-8 rounded-lg">
       <h2 className="text-xl font-bold mb-5">🔥 인기 자리</h2>
       <div className="flex flex-col sm:flex-row gap-3 px-1">
         <div className="flex flex-col w-full sm:w-1/2 gap-3">

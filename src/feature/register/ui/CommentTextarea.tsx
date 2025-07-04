@@ -8,7 +8,7 @@ export const CommentTextarea = ({
   onChange,
 }: CommentTextareaProps) => {
   return (
-    <div className="border-neutral-700 pb-4 mb-4">
+    <div className=" pb-4 mb-4 border-b border-neutral-700">
       <label className="block mb-1 text-sm font-medium text-white">
         거래 메모
       </label>

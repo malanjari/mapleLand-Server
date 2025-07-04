@@ -33,6 +33,14 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
+      {
+        path: "profile",
+        element: (
+          <RequireAuth>
+            <JariRegisterDetailPage />
+          </RequireAuth>
+        ),
+      },
       { path: "oauth2/success", element: <OAuthSuccessPage /> },
     ],
   },

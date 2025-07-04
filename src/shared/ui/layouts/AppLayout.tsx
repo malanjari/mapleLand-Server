@@ -17,7 +17,7 @@ const AppLayout = () => {
       <Header />
       <ScrollToTop />
       <Toaster />
-      <main className="max-w-[1440px] flex-col items-center w-full mx-auto flex-grow  py-6 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 ">
+      <main className="max-w-[1440px]   flex-col items-center w-full mx-auto flex-grow  py-6 px-4 sm:px-6 md:px-8 lg:px-10 xl:px-16 ">
         <Outlet />
       </main>
       <Footer />

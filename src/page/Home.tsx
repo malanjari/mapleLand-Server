@@ -5,7 +5,7 @@ import { PopularJariGrid } from "@/widgets/popularJari/PopularJariGrid";
 
 const HomePage = () => {
   return (
-    <div className="py-10 flex flex-col gap-10">
+    <div className="py-10   flex flex-col gap-10">
       <DiscordBanner />
       <UserWelcomeBox />
       <WorldSearchGrid />
