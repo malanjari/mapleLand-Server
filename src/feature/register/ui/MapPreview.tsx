@@ -24,7 +24,7 @@ export const MapPreview = ({
 
   return (
     <div className="w-full flex flex-col items-center gap-3 mt-10 mb-10 text-white relative">
-      <div className="flex items-center gap-4 p-3 rounded-lg bg-slate-700 shadow-md hover:shadow-lg transition duration-200">
+      <div className="flex items-center gap-4 p-6 rounded-lg bg-slate-700 shadow-md hover:shadow-lg transition duration-200">
         <img
           src={miniMapImageLogoUrl}
           alt="minimap"

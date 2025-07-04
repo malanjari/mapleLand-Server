@@ -12,27 +12,22 @@ const JariRegisterDetailPage = () => {
     useJariRegisterForm();
 
   return (
-    <div className="flex flex-col items-center pt-10 h-full gap-5 px-4 pb-20">
+    <div className="flex flex-col  items-center pt-10 h-full gap-5 px-4 pb-20">
       {/* 안내 박스 */}
       <RegisterNoticeBox />
 
-      {/* tradeType */}
-      <TradeTypeSelector
-        tradeType={form.tradeType}
-        onSelect={(type) => setForm((prev) => ({ ...prev, tradeType: type }))}
-      />
-
       {/* 거래 폼 */}
-      {form.tradeType && (
-        <div>
-          {mapData && (
-            <MapPreview
-              mapName={mapData.mapName}
-              miniMapImageUrl={mapData.miniMapImageUrl}
-              miniMapImageLogoUrl={mapData.miniMapImageLogoUrl}
-            />
-          )}
 
+      <div className="w-full ">
+        {mapData && (
+          <MapPreview
+            mapName={mapData.mapName}
+            miniMapImageUrl={mapData.miniMapImageUrl}
+            miniMapImageLogoUrl={mapData.miniMapImageLogoUrl}
+          />
+        )}
+
+        <div className="p-8 rounded-lg bg-neutral-900">
           <ServerColorSelector
             serverColor={form.serverColor}
             onChange={(color) =>
@@ -59,10 +54,16 @@ const JariRegisterDetailPage = () => {
               setForm((prev) => ({ ...prev, comment: value }))
             }
           />
-
+          {/* tradeType */}
+          <TradeTypeSelector
+            tradeType={form.tradeType}
+            onSelect={(type) =>
+              setForm((prev) => ({ ...prev, tradeType: type }))
+            }
+          />
           <SubmitRegisterButton onClick={handleSubmit} />
         </div>
-      )}
+      </div>
     </div>
   );
 };

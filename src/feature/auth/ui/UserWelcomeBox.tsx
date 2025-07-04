@@ -6,7 +6,7 @@ export const UserWelcomeBox = () => {
   const user = useUser();
 
   return user ? (
-    <div className="bg-neutral-950 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
+    <div className="p-4 mb:p-8 rounded-lg bg-neutral-900 shadow text-sm text-white flex items-center gap-3">
       <img
         src={
           user.user.avatar
@@ -19,7 +19,7 @@ export const UserWelcomeBox = () => {
       <span>{user.user.globalName}님, 환영합니다 👋</span>
     </div>
   ) : (
-    <div className="bg-neutral-950 p-4 rounded-lg shadow text-sm text-white flex items-center gap-3">
+    <div className="p-4 mb:p-8 rounded-lg bg-neutral-900 shadow text-sm text-white flex items-center gap-3">
       <img
         onClick={handleDiscordLogin}
         src="https://cdn.discordapp.com/embed/avatars/0.png"

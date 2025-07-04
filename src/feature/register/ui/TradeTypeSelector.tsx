@@ -8,10 +8,7 @@ interface Props {
 
 export const TradeTypeSelector = ({ tradeType, onSelect }: Props) => {
   return (
-    <div className="w-full max-w-2xl space-y-2">
-      <p className="text-white text-sm font-medium text-center">
-        거래 타입을 선택해주세요
-      </p>
+    <div className="w-full space-y-2 pb-4 mb-10 border-b border-neutral-700 ">
       <div className="flex gap-4">
         <Button
           variant="none"
