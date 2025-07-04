@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Button } from "@/shared/ui/button/Button";
 
 interface MapPreviewProps {
@@ -14,7 +14,6 @@ export const MapPreview = ({
 }: MapPreviewProps) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [aspectRatio, setAspectRatio] = useState("4 / 3");
-  const imgRef = useRef<HTMLImageElement>(null);
 
   const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const img = e.currentTarget;
@@ -37,7 +36,6 @@ export const MapPreview = ({
       <div className="relative">
         <div className="w-96 relative" style={{ aspectRatio }}>
           <img
-            ref={imgRef}
             src={miniMapImageUrl}
             alt="맵로고"
             onLoad={handleImageLoad}

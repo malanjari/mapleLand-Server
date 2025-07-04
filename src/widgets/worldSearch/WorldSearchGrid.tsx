@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import { ludusNihal, leafre, victoria, elnath } from "@/shared/assets/world";
 
 const worlds = [
-  { name: "루더스니할", image: ludusNihal },
-  { name: "리프레", image: leafre },
   { name: "빅토리아", image: victoria },
   { name: "엘나스", image: elnath },
+  { name: "루더스니할", image: ludusNihal },
+  { name: "리프레", image: leafre },
 ];
 
 export const WorldSearchGrid = () => {
