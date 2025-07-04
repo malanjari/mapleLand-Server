@@ -2,6 +2,7 @@ import { useState, useMemo } from "react";
 import clsx from "clsx";
 import TradeList from "./TradeList";
 import { JariItem } from "@/entity/trade/model/type";
+import { Button } from "@/shared/ui/button/Button";
 
 interface Props {
   title: string;
@@ -9,21 +10,39 @@ interface Props {
   jari: JariItem[];
 }
 
-type SortOption = "recent" | "price";
+type SortOption = "time" | "price";
+type SortOrder = "asc" | "desc";
 
 const TradeSection = ({ title, color, jari }: Props) => {
-  const [sortOption, setSortOption] = useState<SortOption>("recent");
+  const [sortOption, setSortOption] = useState<SortOption>("time");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
+
+  const toggleSortOption = (option: SortOption) => {
+    if (sortOption === option) {
+      setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
+    } else {
+      setSortOption(option);
+      setSortOrder("desc"); // default order when switching category
+    }
+  };
 
   const sortedItems = useMemo(() => {
     return [...jari].sort((a, b) => {
-      if (sortOption === "recent") {
-        return (
-          new Date(b.createTime).getTime() - new Date(a.createTime).getTime()
-        );
+      if (sortOption === "time") {
+        const diff =
+          new Date(a.createTime).getTime() - new Date(b.createTime).getTime();
+        return sortOrder === "asc" ? diff : -diff;
+      } else {
+        const diff = a.price - b.price;
+        return sortOrder === "asc" ? diff : -diff;
       }
-      return b.price - a.price;
     });
-  }, [jari, sortOption]);
+  }, [jari, sortOption, sortOrder]);
+
+  const timeLabel =
+    sortOrder === "desc" && sortOption === "time" ? "최신순 ↓" : "오래된순 ↑";
+  const priceLabel =
+    sortOrder === "desc" && sortOption === "price" ? "가격↑" : "가격↓";
 
   return (
     <section className="max-h-[600px] overflow-y-auto pr-1">
@@ -38,28 +57,30 @@ const TradeSection = ({ title, color, jari }: Props) => {
       >
         <span>{title}</span>
         <div className="flex gap-2 text-xs">
-          <button
-            onClick={() => setSortOption("recent")}
+          <Button
+            variant="ghost"
+            onClick={() => toggleSortOption("time")}
             className={clsx(
-              "px-2 py-1 rounded border",
-              sortOption === "recent"
+              "px-2 py-1 text-[10px] rounded border",
+              sortOption === "time"
                 ? "bg-white text-black"
                 : "text-white border-white hover:bg-white hover:text-black transition"
             )}
           >
-            최신순
-          </button>
-          <button
-            onClick={() => setSortOption("price")}
+            {timeLabel}
+          </Button>
+          <Button
+            variant="ghost"
+            onClick={() => toggleSortOption("price")}
             className={clsx(
-              "px-2 py-1 rounded border",
+              "px-2 py-1 text-[10px] rounded border",
               sortOption === "price"
                 ? "bg-white text-black"
                 : "text-white border-white hover:bg-white hover:text-black transition"
             )}
           >
-            가격순
-          </button>
+            {priceLabel}
+          </Button>
         </div>
       </div>
       <TradeList items={sortedItems} />
