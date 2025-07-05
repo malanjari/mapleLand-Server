@@ -11,7 +11,7 @@ const worlds = [
 
 export const WorldSearchGrid = () => {
   return (
-    <div className="  p-8 rounded-lg bg-neutral-900">
+    <div className="  p-4 mb:p-8 rounded-lg bg-neutral-900">
       <h2 className="text-xl font-bold mb-5">🗺️ 월드별 검색</h2>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {worlds.map((world) => (
