@@ -21,7 +21,7 @@ const TradeCard = ({ item }: Props) => {
 
         {/* 맵 이름 + 가격 */}
         <div className="flex flex-col   w-full ">
-          <div className="flex justify-between items-center border-b border-b-gray-800">
+          <div className="flex justify-between items-center border-b border-neutral-800  ">
             <p className="text-[10px] lg:text-base font-bold">
               {item.mapName.includes(":")
                 ? item.mapName.split(":")[1].trim()
@@ -40,7 +40,7 @@ const TradeCard = ({ item }: Props) => {
               <span className="text-[10px] lg:text-xs">{item.globalName}</span>
             </div>
           </div>
-          <div className="text-sm text-gray-200 flex items-center  justify-between gap-1 border-b border-b-gray-800">
+          <div className="text-sm text-gray-200 flex items-center  justify-between gap-1 border-b border-neutral-800 ">
             <div className="flex items-center gap-1 text-[9px] md:text-[13px]">
               {item.price.toLocaleString()}
               <img src={mesoIcon} alt="메소" />
@@ -58,12 +58,6 @@ const TradeCard = ({ item }: Props) => {
       {/* 협의 옵션 및 코멘트 */}
       <div className="w-full flex justify-between">
         <div className="flex items-center gap-2">
-          <span
-            className="max-w-[60px] md:max-w-[100px] sm:max-w-[150px] lg:max-w-[200px] truncate bg-zinc-800 text-[9px] md:text-[11px] text-gray-300 italic px-2 py-0.5 rounded-sm border border-zinc-600"
-            title={item.comment}
-          >
-            {item.comment}
-          </span>
           <span
             className={`
     inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[9px] md:text-[11px] font-medium
@@ -94,13 +88,13 @@ const TradeCard = ({ item }: Props) => {
               ? "노채"
               : "초채"}
           </span>
-          <div className="flex items-center  text-[9px] md:text-[11px] text-white">
-            <img
-              src={item.miniMapImageLogo}
-              alt="map logo"
-              className="w-5 h-5 object-contain rounded bg-neutral-700 p-[2px]"
-            />
-          </div>
+
+          <span
+            className="max-w-[60px] md:max-w-[100px] sm:max-w-[150px] lg:max-w-[200px] truncate bg-zinc-800 text-[9px] md:text-[11px] text-gray-300 italic px-2 py-0.5 rounded-sm border border-zinc-600"
+            title={item.comment}
+          >
+            {item.comment}
+          </span>
         </div>
       </div>
     </div>
