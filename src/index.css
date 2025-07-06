@@ -137,8 +137,8 @@ textarea {
     @apply border-border;
   }
   body {
-    @apply text-white; /* 필요 시 */
-    @apply text-white bg-neutral-950;
+    @apply text-white;
+    @apply bg-slate-950;
   }
 }
 @layer utilities {

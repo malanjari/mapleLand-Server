@@ -56,7 +56,7 @@ const JariDetailPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
           {/* 왼쪽: 자리 정보 */}
           <div className="col-span-4 lg:col-span-1 lg:sticky top-24 self-start">
-            <div className="flex flex-col border border-neutral-800 p-4 justify-between bg-neutral-800 rounded-md">
+            <div className="flex flex-col border border-neutral-700 bg-neutral-900 p-4 justify-between  rounded-md">
               {/* header */}
               <h2 className="text-sm font-bold flex flex-col items-center justify-center gap-2 text-white mb-4">
                 {mapMeta?.miniMapImageLogoUrl && (
@@ -102,7 +102,7 @@ const JariDetailPage = () => {
                   {dropItems.map((item, i) => (
                     <Card
                       key={i}
-                      className="aspect-[3/1] flex flex-col items-center text-center py-2 bg-neutral-800"
+                      className="lg:aspect-[3/1] flex flex-col items-center text-center py-2 bg-neutral-800"
                     >
                       <img
                         src={item.itemImageUrl}
@@ -130,7 +130,7 @@ const JariDetailPage = () => {
             </div>
 
             {/* 거래 목록 */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-16 lg:mt-0">
               <TradeSection title="📦 팝니다" color="red" jari={sellJari} />
               <TradeSection title="🔍 삽니다" color="blue" jari={buyJari} />
             </div>
