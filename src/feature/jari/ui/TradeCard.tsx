@@ -8,9 +8,8 @@ interface Props {
 }
 
 const TradeCard = ({ item }: Props) => {
-  console.log(item);
   return (
-    <div className="bg-neutral-900 text-white rounded-md py-4  px-2 sm:px-2 lg:px-4 flex flex-col gap-3 items-start shadow">
+    <div className="bg-neutral-900 text-white rounded-md py-4  px-2  lg:px-4 flex flex-col gap-3 items-start shadow">
       <div className="flex items-center justify-center gap-3 w-full">
         {/* 몬스터 이미지 */}
         <img
@@ -22,7 +21,7 @@ const TradeCard = ({ item }: Props) => {
         {/* 맵 이름 + 가격 */}
         <div className="flex flex-col   w-full ">
           <div className="flex justify-between items-center border-b border-neutral-800  ">
-            <p className="text-[10px] lg:text-base font-bold">
+            <p className="text-xs lg:text-base font-bold">
               {item.mapName.includes(":")
                 ? item.mapName.split(":")[1].trim()
                 : item.mapName}
@@ -41,11 +40,11 @@ const TradeCard = ({ item }: Props) => {
             </div>
           </div>
           <div className="text-sm text-gray-200 flex items-center  justify-between gap-1 border-b border-neutral-800 ">
-            <div className="flex items-center gap-1 text-[9px] md:text-[13px]">
+            <div className="flex items-center gap-1  md:text-sm">
               {item.price.toLocaleString()}
               <img src={mesoIcon} alt="메소" />
             </div>
-            <span className="text-[10px]  text-gray-400">
+            <span className="text-xs  text-gray-400">
               {formatDistanceToNow(new Date(item.createTime), {
                 addSuffix: true,
                 locale: ko,

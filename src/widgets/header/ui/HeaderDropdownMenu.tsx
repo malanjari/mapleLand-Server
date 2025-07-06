@@ -1,5 +1,6 @@
+import { Link } from "react-router-dom";
 import { Button } from "../../../shared/ui/button/Button";
-import { useAuthActions } from "@/entity/user/hooks/useUser";
+import { useAuthActions, useUser } from "@/entity/user/hooks/useUser";
 
 export const HeaderDropdownMenu = ({
   menuOpen,
@@ -9,7 +10,8 @@ export const HeaderDropdownMenu = ({
   closeMenu: () => void;
 }) => {
   const { logout } = useAuthActions();
-
+  const user = useUser();
+  const userId = user?.user.userId;
   return (
     <div
       className={`absolute -right-5 mt-2 w-24 z-50 transition-all duration-200 origin-top
@@ -19,9 +21,11 @@ export const HeaderDropdownMenu = ({
             : "opacity-0 scale-95 -translate-y-2 pointer-events-none"
         }`}
     >
-      <Button className="w-full px-4 py-2 text-xs rounded-none justify-start">
-        프로필
-      </Button>
+      <Link to={`/profile/${userId}`}>
+        <Button className="w-full px-4 py-2 text-xs rounded-none justify-start">
+          프로필
+        </Button>
+      </Link>
       <Button
         onClick={() => {
           logout();

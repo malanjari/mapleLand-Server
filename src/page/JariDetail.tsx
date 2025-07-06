@@ -7,6 +7,7 @@ import { JariItem } from "@/entity/trade/model/type";
 import { Button } from "@/shared/ui/button/Button";
 import { Link } from "react-router-dom";
 import { DropItem, getMonsterInfo } from "@/feature/jari/api/monsterInfo";
+import { useUser } from "@/entity/user/hooks/useUser";
 
 const JariDetailPage = () => {
   const { name } = useParams();
@@ -45,7 +46,8 @@ const JariDetailPage = () => {
 
   const buyJari = jari.filter((item) => item.tradeType === "BUY");
   const sellJari = jari.filter((item) => item.tradeType === "SELL");
-
+  const user = useUser();
+  console.log("jari", jari);
   return (
     <>
       {loading ? (
@@ -63,7 +65,7 @@ const JariDetailPage = () => {
                     className="w-10 h-10 object-contain rounded bg-neutral-700 p-1"
                   />
                 )}
-                <span>{name} </span>
+                <span>{name}</span>
               </h2>
 
               <img
@@ -100,7 +102,7 @@ const JariDetailPage = () => {
                       <div className="text-xs text-neutral-300">
                         <p className="leading-tight">{item.itemName}</p>
                         <p className="text-[10px] text-neutral-400">
-                          드랍률: {item.dropRate}
+                          드랍률: {item.dropRate}%
                         </p>
                       </div>
                     </li>
@@ -118,8 +120,6 @@ const JariDetailPage = () => {
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-start">
-            {/* 🗺️ 미니맵 이미지 */}
-
             {/* 판매 목록 */}
             <TradeSection title="📦 팝니다" color="red" jari={sellJari} />
 

@@ -9,6 +9,7 @@ import OAuthSuccessPage from "@/page/OAuthSuccess";
 import JariRegisterPage from "@/page/JariRegister";
 import JariRegisterDetailPage from "@/page/JariRegisterDetail";
 import { RequireAuth } from "../guard/RequireAuth";
+import ProfilePage from "@/page/Profile";
 
 const router = createBrowserRouter([
   {
@@ -34,10 +35,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "profile",
+        path: "profile/:userId",
         element: (
           <RequireAuth>
-            <JariRegisterDetailPage />
+            <ProfilePage />
           </RequireAuth>
         ),
       },
