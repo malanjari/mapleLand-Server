@@ -20,7 +20,7 @@ export const RequireAuth = ({ children }: { children: React.ReactNode }) => {
         duration: 4000,
       });
 
-      navigate("/", { replace: true });
+      navigate(-1); // 이전페이지로
     }
   }, [user, initialized, navigate]);
 
