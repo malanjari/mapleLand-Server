@@ -53,4 +53,11 @@ public interface UserMapRegisterRepository extends JpaRepository<MapRegistration
 
     List<MapRegistrationEntity> findByArea(Region area);
 
+
+    @Query("""
+    SELECT m FROM MapRegistrationEntity m
+    WHERE m.mapleJariUserEntity.userId = :userId
+    ORDER BY m.createTime DESC
+""")
+    List<MapRegistrationEntity> findByMapleJariUserEntity_UserId(@Param("userId") Integer userId);
 }
