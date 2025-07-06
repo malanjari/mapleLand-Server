@@ -66,7 +66,11 @@ const JariDetailPage = () => {
                     className="w-10 h-10 object-contain rounded p-1"
                   />
                 )}
-                <span className="text-lg">{name}</span>
+
+                <p className="text-lg text-center">
+                  {name?.split(":")[1] ?? name}{" "}
+                </p>
+
                 <img
                   src={mapMeta?.miniMapImageUrl}
                   className="max-h-[300px]"
@@ -94,7 +98,7 @@ const JariDetailPage = () => {
               </h3>
 
               {dropItems.length > 0 ? (
-                <div className="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                <div className="grid mb:grid-cols-2 xl:grid-cols-4 gap-4">
                   {dropItems.map((item, i) => (
                     <Card
                       key={i}
