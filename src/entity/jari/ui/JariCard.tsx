@@ -1,4 +1,10 @@
 // src/entities/jari/ui/JariCard.tsx
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/card/card";
 import { Link } from "react-router-dom";
 
 interface JariCardProps {
@@ -11,50 +17,55 @@ interface JariCardProps {
 }
 
 export const JariCard = ({ spot, rank }: JariCardProps) => {
+  const shortMapName = spot.mapName.includes(":")
+    ? spot.mapName.split(":")[1].trim()
+    : spot.mapName;
+
+  const rankColor =
+    rank === 1
+      ? "text-yellow-400"
+      : rank === 2
+      ? "text-gray-300"
+      : rank === 3
+      ? "text-orange-400"
+      : "";
+
   return (
-    <Link
-      to={`/jari/${spot.mapName}`}
-      className="flex items-center gap-4 bg-gray-800 hover:bg-gray-700 rounded-xl py-4 px-4 cursor-pointer transition"
-    >
-      <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 text-white font-bold text-lg select-none">
-        {rank}
-        {[0, 1, 2].includes(rank - 1) && (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className={`absolute -top-3 w-6 h-6 drop-shadow-lg ${
-              rank === 1
-                ? "text-yellow-400"
-                : rank === 2
-                ? "text-gray-300"
-                : "text-orange-400"
-            }`}
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M2 9l2 9h16l2-9-5 4-4-6-4 6-5-4z" />
-          </svg>
-        )}
-      </div>
+    <Link to={`/jari/${spot.mapName}`} className="block">
+      <Card className="bg-neutral-800 text-white hover:bg-gray-700  transition shadow-md cursor-pointer  flex flex-col aspect-[9/5]">
+        <CardHeader className="flex flex-col items-center  gap-2 pt-4 pb-0 px-2">
+          <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 font-bold text-sm">
+            {rank}
+            {rank <= 3 && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className={`absolute -top-3 w-5 h-5 drop-shadow ${rankColor}`}
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M2 9l2 9h16l2-9-5 4-4-6-4 6-5-4z" />
+              </svg>
+            )}
+          </div>
+          <img
+            src={spot.monsterImageUrl}
+            alt={spot.mapName}
+            className="w-24 h-24 object-contain rounded-md "
+          />
+        </CardHeader>
 
-      <img
-        src={spot.monsterImageUrl}
-        alt={spot.mapName}
-        className="w-14 h-14 object-contain rounded-md"
-      />
-
-      <div className="flex flex-col flex-grow">
-        <p className="text-white font-semibold text-xs lg:text-sm truncate">
-          {spot.mapName.includes(":")
-            ? spot.mapName.split(":")[1].trim()
-            : spot.mapName}
-        </p>
-        <p className="text-gray-400 text-sm mt-1">
-          거래 횟수:{" "}
-          <span className="text-white font-semibold">
-            {spot.registerCount.toLocaleString()}
-          </span>
-        </p>
-      </div>
+        <CardContent className="text-center px-3 pb-4 pt-2">
+          <CardTitle className="text-lg font-semibold truncate">
+            {shortMapName}
+          </CardTitle>
+          <p className="text-sm text-gray-400 mt-1">
+            거래 횟수:{" "}
+            <span className="text-white font-medium">
+              {spot.registerCount.toLocaleString()}
+            </span>
+          </p>
+        </CardContent>
+      </Card>
     </Link>
   );
 };
