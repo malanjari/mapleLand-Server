@@ -27,7 +27,7 @@ public class RegionResolver {
 
         } else if (belongsToLudibrium(normalized)) {
 
-            return Region.ludusLake;
+            return Region.LudusLake;
         }
 //        else if(belongsToOrbis(normalized)) {
 //            return Region.Orbis;

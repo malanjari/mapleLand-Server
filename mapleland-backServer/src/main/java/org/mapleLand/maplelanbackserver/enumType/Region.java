@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum Region {
     Victoria("빅토리아"),
-    ludusLake("루디브리엄"),
+    LudusLake("루디브리엄"),
     Elnath("엘나스"),
     MinarForest("리프레"),
     Orbis("오르비스"),

@@ -25,7 +25,7 @@ public class MapPopularityService {
 
     private static final Map<Region, List<String>> regionPrefixes = Map.of(
             Region.Victoria, List.of("빅토리아 로드:"),
-            Region.ludusLake, List.of("루디브리엄성:"),
+            Region.LudusLake, List.of("루디브리엄성:"),
             Region.Elnath, List.of("엘나스산맥:"),
             Region.MinarForest, List.of("히든스트리트:","미나르숲:"),
             Region.AquaRoad, List.of("아쿠아로드:"),
