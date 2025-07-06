@@ -32,7 +32,7 @@ export const JariCard = ({ spot, rank }: JariCardProps) => {
 
   return (
     <Link to={`/jari/${spot.mapName}`} className="block">
-      <Card className="bg-neutral-800 text-white hover:bg-gray-700  transition shadow-md cursor-pointer  flex flex-col aspect-[9/5]">
+      <Card className="bg-neutral-800 text-white hover:bg-neutral-700  transition shadow-md cursor-pointer  flex flex-col aspect-[9/5]">
         <CardHeader className="flex flex-col items-center  gap-2 pt-4 pb-0 px-2">
           <div className="relative flex items-center justify-center w-8 h-8 rounded-full bg-indigo-600 font-bold text-sm">
             {rank}
