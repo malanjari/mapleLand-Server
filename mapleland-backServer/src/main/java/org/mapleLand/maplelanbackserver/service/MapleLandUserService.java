@@ -1,12 +1,19 @@
 package org.mapleLand.maplelanbackserver.service;
 
 import lombok.RequiredArgsConstructor;
+import org.mapleLand.maplelanbackserver.controller.errorController.NotFoundUserException;
 import org.mapleLand.maplelanbackserver.controller.errorController.UserBanGlobalException;
+import org.mapleLand.maplelanbackserver.dto.UserDetailResponseDto;
+import org.mapleLand.maplelanbackserver.dto.UserInfoDto;
+import org.mapleLand.maplelanbackserver.dto.UserMapRegistrationDto;
 import org.mapleLand.maplelanbackserver.repository.MapleJariUserRepository;
+import org.mapleLand.maplelanbackserver.repository.UserMapRegisterRepository;
+import org.mapleLand.maplelanbackserver.table.MapRegistrationEntity;
 import org.mapleLand.maplelanbackserver.table.MapleJariUserEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,6 +23,7 @@ public class MapleLandUserService{
 
 
     private final MapleJariUserRepository  mapleJariUserRepository;
+    private final UserMapRegisterRepository userMapRegisterRepository;
 
 
     public void userActiveCheck(MapleJariUserEntity mapleJariUserEntity) {
@@ -26,6 +34,45 @@ public class MapleLandUserService{
         if(!byDiscordId.get().isActive())
             throw new UserBanGlobalException("차단된 사용자 입니다.",mapleJariUserEntity.getBanedReason());
 
+    }
+
+    public UserDetailResponseDto getUserDetailByUserId(Integer userId) {
+        // 사용자 정보 조회
+        MapleJariUserEntity user = mapleJariUserRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
+
+        // 사용자 정보 DTO 생성
+        UserInfoDto userInfo = new UserInfoDto(
+                user.getDiscordId(),
+                user.getImage(),
+                user.getCreateTime(),
+                user.getGlobalName(),
+                user.getMapTicket(),
+                user.getUserName(),
+                user.getEmail()
+        );
+
+        // 사용자가 등록한 맵 목록 조회
+        List<MapRegistrationEntity> mapRegistrations = userMapRegisterRepository.findByMapleJariUserEntity_UserId(userId);
+        
+        // 맵 등록 정보 DTO 리스트 생성
+        List<UserMapRegistrationDto> mapRegistrationDtos = mapRegistrations.stream()
+                .map(entity -> new UserMapRegistrationDto(
+                        entity.getUserMapId(),
+                        entity.getMapName(),
+                        entity.getServerColor(),
+                        entity.getPrice(),
+                        entity.getTradeType(),
+                        entity.getNegotiationOption(),
+                        entity.getArea(),
+                        entity.getCreateTime(),
+                        entity.getComment(),
+                        entity.getMonsterImageUrl(),
+                        entity.getIsCompleted()
+                ))
+                .toList();
+
+        return new UserDetailResponseDto(userInfo, mapRegistrationDtos);
     }
 
 }

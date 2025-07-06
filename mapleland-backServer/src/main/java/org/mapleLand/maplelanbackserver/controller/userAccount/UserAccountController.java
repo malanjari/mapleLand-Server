@@ -1,11 +1,14 @@
 package org.mapleLand.maplelanbackserver.controller.userAccount;
 
 import lombok.RequiredArgsConstructor;
+import org.mapleLand.maplelanbackserver.dto.UserDetailResponseDto;
+import org.mapleLand.maplelanbackserver.service.MapleLandUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +19,7 @@ import java.util.Map;
 public class UserAccountController {
 
     private final JwtDecoder jwtDecoder;
+    private final MapleLandUserService mapleLandUserService;
 
     @GetMapping("/api/user")
     public ResponseEntity<?> getUserAccount(
@@ -42,5 +46,11 @@ public class UserAccountController {
                 "user", jwt.getClaims()  // 또는 필요한 필드만 추려서 반환
         ));
     // 또는 필요한 필드만 추려서 반환
+    }
+
+    @GetMapping("/api/user/{userId}")
+    public ResponseEntity<UserDetailResponseDto> getUserDetail(@PathVariable Integer userId) {
+        UserDetailResponseDto userDetail = mapleLandUserService.getUserDetailByUserId(userId);
+        return ResponseEntity.ok(userDetail);
     }
 }
