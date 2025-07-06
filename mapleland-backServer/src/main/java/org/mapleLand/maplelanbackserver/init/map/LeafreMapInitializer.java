@@ -1,0 +1,180 @@
+package org.mapleLand.maplelanbackserver.init.map;
+
+import lombok.RequiredArgsConstructor;
+import org.mapleLand.maplelanbackserver.enumType.Region;
+import org.mapleLand.maplelanbackserver.repository.MapleLandMapListRepository;
+import org.mapleLand.maplelanbackserver.table.MapleLandMapListEntity;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class LeafreMapInitializer{
+
+    private final MapleLandMapListRepository mapleLandMapListRepository;
+
+
+
+             public void initLeafre() {
+
+
+
+
+            // -------------------------리프레 ---------------------------------------------
+
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("미나르숲:산양의 골짜기 1")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140110/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240010500.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("미나르숲:숲의 갈림길")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140110/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240010500.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("히든스트리트:레드 와이번의 둥지")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8150300/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240040310.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("히든스트리트:블루 와이번의 둥지")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8150301/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240040210.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("미나르숲:망가진 용의 둥지")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8190000/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240040520.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("미나르숲:용의 숲 입구")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140701/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240030000.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("미나르숲:불과 어둠의 전장")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140102/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240020100.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("미나르숲:검은 켄타우로스의 영역")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140101/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240020200.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("미나르숲:붉은 켄타우로스의 영역")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140102/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240020000.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("미나르숲:푸른 켄타우로스의 영역")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140103/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240020400.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("미나르숲:하늘 둥지2")
+                    .region(Region.Leafre)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140001/icon?resize=2")
+                    .subRegion("미나르 숲")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240010600.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                    .build());
+
+                 mapleLandMapListRepository.save(MapleLandMapListEntity
+                         .builder().
+                         mapName("미나르숲:불과 물의 전장")
+                         .region(Region.Leafre)
+                         .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140103/icon?resize=2")
+                         .subRegion("미나르 숲")
+                         .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240020500.png")
+                         .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                         .build());
+
+                 mapleLandMapListRepository.save(MapleLandMapListEntity
+                         .builder().
+                         mapName("미나르숲:위험한 용의 둥지")
+                         .region(Region.Leafre)
+                         .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8190002/icon?resize=2")
+                         .subRegion("미나르 숲")
+                         .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240040521.png")
+                         .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                         .build());
+
+                 mapleLandMapListRepository.save(MapleLandMapListEntity
+                         .builder().
+                         mapName("미나르숲:큰 둥지 봉우리")
+                         .region(Region.Leafre)
+                         .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8190004/icon?resize=2")
+                         .subRegion("미나르 숲")
+                         .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240040600.png")
+                         .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                         .build());
+
+                 mapleLandMapListRepository.save(MapleLandMapListEntity
+                         .builder().
+                         mapName("미나르숲:남겨진 용의 둥지")
+                         .region(Region.Leafre)
+                         .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8190004/icon?resize=2")
+                         .subRegion("미나르 숲")
+                         .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240040511.png")
+                         .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                         .build());
+
+
+
+             }
+
+    }
+
