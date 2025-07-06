@@ -49,4 +49,11 @@ public interface UserMapRegisterRepository extends JpaRepository<MapRegistration
     ORDER BY m.createTime DESC
 """)
     List<MapRegistrationEntity> findByMapNameWithUser(@Param("keyword") String keyword);
+
+    @Query("""
+    SELECT m FROM MapRegistrationEntity m
+    WHERE m.mapleJariUserEntity.userId = :userId
+    ORDER BY m.createTime DESC
+""")
+    List<MapRegistrationEntity> findByMapleJariUserEntity_UserId(@Param("userId") Integer userId);
 }
