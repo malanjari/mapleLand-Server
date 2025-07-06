@@ -13,14 +13,6 @@ export const MapPreview = ({
   miniMapImageLogoUrl,
 }: MapPreviewProps) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [aspectRatio, setAspectRatio] = useState("4 / 3");
-
-  const handleImageLoad = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const img = e.currentTarget;
-    if (img.naturalWidth && img.naturalHeight) {
-      setAspectRatio(`${img.naturalWidth} / ${img.naturalHeight}`);
-    }
-  };
 
   return (
     <div className="w-full flex flex-col items-center gap-3 mt-10 mb-10 text-white relative">
@@ -34,15 +26,12 @@ export const MapPreview = ({
       </div>
 
       <div className="relative">
-        <div className="w-96 relative" style={{ aspectRatio }}>
-          <img
-            src={miniMapImageUrl}
-            alt="맵로고"
-            onLoad={handleImageLoad}
-            className="absolute inset-0 w-full h-full object-contain rounded-md cursor-pointer transition"
-            onClick={() => setIsPreviewOpen(true)}
-          />
-        </div>
+        <img
+          src={miniMapImageUrl}
+          alt="맵로고"
+          className=" inset-0 w-full object-contain rounded-md cursor-pointer transition max-w-[400px] max-h-[400px]"
+          onClick={() => setIsPreviewOpen(true)}
+        />
 
         {isPreviewOpen && (
           <div
