@@ -27,7 +27,7 @@ const JariRegisterDetailPage = () => {
           />
         )}
 
-        <div className="p-8 rounded-lg bg-neutral-900">
+        <div className="p-8 rounded-lg bg-neutral-800">
           <ServerColorSelector
             serverColor={form.serverColor}
             onChange={(color) =>

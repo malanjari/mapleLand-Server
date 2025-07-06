@@ -16,7 +16,7 @@ export const PriceInput = ({
         type="number"
         value={price}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full p-2 bg-neutral-800 text-white rounded border border-neutral-600"
+        className="w-full p-2 bg-neutral-700 text-white rounded border border-neutral-600"
         placeholder="거래 가격을 입력해주세요"
       />
       {price && (
