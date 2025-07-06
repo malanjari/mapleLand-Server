@@ -36,7 +36,7 @@ public class MapleLandUserService{
 
     }
 
-    public UserDetailResponseDto getUserDetailByUserId(Integer userId) {
+    public UserDetailResponseDto getUserDetailServiceMethod(Integer userId) {
         // 사용자 정보 조회
         MapleJariUserEntity user = mapleJariUserRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
@@ -57,18 +57,18 @@ public class MapleLandUserService{
         
         // 맵 등록 정보 DTO 리스트 생성
         List<UserMapRegistrationDto> mapRegistrationDtos = mapRegistrations.stream()
-                .map(entity -> new UserMapRegistrationDto(
-                        entity.getUserMapId(),
-                        entity.getMapName(),
-                        entity.getServerColor(),
-                        entity.getPrice(),
-                        entity.getTradeType(),
-                        entity.getNegotiationOption(),
-                        entity.getArea(),
-                        entity.getCreateTime(),
-                        entity.getComment(),
-                        entity.getMonsterImageUrl(),
-                        entity.getIsCompleted()
+                .map(e -> new UserMapRegistrationDto(
+                        e.getUserMapId(),
+                        e.getMapName(),
+                        e.getServerColor(),
+                        e.getPrice(),
+                        e.getTradeType(),
+                        e.getNegotiationOption(),
+                        e.getArea(),
+                        e.getCreateTime(),
+                        e.getComment(),
+                        e.getMonsterImageUrl(),
+                        e.getIsCompleted()
                 ))
                 .toList();
 

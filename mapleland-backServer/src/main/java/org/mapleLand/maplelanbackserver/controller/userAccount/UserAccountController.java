@@ -50,7 +50,7 @@ public class UserAccountController {
 
     @GetMapping("/api/user/{userId}")
     public ResponseEntity<UserDetailResponseDto> getUserDetail(@PathVariable Integer userId) {
-        UserDetailResponseDto userDetail = mapleLandUserService.getUserDetailByUserId(userId);
+        UserDetailResponseDto userDetail = mapleLandUserService.getUserDetailServiceMethod(userId);
         return ResponseEntity.ok(userDetail);
     }
 }
