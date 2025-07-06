@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mapleLand.maplelanbackserver.dto.DropItemDto;
 import org.mapleLand.maplelanbackserver.dto.MapDto;
 import org.mapleLand.maplelanbackserver.dto.MapRegistrationDto;
+import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.service.MapService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +43,10 @@ public class MapController {
     public ResponseEntity<List<DropItemDto>> monsterInfo(@RequestParam String keyword) {
         List<DropItemDto> result = mapService.monsterInfo(keyword);
         return ResponseEntity.ok(result);
+    }
+    @GetMapping("/api/region")
+    public ResponseEntity<List<MapDto>> region(@RequestParam String keyword) {
+        List<MapDto> byRegionTag = mapService.findByRegionTag(keyword);
+        return ResponseEntity.ok(byRegionTag);
     }
 }

@@ -1,15 +1,12 @@
 package org.mapleLand.maplelanbackserver.service;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapleLand.maplelanbackserver.dto.MapPopularityDto;
 import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.repository.UserMapRegisterRepository;
 import org.mapleLand.maplelanbackserver.table.MapRegistrationEntity;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.s3.endpoints.internal.Substring;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -28,10 +25,10 @@ public class MapPopularityService {
 
     private static final Map<Region, List<String>> regionPrefixes = Map.of(
             Region.Victoria, List.of("빅토리아 로드:"),
-            Region.Ludibrium, List.of("루디브리엄성:"),
+            Region.LudusLake, List.of("루디브리엄성:"),
             Region.Elnath, List.of("엘나스산맥:"),
-            Region.Leafre, List.of("히든스트리트:","미나르숲:"),
-            Region.Aquarium, List.of("아쿠아로드:"),
+            Region.MinarForest, List.of("히든스트리트:","미나르숲:"),
+            Region.AquaRoad, List.of("아쿠아로드:"),
             Region.Orbis, List.of("스카이로드:")
             // 필요한 지역 더 추가 가능
     );

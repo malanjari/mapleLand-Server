@@ -12,6 +12,7 @@ import java.util.List;
 public class AutoCompleteService {
 
     private final MapleLandMapListRepository mapleLandMapListRepository;
+    private final MapPopularityService popularityService;
 
 
     public List<MapleLandMapListEntity> getSuggestedMapNames(String keyword) {

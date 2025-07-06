@@ -21,7 +21,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("스카이로드:구름 공원1")
-                    .region(Region.Orbis)
+                    .region(Region.Elnath)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/3230200/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/200010000.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/200000000/icon?resize=2")
@@ -32,7 +32,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("스카이로드:구름 공원2")
-                    .region(Region.Orbis)
+                    .region(Region.Elnath)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/4230106/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/200020000.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/200000000/icon?resize=2")
@@ -43,7 +43,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("스카이로드:구름 공원3")
-                    .region(Region.Orbis)
+                    .region(Region.Elnath)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/4230106/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/200040000.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/200000000/icon?resize=2")
@@ -54,7 +54,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("스카이로드:구름 공원4")
-                    .region(Region.Orbis)
+                    .region(Region.Elnath)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/3000001/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/200050000.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/200000000/icon?resize=2")
@@ -65,7 +65,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("스카이로드:구름 공원5")
-                    .region(Region.Orbis)
+                    .region(Region.Elnath)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/5120000/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/200070000.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/200000000/icon?resize=2")
@@ -142,7 +142,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("아쿠아로드:난파선의 무덤")
-                    .region(Region.Aquarium)
+                    .region(Region.AquaRoad)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8150101/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/230040400.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/230040400/icon?resize=2")
@@ -152,7 +152,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("아쿠아로드:깊은 바다 협곡1")
-                    .region(Region.Aquarium)
+                    .region(Region.AquaRoad)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140600/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/230040000.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/230040400/icon?resize=2")
@@ -162,7 +162,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("아쿠아로드:깊은 바다 협곡2")
-                    .region(Region.Aquarium)
+                    .region(Region.AquaRoad)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8140555/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/230040100.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/230040400/icon?resize=2")
@@ -172,7 +172,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("아쿠아로드:위험한 바다 협곡1")
-                    .region(Region.Aquarium)
+                    .region(Region.AquaRoad)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8141300/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/230040200.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/230040400/icon?resize=2")
@@ -182,7 +182,7 @@ public class EllanasMapInitializer{
             mapleLandMapListRepository.save(MapleLandMapListEntity
                     .builder().
                     mapName("아쿠아로드:위험한 바다 협곡2")
-                    .region(Region.Aquarium)
+                    .region(Region.AquaRoad)
                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8142100/icon?resize=2")
                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/230040300.png")
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/230040400/icon?resize=2")

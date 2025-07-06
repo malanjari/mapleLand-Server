@@ -8,7 +8,7 @@ import java.util.Arrays;
 @Getter
 public enum VictoriaLoad {
 
-    GOLEMS_FOREST_1("빅토리아로드: 골렘의 숲"),
+    GOLEMS_FOREST_1("히든스트리트: 골렘의 숲"),
     Night_Market_Alley_1("야시장 사잇길 1"),
     Mushroom_Hall("일본:버섯의 전당");
 
