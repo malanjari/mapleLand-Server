@@ -37,6 +37,7 @@ public class MapService {
     private final MapleLandMapListRepository mapleLandMapListRepository;
     private final UserMapRegisterRepository userMapRegisterRepository;
     private final MapDropItemRepository mapDropItemRepository;
+    private final MapPopularityService popularityService;
 
     public void mapRegisterServiceMethod(MapRegistrationDto dto) {
 
@@ -87,7 +88,7 @@ public class MapService {
                     var user = e.getMapleJariUserEntity();
                     return new MapDto(
                             e.getUserMapId(),
-                            e.getMapName(),
+                            popularityService.removedPrefixByRegion(e.getMapName(),e.getArea()),
                             e.getServerColor(),
                             e.getPrice(),
                             e.getTradeType(),
@@ -121,7 +122,43 @@ public class MapService {
         List<MapDropItemEntity> byMapName = mapDropItemRepository.findByMapName(keyword);
 
         return byMapName.stream().map(
-                p-> new DropItemDto(p.getMapName(),p.getItemName(),p.getItemImageUrl(),p.getDropRate()))
+                p-> new DropItemDto(p.getMapName(),
+                        p.getItemName(),
+                        p.getItemImageUrl(),p.getDropRate()))
+                .toList();
+    }
+
+
+
+    public List<MapDto> findByRegionTag(String keyword){
+        List<MapRegistrationEntity> byArea = userMapRegisterRepository.findByArea(Region.valueOf(keyword));
+
+        MapleLandMapListEntity mapEntity =
+                mapleLandMapListRepository.findByRegion(Region.valueOf(keyword))
+                        .stream().findFirst().orElse(null);
+
+        return byArea.stream()
+                .map(e -> {
+                    var user = e.getMapleJariUserEntity();
+                    return new MapDto(
+                            e.getUserMapId(),
+                            popularityService.removedPrefixByRegion(e.getMapName(),e.getArea()),
+                            e.getServerColor(),
+                            e.getPrice(),
+                            e.getTradeType(),
+                            e.getNegotiationOption(),
+                            e.getArea(),
+                            e.getCreateTime(),
+                            e.getComment(),
+                            e.getMonsterImageUrl(),
+                            user.getGlobalName(),
+                            user.getImage(),
+                            user.getUserId(),
+                            user.getDiscordId(),
+                            user.getUserName(),
+                            mapEntity.getMiniMapImageLogoUrl()
+                    );
+                })
                 .toList();
     }
 }

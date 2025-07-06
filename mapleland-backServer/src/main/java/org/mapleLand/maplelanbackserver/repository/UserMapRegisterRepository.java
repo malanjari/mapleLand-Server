@@ -1,5 +1,6 @@
 package org.mapleLand.maplelanbackserver.repository;
 
+import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.table.MapRegistrationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -49,4 +50,7 @@ public interface UserMapRegisterRepository extends JpaRepository<MapRegistration
     ORDER BY m.createTime DESC
 """)
     List<MapRegistrationEntity> findByMapNameWithUser(@Param("keyword") String keyword);
+
+    List<MapRegistrationEntity> findByArea(Region area);
+
 }

@@ -1,5 +1,5 @@
 package org.mapleLand.maplelanbackserver.repository;
-
+import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.table.MapleLandMapListEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,5 +15,7 @@ public interface MapleLandMapListRepository extends JpaRepository<MapleLandMapLi
     // 정확 일치 (신규 추가)
     @Query("SELECT m FROM MapleLandMapListEntity m WHERE REPLACE(m.mapName, ' ', '') = REPLACE(:keyword, ' ', '')")
     List<MapleLandMapListEntity> findByMapNameExact(@Param("keyword") String keyword);
+
+    List<MapleLandMapListEntity> findByRegion(Region region);
 
 }
