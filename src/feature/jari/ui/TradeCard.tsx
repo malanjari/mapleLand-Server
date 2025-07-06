@@ -9,18 +9,18 @@ interface Props {
 
 const TradeCard = ({ item }: Props) => {
   return (
-    <div className="bg-neutral-900 text-white rounded-md py-4  px-2  lg:px-4 flex flex-col gap-3 items-start shadow">
+    <div className="bg-neutral-800 text-white rounded-md py-4  px-2  lg:px-4 flex flex-col gap-3 items-start shadow">
       <div className="flex items-center justify-center gap-3 w-full">
         {/* 몬스터 이미지 */}
         <img
           src={item.monsterImageUrl}
           alt={item.mapName}
-          className="w-12 h-12 object-contain"
+          className="w-16 h-16 object-contain "
         />
 
         {/* 맵 이름 + 가격 */}
         <div className="flex flex-col   w-full ">
-          <div className="flex justify-between items-center border-b border-neutral-800  ">
+          <div className="flex justify-between items-center pb-1 border-b border-neutral-700  ">
             <p className="text-xs lg:text-base font-bold">
               {item.mapName.includes(":")
                 ? item.mapName.split(":")[1].trim()
@@ -39,12 +39,16 @@ const TradeCard = ({ item }: Props) => {
               <span className="text-[10px] lg:text-xs">{item.globalName}</span>
             </div>
           </div>
-          <div className="text-sm text-gray-200 flex items-center  justify-between gap-1 border-b border-neutral-800 ">
-            <div className="flex items-center gap-1  md:text-sm">
+          <div className="text-sm text-gray-200 flex items-center  justify-between gap-1 border-b py-1 border-neutral-700 ">
+            <div className="relative flex items-center gap-1  md:text-sm">
               {item.price.toLocaleString()}
-              <img src={mesoIcon} alt="메소" />
+              <img
+                className="w-4 relative top-[1.3px]"
+                src={mesoIcon}
+                alt="메소"
+              />
             </div>
-            <span className="text-xs  text-gray-400">
+            <span className="text-xs  ">
               {formatDistanceToNow(new Date(item.createTime), {
                 addSuffix: true,
                 locale: ko,
@@ -55,7 +59,7 @@ const TradeCard = ({ item }: Props) => {
       </div>
 
       {/* 협의 옵션 및 코멘트 */}
-      <div className="w-full flex justify-between">
+      <div className="w-full flex border-b pb-1 border-neutral-700 justify-between">
         <div className="flex items-center gap-2">
           <span
             className={`
@@ -89,7 +93,7 @@ const TradeCard = ({ item }: Props) => {
           </span>
 
           <span
-            className="max-w-[60px] md:max-w-[100px] sm:max-w-[150px] lg:max-w-[200px] truncate bg-zinc-800 text-[9px] md:text-[11px] text-gray-300 italic px-2 py-0.5 rounded-sm border border-zinc-600"
+            className="max-w-[60px] md:max-w-[100px]  truncate bg-zinc-800 text-[9px] md:text-[11px] text-gray-300 italic px-2 py-0.5 rounded-sm border border-zinc-600"
             title={item.comment}
           >
             {item.comment}

@@ -5,16 +5,6 @@ import { JariCard } from "@/entity/jari/ui/JariCard";
 export const PopularJariGrid = () => {
   const [popularMaps, setPopularMaps] = useState<PopularMap[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isLarge, setIsLarge] = useState<boolean>(false);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setIsLarge(window.innerWidth >= 1024); // Tailwind의 lg 기준: 1024px
-    };
-    handleResize(); // 초기값 설정
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     const load = async () => {
