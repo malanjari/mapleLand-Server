@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useAuthActions } from "@/entity/user/hooks/useUser";
 import ScrollToTop from "@/app/ScrollToTop";
 import { Toaster } from "../toast/toaster";
+
 const AppLayout = () => {
   const { initialize } = useAuthActions();
 
@@ -17,7 +18,7 @@ const AppLayout = () => {
       <Header />
       <ScrollToTop />
       <Toaster />
-      <main className="max-w-[1440px]   flex-col items-center w-full mx-auto flex-grow  py-6 px-6 lg:px-12  ">
+      <main className="max-w-[1440px]   flex-col items-center w-full mx-auto flex-grow  py-20 px-32   ">
         <Outlet />
       </main>
       <Footer />

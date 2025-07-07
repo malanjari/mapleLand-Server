@@ -1,7 +1,7 @@
 export type TradeType = "BUY" | "SELL";
 
 export interface JariItem {
-  userMapId: number;
+  userMapId: string;
   mapName: string;
   price: number;
   tradeType: TradeType;

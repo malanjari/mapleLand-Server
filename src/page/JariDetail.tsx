@@ -1,4 +1,3 @@
-import { jariList } from "@/feature/jari/api/jariList";
 import { fetchAutocomplete, MapItem } from "@/feature/jari/api/autocomplete";
 import TradeSection from "@/feature/jari/ui/TradeSection";
 import { useEffect, useState } from "react";
@@ -8,27 +7,26 @@ import { Button } from "@/shared/ui/button/Button";
 import { Link } from "react-router-dom";
 import { DropItem, getMonsterInfo } from "@/feature/jari/api/monsterInfo";
 import { Card, CardContent } from "@/shared/ui/card/card";
+import { useJariList } from "@/feature/jari/hooks/useJariList";
 
 const JariDetailPage = () => {
   const { name } = useParams();
-  const [jari, setJari] = useState<JariItem[]>([]);
+
   const [mapMeta, setMapMeta] = useState<MapItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [dropItems, setDropItems] = useState<DropItem[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
+  const { data: jari, refetch } = useJariList(name || "");
+  console.log("11", jari);
   useEffect(() => {
     if (!name) return;
 
     const load = async () => {
       try {
-        const [jariData, metaDataList, monsterInfo] = await Promise.all([
-          jariList(name),
+        const [metaDataList, monsterInfo] = await Promise.all([
           fetchAutocomplete(name),
           getMonsterInfo(name),
         ]);
-
-        setJari(jariData);
-        setDropItems(monsterInfo ?? []);
 
         const matched = metaDataList.find(
           (m) => m.mapName === decodeURIComponent(name)
@@ -38,6 +36,8 @@ const JariDetailPage = () => {
         } else {
           setErrorMessage("존재하지 않는 맵입니다.");
         }
+
+        setDropItems(monsterInfo ?? []);
       } catch (error) {
         if (error instanceof Error) {
           setErrorMessage(error.message);
@@ -52,8 +52,10 @@ const JariDetailPage = () => {
     load();
   }, [name]);
   console.log("자리", jari);
-  const buyJari = jari.filter((item) => item.tradeType === "BUY");
-  const sellJari = jari.filter((item) => item.tradeType === "SELL");
+  const buyJari =
+    jari?.filter((item: JariItem) => item.tradeType === "BUY") ?? [];
+  const sellJari =
+    jari?.filter((item: JariItem) => item.tradeType === "SELL") ?? [];
 
   console.log("jari", jari);
   if (loading) {
@@ -143,8 +145,18 @@ const JariDetailPage = () => {
 
             {/* 거래 목록 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-16 lg:mt-0">
-              <TradeSection title="팝니다" color="red" jari={sellJari} />
-              <TradeSection title="삽니다" color="blue" jari={buyJari} />
+              <TradeSection
+                title="팝니다"
+                color="red"
+                jari={sellJari}
+                refetch={refetch}
+              />
+              <TradeSection
+                title="삽니다"
+                color="blue"
+                jari={buyJari}
+                refetch={refetch}
+              />
             </div>
           </div>
         </div>

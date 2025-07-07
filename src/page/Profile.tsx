@@ -1,63 +1,49 @@
-import { getUserInfo } from "@/entity/user/api/user";
-import { User } from "@/entity/user/model/type";
-import { RegionMap } from "@/feature/worldJari/api/worldJari";
-import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { useUser } from "@/entity/user/hooks/useUser";
 import { Button } from "@/shared/ui/button/Button";
 import TradeSection from "@/feature/jari/ui/TradeSection";
-
+import { useUserInfo } from "@/entity/user/hooks/useUserInfo";
+import { RegionMap } from "@/feature/worldJari/api/worldJari";
+import back from "@/shared/assets/back.png";
 const ProfilePage = () => {
-  const [userInfo, setUserInfo] = useState<User | null>(null);
-  const [registrations, setRegistrations] = useState<RegionMap[]>([]);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(true);
   const { userId } = useParams();
   const navigate = useNavigate();
   const me = useUser();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const user = await getUserInfo(userId!);
-        setUserInfo(user.userInfo);
-        setRegistrations(user.mapRegistrations);
-      } catch (error) {
-        if (error instanceof Error) {
-          setError(error.message); //
-        } else {
-          setError("알 수 없는 오류가 발생했습니다.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchData();
-  }, [userId]);
-  if (loading) return <p className="text-white">로딩 중...</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
-  if (!userInfo) return null;
+  const { data: user, isLoading, error, refetch } = useUserInfo(userId);
+
+  if (isLoading) return <p className="text-white">로딩 중...</p>;
+  if (error || !user)
+    return <p className="text-red-500">유저 정보를 불러오지 못했습니다.</p>;
+
+  const {
+    userInfo,
+    mapRegistrations,
+  }: { userInfo: any; mapRegistrations: RegionMap[] } = user;
+
   const avatarUrl = userInfo.image
     ? `https://cdn.discordapp.com/avatars/${userInfo.discordId}/${userInfo.image}.png`
-    : "https://cdn.discordapp.com/embed/avatars/0.png"; // 기본 아바타
+    : "https://cdn.discordapp.com/embed/avatars/0.png";
+
   const formattedDate = format(new Date(userInfo.createTime), "yyyy.MM.dd");
-  const isMyProfile = userInfo.discordId === me?.user.id; // 디스코드 아이디가 같을시
-  const sellList = registrations.filter((item) => item.tradeType === "SELL");
-  const buyList = registrations.filter((item) => item.tradeType === "BUY");
-  const completedSellList = registrations.filter(
+  const isMyProfile = userInfo.discordId === me?.user.id;
+
+  const sellList = mapRegistrations.filter((item) => item.tradeType === "SELL");
+  const buyList = mapRegistrations.filter((item) => item.tradeType === "BUY");
+  const completedSellList = mapRegistrations.filter(
     (j) => j.tradeType === "SELL" && j.isCompleted
   );
-  const completedBuyList = registrations.filter(
+  const completedBuyList = mapRegistrations.filter(
     (j) => j.tradeType === "BUY" && j.isCompleted
   );
-  console.log(registrations);
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-full">
+      {/* 왼쪽: 프로필 정보 */}
       <div className="col-span-6 lg:col-span-1 lg:sticky top-24 self-start h-full">
-        <div className="w-full flex flex-col  gap-4">
-          <div className="flex flex-col bg-neutral-800 w-full items-center gap-4  rounded-lg shadow p-6">
-            {" "}
+        <div className="w-full flex flex-col gap-4">
+          <div className="flex flex-col bg-neutral-800 w-full items-center gap-4 rounded-lg shadow p-6 px-4">
             <img
               src={avatarUrl}
               alt="프로필 이미지"
@@ -71,7 +57,8 @@ const ProfilePage = () => {
               <p className="text-xs text-gray-500">{formattedDate} 가입</p>
             </div>
           </div>
-          <div className="flex flex-col bg-neutral-800 w-full items-center gap-2  rounded-lg shadow p-6">
+
+          <div className="flex flex-col bg-neutral-800 w-full items-center gap-2 rounded-lg shadow  p-6 px-4">
             {isMyProfile && (
               <Button
                 variant="register"
@@ -89,7 +76,7 @@ const ProfilePage = () => {
                   "_blank"
                 )
               }
-              className="w-full  font-semibold"
+              className="w-full font-semibold"
             >
               디스코드 프로필 (Web)
             </Button>
@@ -98,18 +85,29 @@ const ProfilePage = () => {
               onClick={() => {
                 window.location.href = `discord://discord.com/users/${userInfo.discordId}`;
               }}
-              className="w-full text-white font-semibold text-center  "
+              className="w-full text-white font-semibold text-center"
             >
-              디스코드 프로필 (Pc)
+              디스코드 프로필 (PC)
             </Button>
           </div>
         </div>
       </div>
+
       {/* 오른쪽: 자리 거래 */}
-      <div className="col-span-6 lg:col-span-4 gap-6">
+      <div className="col-span-5 lg:col-span-4 gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-16 lg:mt-0">
-          <TradeSection title="팝니다" color="red" jari={sellList} />
-          <TradeSection title="삽니다" color="blue" jari={buyList} />
+          <TradeSection
+            title=" 팝니다"
+            color="red"
+            jari={sellList}
+            refetch={refetch}
+          />
+          <TradeSection
+            title="삽니다"
+            color="blue"
+            jari={buyList}
+            refetch={refetch}
+          />
         </div>
         {(completedSellList.length > 0 || completedBuyList.length > 0) && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-12">
@@ -117,11 +115,13 @@ const ProfilePage = () => {
               title="팝니다 (종료)"
               color="red"
               jari={completedSellList}
+              refetch={refetch}
             />
             <TradeSection
               title="삽니다 (종료)"
               color="blue"
               jari={completedBuyList}
+              refetch={refetch}
             />
           </div>
         )}
