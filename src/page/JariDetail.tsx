@@ -57,7 +57,7 @@ const JariDetailPage = () => {
 
   console.log("jari", jari);
   if (loading) {
-    return <p className="text-center text-white pt-20">로딩 중...</p>;
+    return <p className="text-white ">로딩 중...</p>;
   }
   if (errorMessage) return <p className="text-red-500">{errorMessage}</p>;
   return (

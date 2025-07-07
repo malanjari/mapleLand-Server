@@ -48,35 +48,38 @@ const TradeSection = ({ title, color, jari }: Props) => {
     <section className="max-h-[600px]  overflow-y-auto pr-1">
       <div
         className={clsx(
-          "text-white text-sm font-semibold px-3 py-5 mb-3 rounded flex justify-between items-center",
+          "text-white text-sm font-semibold px-4 py-6 mb-4 rounded-xl shadow-lg transition",
+          "flex justify-between items-center",
           {
-            "bg-blue-600": color === "blue",
-            "bg-red-600": color === "red",
+            "bg-gradient-to-r from-blue-600 to-blue-500": color === "blue",
+            "bg-gradient-to-r from-red-600 to-red-500": color === "red",
           }
         )}
       >
-        <span className="text-xl">{title}</span>
+        <span className="text-2xl font-bold tracking-tight">{title}</span>
+
         <div className="flex gap-2 text-xs">
           <Button
             variant="ghost"
             onClick={() => toggleSortOption("time")}
             className={clsx(
-              "px-2 py-1 text-[10px] rounded border",
+              "px-3 py-1 text-[11px] rounded-md border font-medium transition duration-150",
               sortOption === "time"
-                ? "bg-white text-black"
-                : "text-white border-white hover:bg-white hover:text-black transition"
+                ? "bg-white text-black shadow"
+                : "text-white border-white hover:bg-white hover:text-black hover:shadow"
             )}
           >
             {timeLabel}
           </Button>
+
           <Button
             variant="ghost"
             onClick={() => toggleSortOption("price")}
             className={clsx(
-              "px-2 py-1 text-[10px] rounded border",
+              "px-3 py-1 text-[11px] rounded-md border font-medium transition duration-150",
               sortOption === "price"
-                ? "bg-white text-black"
-                : "text-white border-white hover:bg-white hover:text-black transition"
+                ? "bg-white text-black shadow"
+                : "text-white border-white hover:bg-white hover:text-black hover:shadow"
             )}
           >
             {priceLabel}

@@ -1,6 +1,7 @@
 import { JariItem } from "@/entity/trade/model/type";
 
 import mesoIcon from "@/shared/assets/icon/mesoIcon.png";
+import clsx from "clsx";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import { Link } from "react-router-dom";
@@ -10,7 +11,14 @@ interface Props {
 
 const TradeCard = ({ item }: Props) => {
   return (
-    <div className="bg-neutral-800 text-white rounded-md py-4  px-2  lg:px-4 flex flex-col gap-3 items-start shadow">
+    <div
+      className={clsx(
+        "bg-neutral-800 text-white rounded-md py-4 px-2 lg:px-4 flex flex-col gap-3 items-start shadow transition duration-300",
+        {
+          "opacity-40 grayscale pointer-events-none": item.isCompleted,
+        }
+      )}
+    >
       <div className="flex items-center justify-center gap-3 w-full">
         {/* 몬스터 이미지 */}
         <img
