@@ -25,7 +25,7 @@ const ProfilePage = () => {
         setRegistrations(user.mapRegistrations);
       } catch (error) {
         if (error instanceof Error) {
-          setError(error.message); // ✅ 서버에서 내려준 message 사용
+          setError(error.message); //
         } else {
           setError("알 수 없는 오류가 발생했습니다.");
         }
@@ -45,6 +45,12 @@ const ProfilePage = () => {
   const isMyProfile = userInfo.discordId === me?.user.id; // 디스코드 아이디가 같을시
   const sellList = registrations.filter((item) => item.tradeType === "SELL");
   const buyList = registrations.filter((item) => item.tradeType === "BUY");
+  const completedSellList = registrations.filter(
+    (j) => j.tradeType === "SELL" && j.isCompleted
+  );
+  const completedBuyList = registrations.filter(
+    (j) => j.tradeType === "BUY" && j.isCompleted
+  );
   console.log(registrations);
   return (
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-full">
@@ -65,7 +71,7 @@ const ProfilePage = () => {
               <p className="text-xs text-gray-500">{formattedDate} 가입</p>
             </div>
           </div>
-          <div className="flex flex-col bg-neutral-800 w-full items-center  rounded-lg shadow p-6">
+          <div className="flex flex-col bg-neutral-800 w-full items-center gap-2  rounded-lg shadow p-6">
             {isMyProfile && (
               <Button
                 variant="register"
@@ -75,15 +81,50 @@ const ProfilePage = () => {
                 + 자리 등록하기
               </Button>
             )}
+            <Button
+              variant="register"
+              onClick={() =>
+                window.open(
+                  `https://discord.com/users/${userInfo.discordId}`,
+                  "_blank"
+                )
+              }
+              className="w-full  font-semibold"
+            >
+              디스코드 프로필 보기 (WEB)
+            </Button>
+            <Button
+              variant="register"
+              onClick={() => {
+                window.location.href = `discord://discord.com/users/${userInfo.discordId}`;
+              }}
+              className="w-full text-white font-semibold text-center  "
+            >
+              디스코드 앱에서 열기
+            </Button>
           </div>
         </div>
       </div>
       {/* 오른쪽: 자리 거래 */}
-      <div className="col-span-4 gap-6">
+      <div className="col-span-6 lg:col-span-4 gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-16 lg:mt-0">
           <TradeSection title="📦 팝니다" color="red" jari={sellList} />
           <TradeSection title="🔍 삽니다" color="blue" jari={buyList} />
         </div>
+        {(completedSellList.length > 0 || completedBuyList.length > 0) && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-12">
+            <TradeSection
+              title="✅ 팝니다 (종료)"
+              color="red"
+              jari={completedSellList}
+            />
+            <TradeSection
+              title="✅ 삽니다 (종료)"
+              color="blue"
+              jari={completedBuyList}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
