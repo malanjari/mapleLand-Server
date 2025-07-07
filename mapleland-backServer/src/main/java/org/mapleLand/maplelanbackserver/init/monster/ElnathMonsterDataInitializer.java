@@ -42,6 +42,21 @@ public class ElnathMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2000004/icon?resize=2")
                         .dropRate(0.1)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("폐광: 죽은 나무의 숲 1")
+                        .itemName("적일")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1040094/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("폐광: 죽은 나무의 숲 1")
+                        .itemName("젝커")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1322016/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("폐광: 죽은 나무의 숲 1")
                         .itemName("그린 세라피스")
@@ -55,11 +70,6 @@ public class ElnathMonsterDataInitializer {
                         .dropRate(0.007)
                         .build()));
 
-
-
-
-
-
         mapDropItemRepository.saveAll(List.of(
                 MapDropItemEntity.builder()
                         .mapName("폐광: 죽은 나무의 숲 2")
@@ -88,6 +98,21 @@ public class ElnathMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2000004/icon?resize=2")
                         .dropRate(0.1)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("폐광: 죽은 나무의 숲 2")
+                        .itemName("적일")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1040094/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("폐광: 죽은 나무의 숲 2")
+                        .itemName("젝커")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1322016/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("폐광: 죽은 나무의 숲 2")
                         .itemName("그린 세라피스")
@@ -101,7 +126,6 @@ public class ElnathMonsterDataInitializer {
                         .dropRate(0.007)
                         .build()));
 
-
         mapDropItemRepository.saveAll(List.of(
                 MapDropItemEntity.builder()
                         .mapName("폐광: 죽은 나무의 숲 3")
@@ -130,6 +154,21 @@ public class ElnathMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2000004/icon?resize=2")
                         .dropRate(0.1)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("폐광: 죽은 나무의 숲 3")
+                        .itemName("적일")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1040094/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("폐광: 죽은 나무의 숲 3")
+                        .itemName("젝커")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1322016/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("폐광: 죽은 나무의 숲 3")
                         .itemName("그린 세라피스")
@@ -174,6 +213,21 @@ public class ElnathMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2000004/icon?resize=2")
                         .dropRate(0.1)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("폐광: 죽은 나무의 숲 4")
+                        .itemName("적일")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1040094/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("폐광: 죽은 나무의 숲 4")
+                        .itemName("젝커")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1322016/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("폐광: 죽은 나무의 숲 4")
                         .itemName("그린 세라피스")
@@ -217,6 +271,21 @@ public class ElnathMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2070003/icon?resize=2")
                         .dropRate(0.01)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("엘나스 산맥: 차디찬 벌판")
+                        .itemName("샤이닝")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1412007/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("엘나스 산맥: 차디찬 벌판")
+                        .itemName("스틸 보닌")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472014/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("엘나스 산맥: 차디찬 벌판")
                         .itemName("적선백궁")
