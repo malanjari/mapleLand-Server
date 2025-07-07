@@ -20,8 +20,8 @@ const WorldDetailPage = () => {
       {/* 오른쪽: 자리 거래 */}
       <div className="col-span-4 gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-16 lg:mt-0">
-          <TradeSection title="📦 팝니다" color="red" jari={sellJari} />
-          <TradeSection title="🔍 삽니다" color="blue" jari={buyJari} />
+          <TradeSection title="팝니다" color="red" jari={sellJari} />
+          <TradeSection title="삽니다" color="blue" jari={buyJari} />
         </div>
       </div>
     </div>
