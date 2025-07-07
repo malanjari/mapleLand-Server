@@ -114,12 +114,12 @@ const ProfilePage = () => {
         {(completedSellList.length > 0 || completedBuyList.length > 0) && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-12">
             <TradeSection
-              title="✅ 팝니다 (종료)"
+              title="팝니다 (종료)"
               color="red"
               jari={completedSellList}
             />
             <TradeSection
-              title="✅ 삽니다 (종료)"
+              title="삽니다 (종료)"
               color="blue"
               jari={completedBuyList}
             />
