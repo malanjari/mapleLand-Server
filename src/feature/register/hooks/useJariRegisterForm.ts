@@ -98,6 +98,7 @@ export const useJariRegisterForm = () => {
       try {
         const res = await fetchAutocomplete(name);
         const matched = res.find((m) => m.mapName === decodeURIComponent(name));
+
         if (matched) {
           setMapData(matched);
           setForm((prev) => ({ ...prev, mapName: matched.mapName }));
