@@ -5,7 +5,7 @@ import { fetchAutocomplete, MapItem } from "@/feature/jari/api/autocomplete";
 import {
   JariRegisterPayload,
   registerJari,
-} from "@/feature/jari/api/registerJari";
+} from "@/feature/register/api/registerJari";
 import { toast } from "@/shared/hooks/use-toast";
 
 type TradeType = "SELL" | "BUY";
