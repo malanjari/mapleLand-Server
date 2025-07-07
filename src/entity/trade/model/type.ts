@@ -15,4 +15,5 @@ export interface JariItem {
   uniqueId: string;
   globalName: string;
   miniMapImageLogo: string;
+  userId: string | number;
 }
