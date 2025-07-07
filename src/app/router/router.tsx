@@ -21,6 +21,10 @@ const router = createBrowserRouter([
       { path: "jari/:name", element: <JariDetail /> },
       { path: "jari/world/:world", element: <WorldDetailPage /> },
       {
+        path: "profile/:userId",
+        element: <ProfilePage />,
+      },
+      {
         path: "jari/register",
         element: (
           <RequireAuth>
@@ -36,14 +40,7 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
-      {
-        path: "profile/:userId",
-        element: (
-          <RequireAuth>
-            <ProfilePage />
-          </RequireAuth>
-        ),
-      },
+
       { path: "oauth2/success", element: <OAuthSuccessPage /> },
     ],
   },

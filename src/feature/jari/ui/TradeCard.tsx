@@ -3,6 +3,7 @@ import { JariItem } from "@/entity/trade/model/type";
 import mesoIcon from "@/shared/assets/icon/mesoIcon.png";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
+import { Link } from "react-router-dom";
 interface Props {
   item: JariItem;
 }
@@ -26,7 +27,10 @@ const TradeCard = ({ item }: Props) => {
                 ? item.mapName.split(":")[1].trim()
                 : item.mapName}
             </p>
-            <div className="flex gap-1 items-center cursor-pointer">
+            <Link
+              to={`/profile/${item.userId}`}
+              className="flex gap-1 items-center cursor-pointer"
+            >
               <img
                 src={
                   item.userImage
@@ -37,7 +41,7 @@ const TradeCard = ({ item }: Props) => {
                 className="w-4 h-4 lg:w-6 lg:h-6 rounded-full"
               />{" "}
               <span className="text-[10px] lg:text-xs">{item.globalName}</span>
-            </div>
+            </Link>
           </div>
           <div className="text-sm text-gray-200 flex items-center  justify-between gap-1 border-b py-1 border-neutral-700 ">
             <div className="relative flex items-center gap-1  md:text-sm">
