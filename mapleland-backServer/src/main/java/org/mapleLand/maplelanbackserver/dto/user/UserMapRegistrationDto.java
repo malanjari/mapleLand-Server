@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.dto;
+package org.mapleLand.maplelanbackserver.dto.user;
 
 import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.enumType.TradeType;
@@ -16,6 +16,9 @@ public record UserMapRegistrationDto(
         LocalDateTime createTime,
         String comment,
         String monsterImageUrl,
-        Boolean isCompleted
+        Boolean isCompleted,
+        String userImage,
+        int userId,
+        String uniqueId
 ) {
-} 
+}

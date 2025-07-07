@@ -6,13 +6,14 @@ import org.mapleLand.maplelanbackserver.table.MapDropItemEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class AquariumMonsterDataInitializer {
 
     private final MapDropItemRepository mapDropItemRepository;
 
-    public void initAquariumMonsterData(){
+    public void initAquariumMonsterData() {
         mapDropItemRepository.saveAll(List.of(
                 MapDropItemEntity.builder()
                         .mapName("아쿠아로드: 난파선의 무덤")
@@ -41,14 +42,26 @@ public class AquariumMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2041022/icon?resize=2")
                         .dropRate(0.006)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드: 난파선의 무덤")
+                        .itemName("한손검 공격력 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2043001/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("아쿠아로드: 난파선의 무덤")
                         .itemName("망토 힘 주문서 60%")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2041013/icon?resize=2")
                         .dropRate(0.006)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드: 난파선의 무덤")
+                        .itemName("아츠")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1302018/icon?resize=2")
+                        .dropRate(0.01)
                         .build()));
-
-
 
         mapDropItemRepository.saveAll(List.of(
                 MapDropItemEntity.builder()
@@ -77,6 +90,27 @@ public class AquariumMonsterDataInitializer {
                         .itemName("아대 공격력 주문서 60%")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
                         .dropRate(0.006)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:깊은 바다 협곡 1")
+                        .itemName("검은색 세라프의 망토")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1102030/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:깊은 바다 협곡 1")
+                        .itemName("파이어 아룬드")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1452013/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:깊은 바다 협곡 1")
+                        .itemName("다크 엠페러")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082117/icon?resize=2")
+                        .dropRate(0.007)
                         .build(),
                 MapDropItemEntity.builder()
                         .mapName("아쿠아로드:깊은 바다 협곡 1")
@@ -114,13 +148,33 @@ public class AquariumMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
                         .dropRate(0.006)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:깊은 바다 협곡 2")
+                        .itemName("검은색 세라프의 망토")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1102030/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:깊은 바다 협곡 2")
+                        .itemName("파이어 아룬드")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1452013/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:깊은 바다 협곡 2")
+                        .itemName("다크 엠페러")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082117/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
                 MapDropItemEntity.builder()
                         .mapName("아쿠아로드:깊은 바다 협곡 2")
                         .itemName("레드 배틀엠프리스")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1051078/icon?resize=2")
                         .dropRate(0.006)
                         .build()));
-
 
         mapDropItemRepository.saveAll(List.of(
                 MapDropItemEntity.builder()
@@ -146,6 +200,27 @@ public class AquariumMonsterDataInitializer {
 
                 MapDropItemEntity.builder()
                         .mapName("아쿠아로드:위험한 바다 협곡 1")
+                        .itemName("장미꽃 귀걸이")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1032017/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:위험한 바다 협곡 1")
+                        .itemName("그린 아네스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1051084/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:위험한 바다 협곡 1")
+                        .itemName("헬리오스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1412009/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:위험한 바다 협곡 1")
                         .itemName("장갑 공격력 주문서 60%")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2040804/icon?resize=2")
                         .dropRate(0.006)
@@ -156,7 +231,6 @@ public class AquariumMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
                         .dropRate(0.006)
                         .build()));
-
 
 
         mapDropItemRepository.saveAll(List.of(
@@ -179,6 +253,28 @@ public class AquariumMonsterDataInitializer {
                         .itemName("장미꽃 귀걸이")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1032017/icon?resize=2")
                         .dropRate(0.006)
+                        .build(),
+
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:위험한 바다 협곡 2")
+                        .itemName("호프만")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1422010/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:위험한 바다 협곡 2")
+                        .itemName("그린 아네스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1051084/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("아쿠아로드:위험한 바다 협곡 2")
+                        .itemName("헬리오스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1412009/icon?resize=2")
+                        .dropRate(0.01)
                         .build(),
 
                 MapDropItemEntity.builder()

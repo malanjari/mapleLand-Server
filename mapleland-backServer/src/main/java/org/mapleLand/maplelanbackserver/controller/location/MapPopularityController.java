@@ -1,7 +1,7 @@
 package org.mapleLand.maplelanbackserver.controller.location;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.dto.MapPopularityDto;
+import org.mapleLand.maplelanbackserver.dto.Map.MapPopularityDto;
 import org.mapleLand.maplelanbackserver.service.MapPopularityService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

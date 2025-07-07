@@ -48,6 +48,18 @@ public class OrbisMonsterDataInitializer {
                         .build(),
                 MapDropItemEntity.builder()
                         .mapName("스카이로드: 구름공원1")
+                        .itemName("발터2000")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1452007/icon?resize=2")
+                        .dropRate(0.005)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원1")
+                        .itemName("트라우스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1302009/icon?resize=2")
+                        .dropRate(0.005)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원1")
                         .itemName("방패 방어력 주문서 10%")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2040902/icon?resize=2")
                         .dropRate(0.006)
@@ -88,6 +100,18 @@ public class OrbisMonsterDataInitializer {
                         .build(),
                 MapDropItemEntity.builder()
                         .mapName("스카이로드: 구름공원2")
+                        .itemName("발터2000")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1452007/icon?resize=2")
+                        .dropRate(0.005)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원2")
+                        .itemName("트라우스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1302009/icon?resize=2")
+                        .dropRate(0.005)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원2")
                         .itemName("목비 표창")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2070002/icon?resize=2")
                         .dropRate(0.01)
@@ -127,6 +151,18 @@ public class OrbisMonsterDataInitializer {
                         .build(),
                 MapDropItemEntity.builder()
                         .mapName("스카이로드: 구름공원3")
+                        .itemName("발터2000")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1452007/icon?resize=2")
+                        .dropRate(0.005)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원3")
+                        .itemName("트라우스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1302009/icon?resize=2")
+                        .dropRate(0.005)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원3")
                         .itemName("목비 표창")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2070002/icon?resize=2")
                         .dropRate(0.01)
@@ -162,6 +198,18 @@ public class OrbisMonsterDataInitializer {
                         .itemName("하늘색 우산")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1302017/icon?resize=2")
                         .dropRate(0.008)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원4")
+                        .itemName("발터2000")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1452007/icon?resize=2")
+                        .dropRate(0.005)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원4")
+                        .itemName("트라우스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1302009/icon?resize=2")
+                        .dropRate(0.005)
                         .build(),
                 MapDropItemEntity.builder()
                         .mapName("스카이로드: 구름공원4")
@@ -201,6 +249,18 @@ public class OrbisMonsterDataInitializer {
                         .itemName("목비 표창")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2070002/icon?resize=2")
                         .dropRate(0.01)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원5")
+                        .itemName("스틸 마누트")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082086/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원5")
+                        .itemName("블루 고니슈즈")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1072128/icon?resize=2")
+                        .dropRate(0.007)
                         .build(),
                 MapDropItemEntity.builder()
                         .mapName("스카이로드: 구름공원5")
@@ -239,6 +299,18 @@ public class OrbisMonsterDataInitializer {
                         .itemName("목비 표창")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2070002/icon?resize=2")
                         .dropRate(0.01)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원6")
+                        .itemName("스틸 마누트")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082086/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원6")
+                        .itemName("블루 고니슈즈")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1072128/icon?resize=2")
+                        .dropRate(0.007)
                         .build(),
                 MapDropItemEntity.builder()
                         .mapName("스카이로드: 구름공원6")

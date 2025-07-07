@@ -1,10 +1,9 @@
-package org.mapleLand.maplelanbackserver.dto;
+package org.mapleLand.maplelanbackserver.dto.Map;
 
 import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.enumType.TradeType;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public record MapDto(
         Integer userMapId,
@@ -22,6 +21,7 @@ public record MapDto(
         int userId,
         String uniqueId,
         String socialId,
-        String miniMapImageLogo
+        String miniMapImageLogo,
+        boolean isCompleted
 ) {
 }

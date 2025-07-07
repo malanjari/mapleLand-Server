@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.dto;
+package org.mapleLand.maplelanbackserver.dto.user;
 
 import java.time.LocalDateTime;
 

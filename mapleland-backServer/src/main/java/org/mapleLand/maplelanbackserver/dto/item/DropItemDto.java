@@ -1,8 +1,4 @@
-package org.mapleLand.maplelanbackserver.dto;
-
-import org.mapleLand.maplelanbackserver.table.MapDropItemEntity;
-
-import java.util.List;
+package org.mapleLand.maplelanbackserver.dto.item;
 
 public record DropItemDto(String mapName ,
                           String itemName ,

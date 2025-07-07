@@ -1,9 +1,8 @@
-package org.mapleLand.maplelanbackserver.controller.userAccount;
+package org.mapleLand.maplelanbackserver.controller.userController;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.dto.UserDetailResponseDto;
+import org.mapleLand.maplelanbackserver.dto.user.UserDetailResponseDto;
 import org.mapleLand.maplelanbackserver.service.MapleLandUserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;

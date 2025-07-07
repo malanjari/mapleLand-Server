@@ -18,7 +18,7 @@ public class LudibriumMonsterDataInitializer {
             mapDropItemRepository.saveAll(List.of(
                     MapDropItemEntity.builder()
                             .mapName("루디브리엄성:시간의길<1>")
-                            .itemName("애스터 실드")
+                            .itemName("에스터 실드")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1092029/icon?resize=2")
                             .dropRate(0.008)
                             .build(),
@@ -45,6 +45,18 @@ public class LudibriumMonsterDataInitializer {
                             .mapName("루디브리엄성:시간의길<1>")
                             .itemName("쟈드")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1402007/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("루디브리엄성:시간의길<1>")
+                            .itemName("다크 클리브")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1082074/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("루디브리엄성:시간의길<1>")
+                            .itemName("그린 매티")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1002143/icon?resize=2")
                             .dropRate(0.01)
                             .build(),
                     MapDropItemEntity.builder()
@@ -92,6 +104,18 @@ public class LudibriumMonsterDataInitializer {
                             .build(),
                     MapDropItemEntity.builder()
                             .mapName("루디브리엄성:시간의길<2>")
+                            .itemName("자진일갑주")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1040085/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("루디브리엄성:시간의길<2>")
+                            .itemName("화이트 길티언")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1002155/icon?resize=2")
+                            .dropRate(0.007)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("루디브리엄성:시간의길<2>")
                             .itemName("백진일갑주 바지")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1060074/icon?resize=2")
                             .dropRate(0.007)
@@ -131,6 +155,18 @@ public class LudibriumMonsterDataInitializer {
                             .mapName("루디브리엄성:시간의길<3>")
                             .itemName("블루 필퍼")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1002182/icon?resize=2")
+                            .dropRate(0.007)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("루디브리엄성:시간의길<3>")
+                            .itemName("자진일갑주")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1040085/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("루디브리엄성:시간의길<3>")
+                            .itemName("화이트 길티언")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1002155/icon?resize=2")
                             .dropRate(0.007)
                             .build(),
                     MapDropItemEntity.builder()
@@ -178,6 +214,18 @@ public class LudibriumMonsterDataInitializer {
                             .build(),
                     MapDropItemEntity.builder()
                             .mapName("루디브리엄성: 시간의길 <4>")
+                            .itemName("다크 칼라스")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1050049/icon?resize=2")
+                            .dropRate(0.007)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("루디브리엄성: 시간의길 <4>")
+                            .itemName("아이보리 숄더메일")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1041088/icon?resize=2")
+                            .dropRate(0.007)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("루디브리엄성: 시간의길 <4>")
                             .itemName("골든 모울")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1422005/icon?resize=2")
                             .dropRate(0.006)
@@ -216,6 +264,18 @@ public class LudibriumMonsterDataInitializer {
                             .itemName("귀 장식 지력 주문서 60%")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/2040301/icon?resize=2")
                             .dropRate(0.004)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:뒤틀린 시간의 길<1>")
+                            .itemName("네오코라")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1302011/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:뒤틀린 시간의 길<1>")
+                            .itemName("미하일")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1312010/icon?resize=2")
+                            .dropRate(0.005)
                             .build(),
                     MapDropItemEntity.builder()
                             .mapName("시계탑최하층:뒤틀린 시간의 길<1>")
@@ -258,6 +318,18 @@ public class LudibriumMonsterDataInitializer {
                             .itemName("망토 힘 주문서 60%")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/2041013/icon?resize=2")
                             .dropRate(0.004)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:뒤틀린 시간의 길<2>")
+                            .itemName("블루 힌켈")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1452010/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:뒤틀린 시간의 길<2>")
+                            .itemName("황룡도")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1442008/icon?resize=2")
+                            .dropRate(0.006)
                             .build(),
 
                     MapDropItemEntity.builder()
@@ -308,6 +380,12 @@ public class LudibriumMonsterDataInitializer {
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1082097/icon?resize=2")
                             .dropRate(0.007)
                             .build(),
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:뒤틀린 시간의 길<3>")
+                            .itemName("블루 힌켈")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1452010/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
 
                     MapDropItemEntity.builder()
                             .mapName("시계탑최하층:뒤틀린 시간의 길<3>")
@@ -356,6 +434,13 @@ public class LudibriumMonsterDataInitializer {
                             .itemName("다크 크리시스")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1050074/icon?resize=2")
                             .dropRate(0.008)
+                            .build(),
+
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:뒤틀린 시간의 길<4>")
+                            .itemName("그린 파쵸네")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1082132/icon?resize=2")
+                            .dropRate(0.007)
                             .build(),
 
                     MapDropItemEntity.builder()
@@ -412,6 +497,13 @@ public class LudibriumMonsterDataInitializer {
 
                     MapDropItemEntity.builder()
                             .mapName("시계탑최하층:금지된 시간")
+                            .itemName("마린 샬리트")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1462010/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:금지된 시간")
                             .itemName("블루 와이즈")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1082122/icon?resize=2")
                             .dropRate(0.008)
@@ -458,6 +550,13 @@ public class LudibriumMonsterDataInitializer {
                             .mapName("시계탑최하층:사라진 시간")
                             .itemName("다크 크로스 햇")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1002274/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:사라진 시간")
+                            .itemName("아츠")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1302018/icon?resize=2")
                             .dropRate(0.008)
                             .build(),
 
@@ -513,6 +612,14 @@ public class LudibriumMonsterDataInitializer {
 
                     MapDropItemEntity.builder()
                             .mapName("시계탑최하층:삐뚤어진 시간")
+                            .itemName("그린 와이즈")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1082121/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+
+
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:삐뚤어진 시간")
                             .itemName("메탈 하트 이어링")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1032016/icon?resize=2")
                             .dropRate(0.008)
@@ -560,6 +667,13 @@ public class LudibriumMonsterDataInitializer {
                             .itemName("다크 배틀엠프레스")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1051080/icon?resize=2")
                             .dropRate(0.008)
+                            .build(),
+
+                    MapDropItemEntity.builder()
+                            .mapName("시계탑최하층:꼬여버린 시간")
+                            .itemName("블루 아네스")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1051083/icon?resize=2")
+                            .dropRate(0.007)
                             .build(),
 
                     MapDropItemEntity.builder()

@@ -2,7 +2,7 @@ package org.mapleLand.maplelanbackserver.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapleLand.maplelanbackserver.dto.MapPopularityDto;
+import org.mapleLand.maplelanbackserver.dto.Map.MapPopularityDto;
 import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.repository.UserMapRegisterRepository;
 import org.mapleLand.maplelanbackserver.table.MapRegistrationEntity;
@@ -22,6 +22,7 @@ public class MapPopularityService {
     private List<MapPopularityDto> cachedPopularMaps = List.of();
 
     private final UserMapRegisterRepository mapRegisterRepository;
+
 
     private static final Map<Region, List<String>> regionPrefixes = Map.of(
             Region.Victoria, List.of("빅토리아 로드:"),

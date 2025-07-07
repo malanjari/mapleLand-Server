@@ -86,6 +86,7 @@ public class DummyDataInitializer {
                         .mapleJariUserEntity(user)
                         .mapName(mapName)
                         .area(region)
+                        .isCompleted(random.nextBoolean())
                         .comment("자동 생성된 더미 코멘트")
                         .serverColor(List.of("Red", "Blue", "Green").get(random.nextInt(3)))
                         .price(1000 + random.nextInt(10000))
