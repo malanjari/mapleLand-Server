@@ -24,6 +24,7 @@ export const useJariRegisterForm = () => {
   const { name } = useParams();
   const user = useUser();
   const [mapData, setMapData] = useState<MapItem | null>(null);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const [form, setForm] = useState<FormState>({
@@ -100,11 +101,19 @@ export const useJariRegisterForm = () => {
         if (matched) {
           setMapData(matched);
           setForm((prev) => ({ ...prev, mapName: matched.mapName }));
+        } else {
+          // 자동완성 리스트는 내려왔지만, 정확히 일치하는 맵이 없는 경우
+          setErrorMessage("존재하지 않는 맵입니다.");
         }
       } catch (e) {
-        console.error("맵 정보 불러오기 실패", e);
+        if (e instanceof Error) {
+          setErrorMessage(e.message);
+        } else {
+          setErrorMessage("맵 정보를 불러오는 중 오류가 발생했습니다.");
+        }
       }
     };
+
     fetchMap();
   }, [name]);
 
@@ -114,5 +123,6 @@ export const useJariRegisterForm = () => {
     mapData,
     formatToWonStyle,
     handleSubmit,
+    errorMessage,
   };
 };

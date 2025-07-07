@@ -13,13 +13,12 @@ export const jariList = async (keyword: string) => {
     );
 
     if (!res.ok) {
-      const text = await res.text();
-      console.error("jariList 응답 오류:", text);
-      throw new Error("자리 리스트 로딩 실패");
+      const { message } = await res.json();
+      throw new Error(message || "자리 리스트 로딩 실패");
     }
 
     const json = await res.json();
-    console.log(json);
+
     return json;
   } catch (err) {
     console.error("jariList 에러:", err);
