@@ -82,7 +82,7 @@ const ProfilePage = () => {
               </Button>
             )}
             <Button
-              variant="register"
+              variant="blue"
               onClick={() =>
                 window.open(
                   `https://discord.com/users/${userInfo.discordId}`,
@@ -91,16 +91,16 @@ const ProfilePage = () => {
               }
               className="w-full  font-semibold"
             >
-              디스코드 프로필 보기 (WEB)
+              디스코드 프로필 (Web)
             </Button>
             <Button
-              variant="register"
+              variant="blue"
               onClick={() => {
                 window.location.href = `discord://discord.com/users/${userInfo.discordId}`;
               }}
               className="w-full text-white font-semibold text-center  "
             >
-              디스코드 앱에서 열기
+              디스코드 프로필 (Pc)
             </Button>
           </div>
         </div>
@@ -108,8 +108,8 @@ const ProfilePage = () => {
       {/* 오른쪽: 자리 거래 */}
       <div className="col-span-6 lg:col-span-4 gap-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-16 lg:mt-0">
-          <TradeSection title="📦 팝니다" color="red" jari={sellList} />
-          <TradeSection title="🔍 삽니다" color="blue" jari={buyList} />
+          <TradeSection title="팝니다" color="red" jari={sellList} />
+          <TradeSection title="삽니다" color="blue" jari={buyList} />
         </div>
         {(completedSellList.length > 0 || completedBuyList.length > 0) && (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-12">
