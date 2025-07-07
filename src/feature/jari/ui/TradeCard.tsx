@@ -63,7 +63,7 @@ const TradeCard = ({ item }: Props) => {
         <div className="flex items-center gap-2">
           <span
             className={`
-    inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-[9px] md:text-[11px] font-medium
+    inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium
     ${
       item.serverColor === "Red"
         ? "bg-red-100 text-red-600"
@@ -93,7 +93,7 @@ const TradeCard = ({ item }: Props) => {
           </span>
 
           <span
-            className="max-w-[60px] md:max-w-[100px]  truncate bg-zinc-800 text-[9px] md:text-[11px] text-gray-300 italic px-2 py-0.5 rounded-sm border border-zinc-600"
+            className="max-w-[100px]  truncate bg-zinc-800 text-xs text-gray-300 italic px-2 py-0.5 rounded-sm border border-zinc-600"
             title={item.comment}
           >
             {item.comment}

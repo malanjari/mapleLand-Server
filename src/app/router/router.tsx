@@ -10,6 +10,7 @@ import JariRegisterPage from "@/page/JariRegister";
 import JariRegisterDetailPage from "@/page/JariRegisterDetail";
 import { RequireAuth } from "../guard/RequireAuth";
 import ProfilePage from "@/page/Profile";
+import WorldDetailPage from "@/page/WorldDetail";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "jari/:name", element: <JariDetail /> },
+      { path: "jari/world/:world", element: <WorldDetailPage /> },
       {
         path: "jari/register",
         element: (
