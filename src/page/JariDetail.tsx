@@ -15,7 +15,7 @@ const JariDetailPage = () => {
   const [mapMeta, setMapMeta] = useState<MapItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [dropItems, setDropItems] = useState<DropItem[]>([]);
-
+  const [errorMessage, setErrorMessage] = useState("");
   useEffect(() => {
     if (!name) return;
 
@@ -33,9 +33,17 @@ const JariDetailPage = () => {
         const matched = metaDataList.find(
           (m) => m.mapName === decodeURIComponent(name)
         );
-        if (matched) setMapMeta(matched);
+        if (matched) {
+          setMapMeta(matched);
+        } else {
+          setErrorMessage("존재하지 않는 맵입니다.");
+        }
       } catch (error) {
-        console.error("데이터 로딩 실패:", error);
+        if (error instanceof Error) {
+          setErrorMessage(error.message);
+        } else {
+          setErrorMessage("데이터를 불러오는 중 오류가 발생했습니다.");
+        }
       } finally {
         setLoading(false);
       }
@@ -48,6 +56,10 @@ const JariDetailPage = () => {
   const sellJari = jari.filter((item) => item.tradeType === "SELL");
 
   console.log("jari", jari);
+  if (loading) {
+    return <p className="text-center text-white pt-20">로딩 중...</p>;
+  }
+  if (errorMessage) return <p className="text-red-500">{errorMessage}</p>;
   return (
     <>
       {loading ? (

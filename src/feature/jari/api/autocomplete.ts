@@ -1,5 +1,6 @@
 // src/shared/api/map/autocomplete.ts
 import { API_BASE_URL } from "@/shared/config/api";
+
 export interface MapItem {
   mapleLandMapListId: number;
   mapName: string;
@@ -9,6 +10,7 @@ export interface MapItem {
   miniMapImageUrl: string;
   miniMapImageLogoUrl: string;
 }
+
 export const fetchAutocomplete = async (
   keyword: string,
   signal?: AbortSignal
@@ -29,7 +31,10 @@ export const fetchAutocomplete = async (
     }
   );
 
-  if (!res.ok) throw new Error("자동완성 요청 실패");
+  if (!res.ok) {
+    const { message } = await res.json();
+    throw new Error(message || "자동완성 요청 실패");
+  }
 
   return res.json();
 };

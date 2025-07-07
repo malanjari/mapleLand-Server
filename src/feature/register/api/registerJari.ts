@@ -27,8 +27,8 @@ export const registerJari = async (
     });
 
     if (!res.ok) {
-      const errorJson = await res.json(); // text() 대신 json()
-      throw errorJson; // Error 객체 대신 JSON 자체 던지기
+      const errorJson = await res.json();
+      throw errorJson;
     }
   } catch (err) {
     console.error("registerJari 요청 중 에러 발생:", err);

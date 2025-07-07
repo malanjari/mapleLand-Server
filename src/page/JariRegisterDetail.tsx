@@ -8,8 +8,15 @@ import { CommentTextarea } from "@/feature/register/ui/CommentTextarea";
 import { SubmitRegisterButton } from "@/feature/register/ui/SubmitRegisterButton";
 import { useJariRegisterForm } from "@/feature/register/hooks/useJariRegisterForm";
 const JariRegisterDetailPage = () => {
-  const { form, setForm, mapData, formatToWonStyle, handleSubmit } =
-    useJariRegisterForm();
+  const {
+    form,
+    setForm,
+    mapData,
+    formatToWonStyle,
+    handleSubmit,
+    errorMessage,
+  } = useJariRegisterForm();
+  if (errorMessage) return <p className="text-red-500">{errorMessage}</p>;
 
   return (
     <div className="flex flex-col  items-center pt-10 h-full gap-5 px-4 pb-20">
