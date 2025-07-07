@@ -38,9 +38,9 @@ const worlds = [
 
 export const WorldSearchGrid = () => {
   return (
-    <div className=" p-4 mb:p-8 rounded-lg bg-neutral-900">
+    <div className=" p-4 mb:p-8 rounded-lg bg-neutral-800">
       <h2 className="text-xl font-bold mb-5">🗺️ 월드별 검색</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
         {worlds.map((world) => (
           <Link
             to={`/jari/world/${world.keyword}`}

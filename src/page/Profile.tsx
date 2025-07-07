@@ -5,7 +5,7 @@ import { Button } from "@/shared/ui/button/Button";
 import TradeSection from "@/feature/jari/ui/TradeSection";
 import { useUserInfo } from "@/entity/user/hooks/useUserInfo";
 import { RegionMap } from "@/feature/worldJari/api/worldJari";
-import back from "@/shared/assets/back.png";
+
 const ProfilePage = () => {
   const { userId } = useParams();
   const navigate = useNavigate();

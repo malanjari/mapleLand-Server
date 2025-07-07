@@ -23,13 +23,13 @@ export const PopularJariGrid = () => {
   const visibleMaps = popularMaps.slice(0, 10);
 
   return (
-    <div className="bg-neutral-900 p-4 mb:p-8 rounded-lg">
+    <div className=" p-4 mb:p-8 rounded-lg bg-neutral-800">
       <h2 className="text-xl font-bold mb-5">🔥 인기 자리</h2>
       {loading ? (
         <p className="text-white text-center">로딩 중...</p>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-5  gap-3 px-1">
-          {visibleMaps.map((spot, idx) => (
+        <div className="flex flex-col gap-5 px-1 lg:grid lg:grid-cols-3">
+          {visibleMaps.slice(0, 3).map((spot, idx) => (
             <JariCard key={spot.mapName} spot={spot} rank={idx + 1} />
           ))}
         </div>

@@ -67,10 +67,10 @@ const JariDetailPage = () => {
       {loading ? (
         <p className="text-white">로딩 중...</p>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-8 gap-4">
           {/* 왼쪽: 자리 정보 */}
-          <div className="col-span-4 lg:col-span-1 lg:sticky top-24 self-start">
-            <div className="flex flex-col border border-neutral-700 bg-neutral-900 p-4 justify-between  rounded-md">
+          <div className="col-span-4 lg:col-span-2 lg:sticky top-24 self-start">
+            <div className="flex flex-col border border-neutral-700 bg-neutral-800 p-4 justify-between  rounded-md">
               {/* header */}
               <h2 className="text-sm font-bold flex flex-col items-center justify-center gap-2 text-white mb-4">
                 {mapMeta?.miniMapImageLogoUrl && (
@@ -104,9 +104,9 @@ const JariDetailPage = () => {
           </div>
 
           {/* 오른쪽: 드랍 아이템 + 거래 목록 */}
-          <div className="col-span-4 flex flex-col gap-6">
+          <div className="col-span-6 flex flex-col gap-6">
             {/* 드랍 아이템 */}
-            <div className="border border-neutral-700 p-4 bg-neutral-900 rounded-md">
+            <div className="border border-neutral-700 p-4 bg-neutral-800 rounded-md">
               <h3 className="text-lg font-bold text-white mb-3">
                 📦 드랍 아이템
               </h3>
