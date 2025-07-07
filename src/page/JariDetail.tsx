@@ -51,7 +51,7 @@ const JariDetailPage = () => {
 
     load();
   }, [name]);
-
+  console.log("자리", jari);
   const buyJari = jari.filter((item) => item.tradeType === "BUY");
   const sellJari = jari.filter((item) => item.tradeType === "SELL");
 
@@ -143,8 +143,8 @@ const JariDetailPage = () => {
 
             {/* 거래 목록 */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-16 lg:mt-0">
-              <TradeSection title="📦 팝니다" color="red" jari={sellJari} />
-              <TradeSection title="🔍 삽니다" color="blue" jari={buyJari} />
+              <TradeSection title="팝니다" color="red" jari={sellJari} />
+              <TradeSection title="삽니다" color="blue" jari={buyJari} />
             </div>
           </div>
         </div>
