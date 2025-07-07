@@ -15,7 +15,7 @@ export interface RegionMap {
   uniqueId: string;
   userId: number;
   userImage: string;
-  userMapId: number;
+  userMapId: string;
   isCompleted: boolean;
 }
 export const getRegionMaps = async (keyword: string): Promise<RegionMap[]> => {

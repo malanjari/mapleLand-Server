@@ -8,12 +8,13 @@ interface Props {
   title: string;
   color: "blue" | "red";
   jari: JariItem[];
+  refetch: () => void;
 }
 
 type SortOption = "time" | "price";
 type SortOrder = "asc" | "desc";
 
-const TradeSection = ({ title, color, jari }: Props) => {
+const TradeSection = ({ title, color, jari, refetch }: Props) => {
   const [sortOption, setSortOption] = useState<SortOption>("time");
   const [sortOrder, setSortOrder] = useState<SortOrder>("desc");
   const [showOnlyActive, setShowOnlyActive] = useState(false);
@@ -61,26 +62,26 @@ const TradeSection = ({ title, color, jari }: Props) => {
           }
         )}
       >
-        <span className="text-2xl font-bold tracking-tight">{title}</span>
+        <span className="text-xl font-bold tracking-tight">{title}</span>
 
         <div className="flex gap-2 text-xs">
           <Button
             variant="ghost"
             onClick={() => setShowOnlyActive((prev) => !prev)}
             className={clsx(
-              "px-3 py-1 text-[11px] rounded-md border font-medium transition duration-150",
+              "px-2 py-1 text-xs rounded-md border font-medium transition duration-150",
               showOnlyActive
                 ? "bg-white text-black shadow"
                 : "text-white border-white hover:bg-white hover:text-black hover:shadow"
             )}
           >
-            {showOnlyActive ? "전체 보기" : "판매중만 보기"}
+            {showOnlyActive ? "전체 보기" : "거래중만 보기"}
           </Button>
           <Button
             variant="ghost"
             onClick={() => toggleSortOption("time")}
             className={clsx(
-              "px-3 py-1 text-[11px] rounded-md border font-medium transition duration-150",
+              "px-2 py-1 text-xs rounded-md border font-medium transition duration-150",
               sortOption === "time"
                 ? "bg-white text-black shadow"
                 : "text-white border-white hover:bg-white hover:text-black hover:shadow"
@@ -93,7 +94,7 @@ const TradeSection = ({ title, color, jari }: Props) => {
             variant="ghost"
             onClick={() => toggleSortOption("price")}
             className={clsx(
-              "px-3 py-1 text-[11px] rounded-md border font-medium transition duration-150",
+              "px-2 py-1 text-xs rounded-md border font-medium transition duration-150",
               sortOption === "price"
                 ? "bg-white text-black shadow"
                 : "text-white border-white hover:bg-white hover:text-black hover:shadow"
@@ -104,7 +105,7 @@ const TradeSection = ({ title, color, jari }: Props) => {
         </div>
       </div>
 
-      <TradeList items={filteredAndSortedItems} />
+      <TradeList items={filteredAndSortedItems} refetch={refetch} />
     </section>
   );
 };
