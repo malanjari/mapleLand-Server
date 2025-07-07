@@ -50,6 +50,20 @@ public class VictoryMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1322003/icon?resize=2")
                         .dropRate(0.008)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("히든스트리트:골렘의 숲")
+                        .itemName("자월")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1041077/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("히든스트리트:골렘의 숲")
+                        .itemName("이블테일러")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1372014/icon?resize=2")
+                        .dropRate(0.005)
+                        .build(),
                 MapDropItemEntity.builder()
                         .mapName("히든스트리트:골렘의 숲")
                         .itemName("엘릭서")

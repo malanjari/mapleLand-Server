@@ -172,6 +172,27 @@ public class LeafreMapInitializer{
                          .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
                          .build());
 
+                 mapleLandMapListRepository.save(MapleLandMapListEntity
+                         .builder().
+                         mapName("미나르숲:마뇽의 숲")
+                         .region(Region.MinarForest)
+                         .monsterImageUrl("https://maplestory.io/api/gms/62/mob/9500174/icon?resize=2")
+                         .subRegion("미나르 숲")
+                         .miniMapImageUrl("https://mapleland-static-files.s3.ap-northeast-2.amazonaws.com/minonForest.png")
+                         .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                         .build());
+
+                 mapleLandMapListRepository.save(MapleLandMapListEntity
+                         .builder().
+                         mapName("미나르숲:그리프의 숲")
+                         .region(Region.MinarForest)
+                         .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8180001/icon?resize=2")
+                         .subRegion("미나르 숲")
+                         .miniMapImageUrl("https://mapleland-static-files.s3.ap-northeast-2.amazonaws.com/grifForest.png")
+                         .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                         .build());
+
+
 
 
              }

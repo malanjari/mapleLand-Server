@@ -190,6 +190,17 @@ public class EllanasMapInitializer{
                     .build());
 
 
+            mapleLandMapListRepository.save(MapleLandMapListEntity
+                    .builder().
+                    mapName("아쿠아로드:피아누스의 동굴")
+                    .region(Region.AquaRoad)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8520000/icon?resize=2")
+                    .miniMapImageUrl("https://mapleland-static-files.s3.ap-northeast-2.amazonaws.com/pianusCave.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/230040400/icon?resize=2")
+                    .subRegion(ElnathRegion.Aquarium.getDisplayName())
+                    .build());
+
+
 
         }
     }

@@ -69,7 +69,7 @@ public class LeafreMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1432010/icon?resize=2")
                         .dropRate(0.007)
                         .build()
-                ));
+        ));
 
         mapDropItemRepository.saveAll(List.of(
                 MapDropItemEntity.builder()
@@ -156,6 +156,21 @@ public class LeafreMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2040516/icon?resize=2")
                         .dropRate(0.001)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("히든스트리트: 레드와이번의 둥지")
+                        .itemName("블루 아데스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1050089/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("히든스트리트: 레드와이번의 둥지")
+                        .itemName("그린 바르슈즈")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1072223/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("히든스트리트: 레드와이번의 둥지")
                         .itemName("메투스")
@@ -169,7 +184,6 @@ public class LeafreMonsterDataInitializer {
                         .dropRate(0.007)
                         .build()
         ));
-
 
 
         mapDropItemRepository.saveAll(List.of(
@@ -200,6 +214,21 @@ public class LeafreMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2044001/icon?resize=2")
                         .dropRate(0.006)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("히든스트리트: 블루와이번의 둥지")
+                        .itemName("그린 아르미스")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1051105/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("히든스트리트: 블루와이번의 둥지")
+                        .itemName("레드 아르나슈즈")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1072227/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("히든스트리트: 블루와이번의 둥지")
                         .itemName("적견랑포")
@@ -297,6 +326,21 @@ public class LeafreMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/2044001/icon?resize=2")
                         .dropRate(0.006)
                         .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲: 용의 숲 입구")
+                        .itemName("프라우테")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1302023/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲: 용의 숲 입구")
+                        .itemName("바키트")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1332027/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("미나르 숲: 용의 숲 입구")
                         .itemName("석궁 공격력 주문서 60%")
@@ -402,6 +446,20 @@ public class LeafreMonsterDataInitializer {
 
                 MapDropItemEntity.builder()
                         .mapName("미나르 숲:검은 켄타우로스의 영역")
+                        .itemName("딸기 귀고리")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1032023/icon?resize=2")
+                        .dropRate(0.009)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲:검은 켄타우로스의 영역")
+                        .itemName("레드 피라테")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1040109/icon?resize=2")
+                        .dropRate(0.009)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲:검은 켄타우로스의 영역")
                         .itemName("다크 엠페러")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1082117/icon?resize=2")
                         .dropRate(0.008)
@@ -430,17 +488,33 @@ public class LeafreMonsterDataInitializer {
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1332051/icon?resize=2")
                         .dropRate(0.0003)
                         .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("미나르 숲:푸른 켄타우로스의 영역")
                         .itemName("페어프로즌")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1432011/icon?resize=2")
                         .dropRate(0.004)
                         .build(),
+
                 MapDropItemEntity.builder()
                         .mapName("미나르 숲:푸른 켄타우로스의 영역")
                         .itemName("월아산")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1442019/icon?resize=2")
                         .dropRate(0.007)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲:푸른 켄타우로스의 영역")
+                        .itemName("파이어 아룬드")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1452013/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲:푸른 켄타우로스의 영역")
+                        .itemName("블러드 엠페러")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082116/icon?resize=2")
+                        .dropRate(0.009)
                         .build(),
 
                 MapDropItemEntity.builder()
@@ -483,6 +557,20 @@ public class LeafreMonsterDataInitializer {
                         .mapName("미나르 숲:붉은 켄타우로스의 영역")
                         .itemName("용천권")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1332023/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲:붉은 켄타우로스의 영역")
+                        .itemName("장팔사모")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1432004/icon?resize=2")
+                        .dropRate(0.009)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲:붉은 켄타우로스의 영역")
+                        .itemName("청운검")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1402004/icon?resize=2")
                         .dropRate(0.008)
                         .build(),
 
@@ -548,7 +636,7 @@ public class LeafreMonsterDataInitializer {
                         .dropRate(0.001)
                         .build()
         ));
- // ----------------------------- 여기임 ------------------------------
+        // ----------------------------- 여기임 ------------------------------
         mapDropItemRepository.saveAll(List.of(
                 MapDropItemEntity.builder()
                         .mapName("미나르숲: 불과 물의 전장")
@@ -582,6 +670,20 @@ public class LeafreMonsterDataInitializer {
                         .itemName("페어프로즌")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1432011/icon?resize=2")
                         .dropRate(0.004)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르숲: 불과 물의 전장")
+                        .itemName("장팔사모")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1432004/icon?resize=2")
+                        .dropRate(0.009)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르숲: 불과 물의 전장")
+                        .itemName("청운검")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1402004/icon?resize=2")
+                        .dropRate(0.008)
                         .build(),
 
                 MapDropItemEntity.builder()
@@ -756,5 +858,115 @@ public class LeafreMonsterDataInitializer {
                         .dropRate(0.005)
                         .build()
         ));
+
+
+        mapDropItemRepository.saveAll(List.of(
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 마뇽의 숲")
+                        .itemName("마뇽의 울음소리")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/4001076/icon?resize=2")
+                        .dropRate(60)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 마뇽의 숲")
+                        .itemName("[마스터리 북]패럴라이즈 20")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2290068/icon?resize=2")
+                        .dropRate(0.8)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 마뇽의 숲")
+                        .itemName("레드 크리븐")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472053/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 마뇽의 숲")
+                        .itemName("블루 마린")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1382035/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 마뇽의 숲")
+                        .itemName("피나카")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1432030/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 마뇽의 숲")
+                        .itemName("화이트 니스록")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1452019/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 마뇽의 숲")
+                        .itemName("화이트 네쉐르")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1462015/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 마뇽의 숲")
+                        .itemName("다이몬의 완드")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1372010/icon?resize=2")
+                        .dropRate(0.01)
+                        .build()
+        ));
+
+        mapDropItemRepository.saveAll(List.of(
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 그리프의 숲")
+                        .itemName("[마스터리북]체인 라이트닝 20")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2290032/icon?resize=2")
+                        .dropRate(2)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 그리프의 숲")
+                        .itemName("[마스터리북]아이스 데몬20")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2290042/icon?resize=2")
+                        .dropRate(1)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 그리프의 숲")
+                        .itemName("[마스터리북]암살 20")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2290042/icon?resize=2")
+                        .dropRate(0.2)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 그리프의 숲")
+                        .itemName("영웅의 별")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/4031344/icon?resize=2")
+                        .dropRate(40)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 그리프의 숲")
+                        .itemName("피나카")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1432030/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 그리프의 숲")
+                        .itemName("화이트 니스록")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1452019/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+
+                MapDropItemEntity.builder()
+                        .mapName("미나르 숲 : 그리프의 숲")
+                        .itemName("화이트 네쉐르")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1462015/icon?resize=2")
+                        .dropRate(0.01)
+                        .build()
+                ));
     }
 }

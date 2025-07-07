@@ -1,11 +1,11 @@
-package org.mapleLand.maplelanbackserver.dto;
+package org.mapleLand.maplelanbackserver.dto.Map;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.enumType.TradeType;
 
 import java.time.LocalDateTime;
-import java.util.List;
-
+@Schema(description = "맵 정보 Dto")
 public record MapDto(
         Integer userMapId,
         String mapName,
@@ -20,8 +20,7 @@ public record MapDto(
         String globalName,
         String userImage,
         int userId,
-        String uniqueId,
-        String socialId,
-        String miniMapImageLogo
+        String discordId,
+        boolean isCompleted
 ) {
 }

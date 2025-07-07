@@ -17,6 +17,9 @@ public class AutoCompleteService {
 
     public List<MapleLandMapListEntity> getSuggestedMapNames(String keyword) {
         String cleanedKeyword = keyword.replaceAll("\\s+", "");
-        return mapleLandMapListRepository.findByMapName(cleanedKeyword);
+        System.out.println("메서드 진입 = " + cleanedKeyword);
+        List<MapleLandMapListEntity> byMapName = mapleLandMapListRepository.findByMapName(cleanedKeyword);
+        byMapName.forEach(e -> System.out.println(e.toString()));
+        return byMapName;
     }
 }

@@ -10,6 +10,7 @@ import org.mapleLand.maplelanbackserver.enumType.victoria.VictoriaLoadRegion;
 @Setter
 @AllArgsConstructor
 @Builder
+@ToString
 public class MapleLandMapListEntity {
 
     @Id

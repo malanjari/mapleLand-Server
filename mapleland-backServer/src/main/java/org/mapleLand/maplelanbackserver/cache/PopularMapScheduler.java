@@ -1,6 +1,7 @@
-package org.mapleLand.maplelanbackserver.service;
+package org.mapleLand.maplelanbackserver.cache;
 
 import lombok.RequiredArgsConstructor;
+import org.mapleLand.maplelanbackserver.service.MapPopularityService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,4 +16,5 @@ public class PopularMapScheduler {
     public void updatePopularMapsHourly() {
         popularityService.refreshPopularMaps();
     }
+
 }

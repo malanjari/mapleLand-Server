@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface MapleLandMapListRepository extends JpaRepository<MapleLandMapListEntity, Integer> {
 
+    //검색용
+
     @Query("SELECT m FROM MapleLandMapListEntity m WHERE REPLACE(m.mapName, ' ', '') LIKE CONCAT('%', REPLACE(:keyword, ' ', ''), '%')")
     List<MapleLandMapListEntity> findByMapName(@Param("keyword") String keyword);
 
