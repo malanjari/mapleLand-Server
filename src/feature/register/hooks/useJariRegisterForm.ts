@@ -55,7 +55,6 @@ export const useJariRegisterForm = () => {
     }
     return parts.join(" ") + "메소";
   };
-
   const handleSubmit = async () => {
     const payload: JariRegisterPayload = {
       ...form,
@@ -65,6 +64,7 @@ export const useJariRegisterForm = () => {
       price: Number(form.price),
       tradeType: form.tradeType!,
     };
+
     try {
       await registerJari(payload);
       toast({
@@ -82,8 +82,18 @@ export const useJariRegisterForm = () => {
       }));
     } catch (err: any) {
       let message = "알 수 없는 오류가 발생했습니다.";
-      if (err?.errors?.comment) message = err.errors.comment;
-      else if (err?.error) message = err.error;
+
+      if (err?.errors) {
+        const firstKey = Object.keys(err.errors)[0];
+        if (firstKey) {
+          message = err.errors[firstKey];
+        }
+      } else if (err?.error) {
+        message = err.error;
+      } else if (err?.message) {
+        message = err.message;
+      }
+
       toast({
         variant: "destructive",
         title: "자리 등록 실패",
