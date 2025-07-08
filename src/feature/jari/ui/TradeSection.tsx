@@ -54,22 +54,26 @@ const TradeSection = ({ title, color, jari, refetch }: Props) => {
     <section className="max-h-[600px] overflow-y-auto pr-1">
       <div
         className={clsx(
-          "text-white text-sm font-semibold px-4 py-6 mb-4 rounded-xl shadow-lg transition",
-          "flex justify-between items-center",
+          "text-white text-sm font-semibold px-4 py-4 mb-4 rounded-xl shadow-lg transition",
+          "flex flex-col gap-3",
           {
             "bg-gradient-to-r from-blue-600 to-blue-500": color === "blue",
             "bg-gradient-to-r from-red-600 to-red-500": color === "red",
           }
         )}
       >
-        <span className="text-xl font-bold tracking-tight">{title}</span>
+        {/* 타이틀 */}
+        <div className="flex justify-between items-center">
+          <span className="text-lg font-bold tracking-tight">{title}</span>
+        </div>
 
-        <div className="flex gap-2 text-xs">
+        {/* 버튼 그룹 */}
+        <div className="flex flex-wrap gap-1 text-xs ">
           <Button
             variant="ghost"
             onClick={() => setShowOnlyActive((prev) => !prev)}
             className={clsx(
-              "px-2 py-1 text-xs rounded-md border font-medium transition duration-150",
+              "px-2 py-[2px] h-6 text-[11px] rounded border font-medium",
               showOnlyActive
                 ? "bg-white text-black shadow"
                 : "text-white border-white hover:bg-white hover:text-black hover:shadow"
@@ -77,11 +81,12 @@ const TradeSection = ({ title, color, jari, refetch }: Props) => {
           >
             {showOnlyActive ? "전체 보기" : "거래중만 보기"}
           </Button>
+
           <Button
             variant="ghost"
             onClick={() => toggleSortOption("time")}
             className={clsx(
-              "px-2 py-1 text-xs rounded-md border font-medium transition duration-150",
+              "px-2 py-[2px] h-6 text-[11px] rounded border font-medium",
               sortOption === "time"
                 ? "bg-white text-black shadow"
                 : "text-white border-white hover:bg-white hover:text-black hover:shadow"
@@ -94,7 +99,7 @@ const TradeSection = ({ title, color, jari, refetch }: Props) => {
             variant="ghost"
             onClick={() => toggleSortOption("price")}
             className={clsx(
-              "px-2 py-1 text-xs rounded-md border font-medium transition duration-150",
+              "px-2 py-[2px] h-6 text-[11px] rounded border font-medium",
               sortOption === "price"
                 ? "bg-white text-black shadow"
                 : "text-white border-white hover:bg-white hover:text-black hover:shadow"

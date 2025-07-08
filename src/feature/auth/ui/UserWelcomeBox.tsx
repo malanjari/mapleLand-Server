@@ -6,7 +6,7 @@ export const UserWelcomeBox = () => {
   const user = useUser();
 
   return user ? (
-    <div className="p-4 mb:p-8 rounded-lg bg-neutral-800 shadow text-sm text-white flex items-center gap-3">
+    <div className="p-4 mb:p-8 rounded-lg bg-neutral-700 shadow text-sm text-white flex items-center gap-3">
       <img
         src={
           user.user.avatar
