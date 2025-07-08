@@ -23,7 +23,7 @@ export const PopularJariGrid = () => {
   const visibleMaps = popularMaps.slice(0, 10);
 
   return (
-    <div className=" p-4 mb:p-8 rounded-lg bg-neutral-800">
+    <div className=" p-4 mb:p-8 rounded-lg bg-neutral-700">
       <h2 className="text-xl font-bold mb-5">🔥 인기 자리</h2>
       {loading ? (
         <p className="text-white text-center">로딩 중...</p>
