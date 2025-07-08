@@ -25,7 +25,7 @@ const JariRegisterDetailPage = () => {
 
       {/* 거래 폼 */}
 
-      <div className="w-full ">
+      <div className="w-full max-w-[600px] rounded-lg bg-neutral-800 flex flex-col justify-center items-center ">
         {mapData && (
           <MapPreview
             mapName={mapData.mapName}
@@ -34,7 +34,7 @@ const JariRegisterDetailPage = () => {
           />
         )}
 
-        <div className="p-8 rounded-lg bg-neutral-800">
+        <div className="p-8 w-full max-w-[500px]  flex flex-col  rounded-lg bg-neutral-800">
           <ServerColorSelector
             serverColor={form.serverColor}
             onChange={(color) =>
