@@ -52,7 +52,7 @@ export const JariCard = ({ spot, rank }: JariCardProps) => {
       <Card
         className={`${getCardBg(
           rank
-        )} flex flex-row items-center gap-2  transition shadow-md hover:shadow-lg hover:scale-[1.02] duration-200 cursor-pointer p-2 lg:p-4`}
+        )} flex flex-col items-center gap-2  transition shadow-md hover:shadow-lg hover:scale-[1.02] duration-200 cursor-pointer p-2 lg:p-4`}
       >
         {/* 랭킹 뱃지 */}
         <div
