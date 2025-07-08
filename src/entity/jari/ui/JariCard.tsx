@@ -38,7 +38,7 @@ const getCardBg = (rank: number) => {
     case 3:
       return "bg-orange-100 hover:bg-orange-200 text-black";
     default:
-      return "bg-zinc-600 hover:bg-zinc-500 text-white";
+      return "bg-zinc-700 hover:bg-zinc-600 text-white";
   }
 };
 
@@ -52,11 +52,11 @@ export const JariCard = ({ spot, rank }: JariCardProps) => {
       <Card
         className={`${getCardBg(
           rank
-        )} flex flex-row items-center gap-2 lg:gap-4 transition shadow-md hover:shadow-lg hover:scale-[1.02] duration-200 cursor-pointer p-2 lg:p-4`}
+        )} flex flex-row items-center gap-2  transition shadow-md hover:shadow-lg hover:scale-[1.02] duration-200 cursor-pointer p-2 lg:p-4`}
       >
         {/* 랭킹 뱃지 */}
         <div
-          className={`relative flex items-center justify-center w-10 h-10 rounded-full font-bold text-sm ${getRankStyle(
+          className={`relative flex items-center justify-center w-8 h-8 rounded-full font-bold text-sm ${getRankStyle(
             rank
           )}`}
         >
@@ -77,16 +77,16 @@ export const JariCard = ({ spot, rank }: JariCardProps) => {
         <img
           src={spot.monsterImageUrl}
           alt={spot.mapName}
-          className="w-12 h-12 lg:w-20 lg:h-20 object-contain rounded-md"
+          className="w-12 h-12  object-contain rounded-md"
         />
 
         {/* 텍스트 정보 */}
         <div className="flex flex-col">
-          <CardTitle className="text-lg font-semibold truncate">
+          <CardTitle className="text-base  font-semibold truncate">
             {shortMapName}
           </CardTitle>
           <p className="text-sm text-gray-500 mt-1">
-            거래 횟수:{" "}
+            매물 수 :{" "}
             <span className="font-medium">
               {spot.registerCount.toLocaleString()}
             </span>
