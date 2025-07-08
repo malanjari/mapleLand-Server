@@ -1,5 +1,10 @@
 // src/entities/jari/ui/JariCard.tsx
-import { Card, CardTitle } from "@/shared/ui/card/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/shared/ui/card/card";
 import { Link } from "react-router-dom";
 
 interface JariCardProps {
@@ -47,7 +52,7 @@ export const JariCard = ({ spot, rank }: JariCardProps) => {
       <Card
         className={`${getCardBg(
           rank
-        )} flex flex-col items-center transition shadow-md hover:shadow-lg hover:scale-[1.02] duration-200 cursor-pointer aspect-[10/5] p-4`}
+        )} flex flex-row items-center gap-2 lg:gap-4 transition shadow-md hover:shadow-lg hover:scale-[1.02] duration-200 cursor-pointer p-2 lg:p-4`}
       >
         {/* 랭킹 뱃지 */}
         <div
@@ -72,11 +77,11 @@ export const JariCard = ({ spot, rank }: JariCardProps) => {
         <img
           src={spot.monsterImageUrl}
           alt={spot.mapName}
-          className="w-24 h-24 object-contain rounded-md mt-2 "
+          className="w-12 h-12 lg:w-20 lg:h-20 object-contain rounded-md"
         />
 
         {/* 텍스트 정보 */}
-        <div className="text-center mt-3">
+        <div className="flex flex-col">
           <CardTitle className="text-lg font-semibold truncate">
             {shortMapName}
           </CardTitle>

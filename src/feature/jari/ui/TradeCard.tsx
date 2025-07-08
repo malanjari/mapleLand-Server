@@ -29,7 +29,6 @@ const TradeCard = ({ item, refetch }: Props) => {
   const [editNegotiationOption, setEditNegotiationOption] = useState(
     item.negotiationOption
   ); // boolean
-  console.log("아이템", item);
 
   // 자리수정함수
   const handleUpdate = async () => {
