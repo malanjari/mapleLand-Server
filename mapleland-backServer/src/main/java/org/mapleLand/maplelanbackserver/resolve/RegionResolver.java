@@ -1,5 +1,6 @@
 package org.mapleLand.maplelanbackserver.resolve;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mapleLand.maplelanbackserver.controller.errorController.MapNameMismatchException;
 import org.mapleLand.maplelanbackserver.enumType.aquarium.Aquarium;
 import org.mapleLand.maplelanbackserver.enumType.elnath.Elnath;
@@ -7,22 +8,25 @@ import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.enumType.leafre.Leafre;
 import org.mapleLand.maplelanbackserver.enumType.ludibrium.Ludibrium;
 import org.mapleLand.maplelanbackserver.enumType.victoria.VictoriaLoad;
+import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
+@Slf4j
 public class RegionResolver {
 
     public static Region getRegionEnumByMapName(String inputMapName) {
 
         String normalized = normalize(inputMapName);
-
+        log.info("지역이름 = {}", inputMapName);
+        log.info("자른 후  = {}", normalized);
         // 순서 중요: 더 구체적인 Enum부터 검사
         if (belongsToLeafre(normalized)) {
 
             return Region.MinarForest;
 
         } else if (belongsToEllanas(normalized)) {
-
+            log.info("여기 들어감???   = {}", normalized);
             return Region.Elnath;
 
         } else if (belongsToLudibrium(normalized)) {

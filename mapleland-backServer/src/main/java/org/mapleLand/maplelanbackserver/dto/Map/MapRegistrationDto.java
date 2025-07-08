@@ -1,9 +1,7 @@
-package org.mapleLand.maplelanbackserver.dto;
+package org.mapleLand.maplelanbackserver.dto.Map;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.enumType.TradeType;
-import org.springframework.web.multipart.MultipartFile;
 
 @Getter
     @Setter

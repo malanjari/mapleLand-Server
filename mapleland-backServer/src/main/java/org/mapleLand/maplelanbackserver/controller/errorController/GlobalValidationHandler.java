@@ -46,7 +46,6 @@ public class GlobalValidationHandler {
         log.error("HttpMessageNotReadableException 발생", ex);
         log.error("cause type = {}", cause != null ? cause.getClass().getName() : "null");
 
-        // 1. 숫자 범위 초과 (ex: int 오버플로우) InputCoercionException 은 InvalidFormatException의 내부 cause로 발생
         if (cause instanceof JsonMappingException jme) {
             Throwable rootCause = jme.getCause();
             if (rootCause instanceof InputCoercionException) {

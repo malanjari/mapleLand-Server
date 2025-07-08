@@ -60,4 +60,18 @@ public interface UserMapRegisterRepository extends JpaRepository<MapRegistration
     ORDER BY m.createTime DESC
 """)
     List<MapRegistrationEntity> findByMapleJariUserEntity_UserId(@Param("userId") Integer userId);
+
+    @Query("""
+    SELECT m FROM MapRegistrationEntity m
+    WHERE REPLACE(m.mapName, ' ', '') = REPLACE(:mapName, ' ', '')
+    AND m.isCompleted = true
+    AND m.createTime BETWEEN :start AND :end
+""")
+    List<MapRegistrationEntity> findCompletedByMapNameIgnoreSpaceAndDate(
+            @Param("mapName") String mapName,
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end
+    );
+    @Query("SELECT m FROM MapRegistrationEntity m WHERE m.userMapId = :userMapId")
+    MapRegistrationEntity findByUserMapId(@Param("userMapId") int mapId);
 }

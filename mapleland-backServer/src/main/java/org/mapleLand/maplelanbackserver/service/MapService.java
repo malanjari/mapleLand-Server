@@ -3,12 +3,15 @@ package org.mapleLand.maplelanbackserver.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapleLand.maplelanbackserver.controller.errorController.NotFoundUserException;
-import org.mapleLand.maplelanbackserver.dto.DropItemDto;
-import org.mapleLand.maplelanbackserver.dto.MapDto;
-import org.mapleLand.maplelanbackserver.dto.MapPopularityDto;
-import org.mapleLand.maplelanbackserver.dto.MapRegistrationDto;
+import org.mapleLand.maplelanbackserver.dto.*;
 import org.mapleLand.maplelanbackserver.controller.errorController.NotFoundMapTicketException;
 
+import org.mapleLand.maplelanbackserver.dto.Map.MapDto;
+import org.mapleLand.maplelanbackserver.dto.Map.MapRegistrationDto;
+import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
+import org.mapleLand.maplelanbackserver.dto.update.MapUpdateDto;
+import org.mapleLand.maplelanbackserver.dto.update.MapUpdatePriceDto;
+import org.mapleLand.maplelanbackserver.dto.update.MapUpdateServerColorDto;
 import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.repository.MapDropItemRepository;
 import org.mapleLand.maplelanbackserver.repository.MapleJariUserRepository;
@@ -20,10 +23,14 @@ import org.mapleLand.maplelanbackserver.table.MapRegistrationEntity;
 import org.mapleLand.maplelanbackserver.table.MapleJariUserEntity;
 import org.mapleLand.maplelanbackserver.table.MapleLandMapListEntity;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -48,7 +55,7 @@ public class MapService {
 
         // 지역 정보 추출
         Region region = RegionResolver.getRegionEnumByMapName(dto.getMapName());
-        log.info("지역이름 = {}", region);
+
 
         // 매칭 맵 정보 추출
         MapleLandMapListEntity mapInfo = getFirstMatchedMap(dto.getMapName());
@@ -102,7 +109,8 @@ public class MapService {
                             user.getUserId(),
                             user.getDiscordId(),
                             user.getUserName(),
-                            mapleLandMapListEntity.getMiniMapImageLogoUrl()
+                            mapleLandMapListEntity.getMiniMapImageLogoUrl(),
+                            e.getIsCompleted()
                     );
                 })
                 .toList();
@@ -122,9 +130,9 @@ public class MapService {
         List<MapDropItemEntity> byMapName = mapDropItemRepository.findByMapName(keyword);
 
         return byMapName.stream().map(
-                p-> new DropItemDto(p.getMapName(),
-                        p.getItemName(),
-                        p.getItemImageUrl(),p.getDropRate()))
+                        p-> new DropItemDto(p.getMapName(),
+                                p.getItemName(),
+                                p.getItemImageUrl(),p.getDropRate()))
                 .toList();
     }
 
@@ -156,9 +164,103 @@ public class MapService {
                             user.getUserId(),
                             user.getDiscordId(),
                             user.getUserName(),
-                            mapEntity.getMiniMapImageLogoUrl()
+                            mapEntity.getMiniMapImageLogoUrl(),
+                            e.getIsCompleted()
                     );
                 })
                 .toList();
+    }
+
+    public List<PriceStatDto> iqrPriceAvg(String keyword) {
+        System.out.println("✅ iqrPriceAvg 진입: " + keyword);
+
+        LocalDateTime today = LocalDate.now().atStartOfDay().plusDays(1);
+        LocalDateTime sevenDaysAgo = today.minusDays(7);
+
+        // 1. 최근 7일간 isCompleted = true + mapName 일치하는 거래 조회
+        List<MapRegistrationEntity> completed =
+                userMapRegisterRepository.findCompletedByMapNameIgnoreSpaceAndDate(
+                        keyword, sevenDaysAgo, today
+                );
+        System.out.println("✅ iqrPriceAvg 진입: " + completed.stream().map(MapRegistrationEntity::getMapName));
+
+        // 2. 날짜(LocalDate) 기준으로 묶기
+        Map<LocalDate, List<Integer>> groupedByDate = completed.stream()
+                .collect(Collectors.groupingBy(
+                        e -> e.getCreateTime().toLocalDate(), // 날짜 단위로 그룹핑
+                        Collectors.mapping(MapRegistrationEntity::getPrice, Collectors.toList())
+                ));
+
+        // 3. 각 날짜별 IQR 평균 계산
+        return groupedByDate.entrySet().stream()
+                .map(entry -> {
+                    LocalDate date = entry.getKey();
+                    List<Integer> prices = entry.getValue();
+                    double iqrAvg = calculateIqrAverage(prices);
+
+                    return new PriceStatDto(
+                            keyword,
+                            (int) iqrAvg,
+                            date.atStartOfDay() // LocalDateTime으로 변환
+                    );
+                })
+                .sorted(Comparator.comparing(PriceStatDto::dateTime)) // 날짜순 정렬
+                .toList();
+    }
+
+    private double calculateIqrAverage(List<Integer> prices) {
+        if (prices.size() < 4) return prices.stream().mapToInt(i -> i).average().orElse(0);
+
+        List<Integer> sorted = prices.stream().sorted().toList();
+        int q1Index = sorted.size() / 4;
+        int q3Index = sorted.size() * 3 / 4;
+        double q1 = sorted.get(q1Index);
+        double q3 = sorted.get(q3Index);
+        double iqr = q3 - q1;
+
+        double lower = q1 - 1.5 * iqr;
+        double upper = q3 + 1.5 * iqr;
+
+        List<Integer> filtered = sorted.stream()
+                .filter(p -> p >= lower && p <= upper)
+                .toList();
+
+        return filtered.stream().mapToInt(i -> i).average().orElse(0);
+    }
+
+    public void mapUpdateAll(MapUpdateDto mapUpdateDto){
+        log.info("mapUpdateDto.mapId() = {}", mapUpdateDto.mapId());
+        MapRegistrationEntity byUserMapId = registerRepository.findByUserMapId(mapUpdateDto.mapId());
+        if (byUserMapId == null) {
+            log.error("❌ 해당 mapId로 MapRegistrationEntity 를 찾을 수 없습니다: {}", mapUpdateDto.mapId());
+            throw new RuntimeException("존재하지 않는 mapId입니다: " + mapUpdateDto.mapId());
+        }
+
+        byUserMapId.setServerColor(mapUpdateDto.serverColor());
+        byUserMapId.setPrice(mapUpdateDto.price());
+        byUserMapId.setNegotiationOption(mapUpdateDto.negotiationOption());
+        byUserMapId.setComment(mapUpdateDto.comment());
+
+        registerRepository.save(byUserMapId);
+
+    }
+
+
+    public void mapUpdatePrice(MapUpdatePriceDto priceDto) {
+        MapRegistrationEntity byUserId = registerRepository.findByUserMapId(priceDto.mapId());
+        byUserId.setPrice(priceDto.price());
+        registerRepository.save(byUserId);
+
+    }
+
+    public void mapUpdateServerColor(MapUpdateServerColorDto dto) {
+        MapRegistrationEntity byUserId = registerRepository.findByUserMapId(dto.mapId());
+        byUserId.setServerColor(dto.color());
+        registerRepository.save(byUserId);
+    }
+
+    public void mapDelete(int mapId) {
+        MapRegistrationEntity byUserId = registerRepository.findByUserMapId(mapId);
+        registerRepository.delete(byUserId);
     }
 }
