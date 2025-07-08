@@ -127,7 +127,7 @@ const JariDetailPage = () => {
                 {/* 버튼 */}
                 <Link to={`/jari/register/${name}`} className="w-full">
                   <Button
-                    variant="default"
+                    variant="register"
                     className="mt-4 text-white px-4 py-2 rounded-md font-semibold transition w-full"
                   >
                     + 자리 등록하기
@@ -142,7 +142,7 @@ const JariDetailPage = () => {
               {/* 드랍 아이템 */}
               <div className="border border-neutral-700 p-4 bg-neutral-800 rounded-md">
                 <h3 className="text-lg font-bold text-white mb-3">
-                  📦 드랍 아이템
+                  드랍 아이템
                 </h3>
 
                 {dropItems.length > 0 ? (
@@ -158,8 +158,8 @@ const JariDetailPage = () => {
                           className="w-12 h-12 object-contain rounded bg-neutral-700"
                         />
                         <CardContent className="p-0 text-sm text-neutral-300">
-                          <p className="font-medium">{item.itemName}</p>
-                          <p className="text-xs text-neutral-400 mt-1">
+                          <p className="font-bold">{item.itemName}</p>
+                          <p className="text-xs text-neutral-300 mt-1">
                             드랍률: {item.dropRate}%
                           </p>
                         </CardContent>
