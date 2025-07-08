@@ -102,7 +102,7 @@ const JariDetailPage = () => {
         <>
           <div className="grid grid-cols-1 lg:grid-cols-8 gap-4">
             {/* 왼쪽: 자리 정보 */}
-            <div className="flex flex-col col-span-4 gap-4 mb-10 lg:mb-0 lg:col-span-2 lg:sticky top-24 self-start ">
+            <div className="flex flex-col col-span-8 gap-4 mb-10 lg:mb-0 lg:col-span-2 lg:sticky top-24 self-start ">
               <div className="flex flex-col border border-neutral-700 bg-neutral-800 p-4 justify-between  rounded-md">
                 {/* header */}
                 <h2 className="text-sm font-bold flex flex-col items-center justify-center gap-2 text-white mb-4">
@@ -138,7 +138,7 @@ const JariDetailPage = () => {
             </div>
 
             {/* 오른쪽: 드랍 아이템 + 거래 목록 */}
-            <div className="col-span-6 flex flex-col gap-6">
+            <div className=" col-span-8 lg:col-span-6 flex flex-col gap-6">
               {/* 드랍 아이템 */}
               <div className="border border-neutral-700 p-4 bg-neutral-800 rounded-md">
                 <h3 className="text-lg font-bold text-white mb-3">
