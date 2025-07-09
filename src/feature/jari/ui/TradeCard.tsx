@@ -8,8 +8,8 @@ import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { postEdit } from "../api/jariEdit";
-import { jariDelete } from "../api/jariDelete";
+import { jariEdit } from "../../trade/api/jariEdit";
+import { jariDelete } from "../../trade/api/jariDelete";
 interface Props {
   item: JariItem;
   refetch: () => void;
@@ -33,7 +33,7 @@ const TradeCard = ({ item, refetch }: Props) => {
   // 자리수정함수
   const handleUpdate = async () => {
     try {
-      await postEdit({
+      await jariEdit({
         mapId: item.userMapId,
         price: Number(editPrice),
         serverColor: editServerColor,
@@ -162,7 +162,6 @@ const TradeCard = ({ item, refetch }: Props) => {
                 <Popover.Content
                   side="bottom"
                   align="start"
-                  avoidCollisions={false}
                   className="w-[200px]  z-50 bg-zinc-800 border border-zinc-700 rounded-md text-xs text-gray-300 p-3 flex flex-col gap-2 shadow-lg"
                   sideOffset={4}
                 >

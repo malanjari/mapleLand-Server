@@ -1,7 +1,7 @@
-import { WorldSearchGrid } from "@/widgets/worldSearch/WorldSearchGrid";
+import { WorldSearchGrid } from "@/feature/worldJari/ui/WorldSearchGrid";
 import { UserWelcomeBox } from "@/feature/auth/ui/UserWelcomeBox";
 import { DiscordBanner } from "@/feature/auth/ui/DiscordBanner";
-import { PopularJariGrid } from "@/widgets/popularJari/PopularJariGrid";
+import { PopularJariGrid } from "@/feature/popularJari/ui/PopularJariGrid";
 
 const HomePage = () => {
   return (

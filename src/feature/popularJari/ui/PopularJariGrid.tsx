@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { fetchPopularMaps, PopularMap } from "@/feature/jari/api/popularJari";
+import {
+  fetchPopularMaps,
+  PopularMap,
+} from "@/feature/popularJari/api/popularJari";
 import { JariCard } from "@/entity/jari/ui/JariCard";
 
 export const PopularJariGrid = () => {

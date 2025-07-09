@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Button } from "../../../shared/ui/button/Button";
+import { Button } from "../../button/Button";
 import { useAuthActions, useUser } from "@/entity/user/hooks/useUser";
 
 export const HeaderDropdownMenu = ({

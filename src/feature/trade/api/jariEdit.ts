@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "@/shared/config/api";
 
-interface PostEditPayload {
+interface jariEditPayload {
   mapId: string;
   price?: number;
   serverColor?: "Red" | "Yellow" | "Green";
@@ -8,7 +8,7 @@ interface PostEditPayload {
   negotiationOption?: boolean;
 }
 
-export async function postEdit(payload: PostEditPayload) {
+export async function jariEdit(payload: jariEditPayload) {
   try {
     const res = await fetch(`${API_BASE_URL}/api/maps/update/filed`, {
       method: "POST",

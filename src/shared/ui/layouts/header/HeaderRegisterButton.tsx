@@ -1,4 +1,4 @@
-import { Button } from "../../../shared/ui/button/Button";
+import { Button } from "../../button/Button";
 import mesoIcon from "@/shared/assets/icon/mesoIcon.png";
 import { useNavigate } from "react-router-dom";
 

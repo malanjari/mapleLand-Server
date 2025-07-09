@@ -23,9 +23,9 @@ interface FormState {
 export const useJariRegisterForm = () => {
   const { name } = useParams();
   const user = useUser();
+  const navigate = useNavigate();
   const [mapData, setMapData] = useState<MapItem | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate();
 
   const [form, setForm] = useState<FormState>({
     tradeType: null,
@@ -35,6 +35,31 @@ export const useJariRegisterForm = () => {
     comment: "",
     negotiationOption: false,
   });
+
+  useEffect(() => {
+    const fetchMap = async () => {
+      if (!name) return;
+      try {
+        const res = await fetchAutocomplete(name);
+        const matched = res.find((m) => m.mapName === decodeURIComponent(name));
+
+        if (matched) {
+          setMapData(matched);
+          setForm((prev) => ({ ...prev, mapName: matched.mapName }));
+        } else {
+          setErrorMessage("존재하지 않는 맵입니다.");
+        }
+      } catch (e) {
+        if (e instanceof Error) {
+          setErrorMessage(e.message);
+        } else {
+          setErrorMessage("맵 정보를 불러오는 중 오류가 발생했습니다.");
+        }
+      }
+    };
+
+    fetchMap();
+  }, [name]);
 
   const formatToWonStyle = (value: number | string): string => {
     let num = Number(value);
@@ -55,6 +80,7 @@ export const useJariRegisterForm = () => {
     }
     return parts.join(" ") + "메소";
   };
+
   const handleSubmit = async () => {
     const payload: JariRegisterPayload = {
       ...form,
@@ -80,18 +106,26 @@ export const useJariRegisterForm = () => {
         comment: "",
         negotiationOption: false,
       }));
-    } catch (err: any) {
+    } catch (err: unknown) {
       let message = "알 수 없는 오류가 발생했습니다.";
 
-      if (err?.errors) {
-        const firstKey = Object.keys(err.errors)[0];
-        if (firstKey) {
-          message = err.errors[firstKey];
+      if (typeof err === "object" && err !== null) {
+        const e = err as {
+          errors?: Record<string, string>;
+          error?: string;
+          message?: string;
+        };
+
+        if (e.errors) {
+          const firstKey = Object.keys(e.errors)[0];
+          if (firstKey) {
+            message = e.errors[firstKey];
+          }
+        } else if (e.error) {
+          message = e.error;
+        } else if (e.message) {
+          message = e.message;
         }
-      } else if (err?.error) {
-        message = err.error;
-      } else if (err?.message) {
-        message = err.message;
       }
 
       toast({
@@ -101,32 +135,6 @@ export const useJariRegisterForm = () => {
       });
     }
   };
-
-  useEffect(() => {
-    const fetchMap = async () => {
-      if (!name) return;
-      try {
-        const res = await fetchAutocomplete(name);
-        const matched = res.find((m) => m.mapName === decodeURIComponent(name));
-
-        if (matched) {
-          setMapData(matched);
-          setForm((prev) => ({ ...prev, mapName: matched.mapName }));
-        } else {
-          // 자동완성 리스트는 내려왔지만, 정확히 일치하는 맵이 없는 경우
-          setErrorMessage("존재하지 않는 맵입니다.");
-        }
-      } catch (e) {
-        if (e instanceof Error) {
-          setErrorMessage(e.message);
-        } else {
-          setErrorMessage("맵 정보를 불러오는 중 오류가 발생했습니다.");
-        }
-      }
-    };
-
-    fetchMap();
-  }, [name]);
 
   return {
     form,

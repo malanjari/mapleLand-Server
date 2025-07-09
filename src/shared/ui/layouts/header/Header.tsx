@@ -4,8 +4,8 @@ import {
   HeaderLogo,
   HeaderProfileButton,
   HeaderTradeButton,
-} from "./ui/index";
-import { useProfileMenu } from "../hook/useProfileMenu";
+} from "./index";
+import { useProfileMenu } from "@/feature/auth/ui/hooks/useProfileMenu";
 import { useLocation } from "react-router-dom";
 import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
 import { useNavigate } from "react-router-dom";

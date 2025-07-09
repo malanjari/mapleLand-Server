@@ -1,10 +1,5 @@
 // src/entities/jari/ui/JariCard.tsx
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/shared/ui/card/card";
+import { Card, CardTitle } from "@/shared/ui/card/card";
 import { Link } from "react-router-dom";
 
 interface JariCardProps {
@@ -38,7 +33,7 @@ const getCardBg = (rank: number) => {
     case 3:
       return "bg-orange-100 hover:bg-orange-200 text-black";
     default:
-      return "bg-zinc-700 hover:bg-zinc-600 text-white";
+      return "bg-neutral-600 hover:bg-neutral-500 text-white";
   }
 };
 
@@ -77,17 +72,17 @@ export const JariCard = ({ spot, rank }: JariCardProps) => {
         <img
           src={spot.monsterImageUrl}
           alt={spot.mapName}
-          className="w-12 h-12  object-contain rounded-md"
+          className="w-16 h-16  object-contain rounded-md"
         />
 
         {/* 텍스트 정보 */}
-        <div className="flex flex-col">
-          <CardTitle className="text-base  font-semibold truncate">
+        <div className="flex flex-col ">
+          <CardTitle className="text-lg  font-semibold truncate">
             {shortMapName}
           </CardTitle>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm  text-gray-400 mt-1 text-center">
             매물 수 :{" "}
-            <span className="font-medium">
+            <span className="font-medium ">
               {spot.registerCount.toLocaleString()}
             </span>
           </p>

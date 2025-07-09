@@ -1,4 +1,3 @@
-// src/features/auth/ui/UserWelcomeBox.tsx
 import { useUser } from "@/entity/user/hooks/useUser";
 import { handleDiscordLogin } from "@/shared/utils/auth/discord";
 
