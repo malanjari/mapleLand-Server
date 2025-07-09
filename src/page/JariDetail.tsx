@@ -10,7 +10,7 @@ import { Card, CardContent } from "@/shared/ui/card/card";
 import { useJariList } from "@/feature/jari/hooks/useJariList";
 import { getPriceStat, DailyPriceStat } from "@/entity/price/api/priceStat";
 import { PriceChart } from "@/entity/price/ui/priceChart";
-import { API_BASE_URL } from "@/shared/config/api";
+
 const JariDetailPage = () => {
   const { name } = useParams();
 
@@ -18,38 +18,31 @@ const JariDetailPage = () => {
   const [loading, setLoading] = useState(true);
   const [dropItems, setDropItems] = useState<DropItem[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [priceStats, setPriceStats] = useState<DailyPriceStat[]>([
-    { dateTime: "2025-07-01T00:00:00", price: 6120 },
-    { dateTime: "2025-07-02T00:00:00", price: 6210 },
-    { dateTime: "2025-07-03T00:00:00", price: 6340 },
-    { dateTime: "2025-07-04T00:00:00", price: 6400 },
-    { dateTime: "2025-07-05T00:00:00", price: 6280 },
-    { dateTime: "2025-07-06T00:00:00", price: 6350 },
-    { dateTime: "2025-07-07T00:00:00", price: 6510 },
-  ]);
+  const [priceStats, setPriceStats] = useState<DailyPriceStat[]>([]);
   const [priceLoading, setPriceLoading] = useState(true);
   const [priceError, setPriceError] = useState("");
 
   const { data: jari, refetch } = useJariList(name || "");
-  // useEffect(() => {
-  //   if (!name) return;
+  useEffect(() => {
+    if (!name) return;
 
-  //   const loadPriceStats = async () => {
-  //     try {
-  //       setPriceLoading(true);
-  //       const stat = await getPriceStat(name);
-  //       console.log("스탯", stat);
-  //       setPriceStats(stat);
-  //     } catch (error) {
-  //       console.error("가격 통계 에러:", error);
-  //       setPriceError("가격 통계를 불러오는 데 실패했습니다.");
-  //     } finally {
-  //       setPriceLoading(false);
-  //     }
-  //   };
+    const loadPriceStats = async () => {
+      try {
+        setPriceLoading(true);
+        const stat = await getPriceStat(name);
+        console.log("스탯", stat);
+        setPriceStats(stat);
+      } catch (error) {
+        console.error("가격 통계 에러:", error);
+        setPriceError("가격 통계를 불러오는 데 실패했습니다.");
+      } finally {
+        setPriceLoading(false);
+      }
+    };
 
-  //   loadPriceStats();
-  // }, [name]);
+    loadPriceStats();
+  }, [name]);
+
   useEffect(() => {
     if (!name) return;
 

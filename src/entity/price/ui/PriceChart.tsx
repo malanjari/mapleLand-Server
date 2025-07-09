@@ -9,7 +9,7 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import { DailyPriceStat } from "../api/priceStat";
-
+import { TooltipItem } from "chart.js";
 ChartJS.register(
   LineElement,
   CategoryScale,
@@ -56,7 +56,8 @@ export const PriceChart = ({ data }: Props) => {
       },
       tooltip: {
         callbacks: {
-          label: (context) => `${context.parsed.y.toLocaleString()}`,
+          label: (context: TooltipItem<"line">) =>
+            `${context.parsed.y.toLocaleString()}`,
         },
       },
     },

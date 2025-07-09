@@ -4,7 +4,6 @@ import { useUser } from "@/entity/user/hooks/useUser";
 import { Button } from "@/shared/ui/button/Button";
 import TradeSection from "@/feature/jari/ui/TradeSection";
 import { useUserInfo } from "@/entity/user/hooks/useUserInfo";
-import { RegionMap } from "@/feature/worldJari/api/worldJari";
 
 const ProfilePage = () => {
   const { userId } = useParams();
@@ -17,10 +16,7 @@ const ProfilePage = () => {
   if (error || !user)
     return <p className="text-red-500">유저 정보를 불러오지 못했습니다.</p>;
 
-  const {
-    userInfo,
-    mapRegistrations,
-  }: { userInfo: any; mapRegistrations: RegionMap[] } = user;
+  const { userInfo, mapRegistrations } = user;
 
   const avatarUrl = userInfo.image
     ? `https://cdn.discordapp.com/avatars/${userInfo.discordId}/${userInfo.image}.png`
