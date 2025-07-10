@@ -1,0 +1,92 @@
+name: Deploy Spring Boot + React to EC2 (Blue-Green)
+
+on:
+  push:
+    branches:
+      - deploy
+
+jobs:
+  deploy:
+    name: Build and Deploy (Blue-Green)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v3
+
+      # CI 단계: GitHub Actions Runner에서 빌드 수행 (서버 부하 감소)
+      - name: ☕ Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew
+        working-directory: ./backend
+
+      - name: 🛠️ Build Spring Boot with Gradle
+        run: ./gradlew build -x test
+        working-directory: ./backend
+        
+      - name: 🧱 Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: 🧾 Build React App
+        run: |
+          npm ci
+          npm run build
+        working-directory: ./frontend
+
+      # CD 단계: SSH로 서버에 접속하여 배포 수행
+      - name: 🚀 Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            # 1. 서버에서 최신 코드 가져오기
+            cd ~/app
+            git pull origin main
+
+            # 2. 현재 실행 중인 그룹 확인하여 다음 타겟 그룹 결정
+            IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx_app-1" --format "{{.Names}}")
+            if [ -n "$IS_BLUE_RUNNING" ]; then
+              TARGET_GROUP=green
+              OLD_GROUP=blue
+            else
+              TARGET_GROUP=blue
+              OLD_GROUP=green
+            fi
+            echo "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
+
+            # 3. .env 파일 동적 생성 (보안 강화)
+            echo "DB_URL=${{ secrets.DB_URL }}" > .env
+            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" >> .env
+            echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
+            echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
+
+            # 4. 새로운 그룹 빌드 및 실행
+            # -p 옵션으로 프로젝트 이름을 지정하여 컨테이너 이름에 접두사(blue/green)를 붙입니다.
+            docker-compose -f docker-compose.yml -p $TARGET_GROUP up --build -d
+
+            # 5. 새 그룹이 정상적으로 실행될 때까지 대기 (Health Check)
+            echo "Waiting for $TARGET_GROUP to be healthy..."
+            sleep 30 # 실제 운영에서는 API 헬스체크 엔드포인트를 호출하는 방식으로 개선
+
+            # 6. '교통 경찰' Nginx의 설정을 새 그룹으로 변경
+            echo "Switching reverse-proxy to $TARGET_GROUP..."
+            sed "s/##TARGET_GROUP##/$TARGET_GROUP/g" ~/app/nginx-proxy/nginx.template.conf > ~/app/nginx-proxy/nginx.conf
+
+            # 7. '교통 경찰' Nginx 재시작하여 설정 적용
+            docker restart reverse-proxy
+            echo "✅ Switched to $TARGET_GROUP successfully!"
+
+            # 8. 이전 버전 그룹 컨테이너 정리
+            docker-compose -f docker-compose.yml -p $OLD_GROUP down --volumes || true
+            echo "🧹 Cleaned up $OLD_GROUP group."

@@ -1,24 +1,51 @@
-# Logs
-logs
+# ========================================
+# FRONTEND (React + Node modules)
+# ========================================
+frontend/node_modules/
+frontend/build/
+frontend/.env
+frontend/.DS_Store
+frontend/yarn.lock
+frontend/npm-debug.log*
+frontend/.eslintcache
+
+# ========================================
+# BACKEND (Java + Spring Boot)
+# ========================================
+backend/target/
+backend/.env
+backend/.DS_Store
+
+# Gradle
+backend/.gradle/
+backend/build/
+backend/gradle-app.setting
+backend/*.iml
+backend/*.log
+
+# Maven
+backend/.mvn/
+
+# IntelliJ / Eclipse
+*.iml
+*.ipr
+*.iws
+.idea/
+*.class
+*.jar
+*.war
+*.ear
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+*.tmp
+*.bak
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# ========================================
+# OS / Global
+# ========================================
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+Thumbs.db
+*.swp
+*.swo
+*.lock
+*.env
+.env.local

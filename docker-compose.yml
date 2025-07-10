@@ -1,0 +1,52 @@
+# docker-compose.yml
+
+version: '3.8'
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: nginx/Dockerfile
+    container_name: nginx_app
+    restart: always
+    depends_on:
+      - backend
+    networks:
+      - maple_network
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend_app
+    restart: always
+    environment:
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
+      DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
+      DISCORD_REDIRECT_URI: ${DISCORD_REDIRECT_URI}
+    depends_on:
+      - db
+    networks:
+      - maple_network
+
+  db:
+    image: mysql:8.0
+    container_name: db_app
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: mapledb
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - maple_network
+
+volumes:
+  db_data:
+
+networks:
+  maple_network:
+    # 외부에서 생성된 네트워크에 연결합니다.
+    external: true
