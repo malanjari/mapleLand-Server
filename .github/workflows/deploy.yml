@@ -13,83 +13,56 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 📦 Checkout Repository
-        uses: actions/checkout@v3
-
-      # --- CI: Build Artifacts ---
-      - name: ☕ Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Grant execute permission to gradlew
-        run: chmod +x ./backend/gradlew
-
-      - name: 🛠️ Build Spring Boot with Gradle
-        run: ./gradlew build -x test
-        working-directory: ./backend
-
-      - name: 🧱 Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: 🧾 Build React App
-        working-directory: ./frontend
-        run: |
-          npm ci
-          npm run build
-
-      # --- 배포 폴더 구조화 ---
-      - name: 📁 Prepare deployment structure
-        run: |
-          mkdir -p ./deploy/backend/build/libs
-          mkdir -p ./deploy/frontend
-          mkdir -p ./deploy/nginx
-          mkdir -p ./deploy/nginx-proxy
-
-          cp ./backend/Dockerfile ./deploy/backend/
-          cp ./backend/build/libs/*.jar ./deploy/backend/build/libs/
-          cp -r ./frontend/dist ./deploy/frontend/
-          cp -r ./nginx/* ./deploy/nginx/
-          cp -r ./nginx-proxy/* ./deploy/nginx-proxy/
-          cp ./docker-compose.yml ./deploy/
-
-      # --- 💡 변경점 1: 배포 폴더를 직접 압축 ---
-      - name: 📦 Compress deployment folder
-        run: |
-          cd ./deploy
-          tar -czf ../deploy.tar.gz .
-          cd ..
-          ls -alh deploy.tar.gz
-
-      # --- CD: Deploy to Server ---
-      - name: 🚚 Transfer Build Artifacts to EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          # 💡 변경점 2: 개별 파일 대신 압축 파일 하나만 전송
-          source: "deploy.tar.gz"
-          target: "~/"
-
-      - name: 🚀 Deploy to EC2 with SSH
+      - name: 🚀 Connect to EC2 and Deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 💡 변경점 3: 서버에서 압축 해제 및 정리
-            rm -rf ~/app
-            mkdir -p ~/app
-            tar -xzf ~/deploy.tar.gz -C ~/app
-            rm ~/deploy.tar.gz
-            
-            # 이제부터는 기존 스크립트와 동일하게 ~/app 폴더로 이동하여 작업을 수행합니다.
+            # --- 1. 소스코드 준비 ---
+            # app 폴더가 없으면 deploy 브랜치를 직접 클론하고, 있으면 최신 코드를 받아옵니다.
+            if [ ! -d "~/app" ]; then
+              echo "Cloning 'deploy' branch from repository..."
+              git clone -b deploy https://github.com/malanjari/mapleLand-Server.git ~/app
+            fi
             cd ~/app
+            git checkout deploy
+            git pull origin deploy
+
+            # --- 1.5. 서버 환경 자동 설정 (Java, Node.js 설치) ---
+            # Java 17 설치 (없는 경우에만)
+            if ! java -version 2>&1 | grep -q "openjdk 17"; then
+              echo "Java 17 not found, installing..."
+              sudo apt-get update -y
+              sudo apt-get install -y openjdk-17-jdk
+            else
+              echo "Java 17 is already installed."
+            fi
+
+            # Node.js 20 설치 (없거나 버전이 다른 경우에만)
+            if ! command -v node &> /dev/null || ! node -v | grep -q "v20."; then
+              echo "Node.js v20 not found or version is not 20, installing..."
+              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+              sudo apt-get install -y nodejs
+            else
+              echo "Node.js v20 is already installed."
+            fi
+
+            # --- 2. 서버에서 직접 빌드 ---
+            echo "🛠️ Building Spring Boot App on server..."
+            chmod +x ./backend/gradlew
+            ./backend/gradlew build -x test -p ./backend
+
+            echo "🧾 Building React App on server..."
+            # frontend 디렉토리로 이동하여 npm install 및 build 실행
+            cd ./frontend
+            npm ci
+            npm run build
+            cd .. # 다시 app 루트 디렉토리로 복귀
+
+            # --- 3. Docker로 블루/그린 배포 ---
+            echo "🚀 Starting Blue-Green Deployment..."
 
             # .env 파일 생성
             echo "DB_URL=${{ secrets.DB_URL }}" > .env
