@@ -5,7 +5,6 @@ version: '3.8'
 services:
   proxy:
     image: nginx:latest
-    container_name: reverse-proxy
     restart: always
     ports:
       - "80:80"

@@ -7,7 +7,6 @@ services:
     build:
       context: .
       dockerfile: nginx/Dockerfile
-    container_name: nginx_app
     restart: always
     depends_on:
       - backend
@@ -18,7 +17,6 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    container_name: backend_app
     restart: always
     environment:
       DB_URL: ${DB_URL}
@@ -34,7 +32,6 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: db_app
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
