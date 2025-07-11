@@ -31,8 +31,8 @@ export const PopularJariGrid = () => {
       {loading ? (
         <p className="text-white text-center">로딩 중...</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2  gap-3 lg:gap-5 px-1  lg:grid-cols-3">
-          {visibleMaps.slice(0, 9).map((spot, idx) => (
+        <div className="grid grid-cols-1 mb:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-5 px-1  ">
+          {visibleMaps.slice(0, 8).map((spot, idx) => (
             <JariCard key={spot.mapName} spot={spot} rank={idx + 1} />
           ))}
         </div>

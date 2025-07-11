@@ -173,7 +173,7 @@ const TradeCard = ({ item, refetch }: Props) => {
                       <label className="text-gray-400">
                         맵 상태를 선택해주세요
                       </label>
-                      <div className="flex gap-2">
+                      <div className="flex gap-2 ">
                         {["Red", "Yellow", "Green"].map((color) => (
                           <button
                             key={color}
