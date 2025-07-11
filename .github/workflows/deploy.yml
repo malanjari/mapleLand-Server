@@ -110,7 +110,7 @@ jobs:
 
             # 💡 변경점 3: --build 옵션으로 서버에서 이미지를 빌드하도록 수정
             # -p 옵션으로 프로젝트 이름을 지정하여 컨테이너 이름에 접두사(blue/green)를 붙입니다.
-            docker-compose -f docker-compose.yml -p $TARGET_GROUP up -d --build
+            docker compose -f docker-compose.yml -p $TARGET_GROUP up -d --build
 
             # 4. 새 그룹이 정상적으로 실행될 때까지 대기 (Health Check)
             echo "Waiting for $TARGET_GROUP to be healthy..."
@@ -127,5 +127,5 @@ jobs:
             echo "✅ Switched to $TARGET_GROUP successfully!"
 
             # 7. 이전 버전 그룹 컨테이너 정리
-            docker-compose -f docker-compose.yml -p $OLD_GROUP down --volumes || true
+            docker compose -f docker-compose.yml -p $OLD_GROUP down --volumes || true
             echo "🧹 Cleaned up $OLD_GROUP group."
