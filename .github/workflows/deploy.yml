@@ -41,38 +41,20 @@ jobs:
           npm ci
           npm run build
 
-      # --- 💡 변경점 1: 배포에 필요한 파일만 모아 deploy 폴더 생성 ---
+      # --- 배포 폴더 구조화 ---
       - name: 📁 Prepare deployment structure
         run: |
-          # 배포에 필요한 폴더 구조를 미리 생성합니다.
           mkdir -p ./deploy/backend/build/libs
           mkdir -p ./deploy/frontend
           mkdir -p ./deploy/nginx
           mkdir -p ./deploy/nginx-proxy
 
-          # 백엔드 관련 파일 복사 (Dockerfile + 빌드 결과물)
           cp ./backend/Dockerfile ./deploy/backend/
           cp ./backend/build/libs/*.jar ./deploy/backend/build/libs/
-
-          # 프론트엔드 관련 파일 복사 (빌드 결과물)
           cp -r ./frontend/dist ./deploy/frontend/
-
-          # 서비스 Nginx 관련 파일 복사 (Dockerfile + 설정 파일)
           cp -r ./nginx/* ./deploy/nginx/
-          
-          # Reverse Proxy Nginx 관련 파일 복사 (설정 템플릿)
           cp -r ./nginx-proxy/* ./deploy/nginx-proxy/
-
-          # docker-compose.yml 복사
           cp ./docker-compose.yml ./deploy/
-          
-      - name: 🔍 Verify deployment structure
-        run: |
-          echo "📦 Deployment structure details:"
-          ls -alh ./deploy
-          echo "---"
-          echo "💾 Total size of deployment folder:"
-          du -sh ./deploy          
 
       # --- CD: Deploy to Server ---
       - name: 🚚 Transfer Build Artifacts to EC2
@@ -81,10 +63,10 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          # 💡 변경점 2: deploy 폴더의 내용물을 서버로 전송
-          source: "./deploy/*"
-          target: "~/app"
-          strip_components: 1 # deploy 폴더 자체는 제외하고 내용물만 보냅니다.
+          # deploy 폴더 전체를 하나의 단위로 전송
+          source: "./deploy"
+          # 서버의 홈 디렉토리로 전송
+          target: "~/"
 
       - name: 🚀 Deploy to EC2 with SSH
         uses: appleboy/ssh-action@master
@@ -93,10 +75,14 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 서버의 ~/app 폴더로 이동
+            # 기존 app 폴더를 삭제하고, 새로 받은 deploy 폴더를 app으로 이름 변경
+            rm -rf ~/app
+            mv ~/deploy ~/app
+            
+            # 이제부터는 기존 스크립트와 동일하게 ~/app 폴더로 이동하여 작업을 수행합니다.
             cd ~/app
 
-            # 1. .env 파일 동적 생성 (보안 강화)
+            # .env 파일 생성
             echo "DB_URL=${{ secrets.DB_URL }}" > .env
             echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
@@ -104,8 +90,7 @@ jobs:
             echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
             echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
 
-            # 2. 현재 실행 중인 그룹 확인하여 다음 타겟 그룹 결정
-            # 컨테이너 이름은 docker-compose.yml에 정의된 서비스 이름(nginx)을 기준으로 찾습니다.
+            # 현재 실행 중인 그룹 확인
             IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx-1" --format "{{.Names}}")
             if [ -n "$IS_BLUE_RUNNING" ]; then
               TARGET_GROUP=green
@@ -116,24 +101,19 @@ jobs:
             fi
             echo "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
 
-            # 💡 변경점 3: --build 옵션으로 서버에서 이미지를 빌드하도록 수정
-            # -p 옵션으로 프로젝트 이름을 지정하여 컨테이너 이름에 접두사(blue/green)를 붙입니다.
+            # 새로운 그룹 빌드 및 실행 (💡 docker compose V2 문법으로 수정)
             docker compose -f docker-compose.yml -p $TARGET_GROUP up -d --build
 
-            # 4. 새 그룹이 정상적으로 실행될 때까지 대기 (Health Check)
+            # 헬스 체크 대기
             echo "Waiting for $TARGET_GROUP to be healthy..."
-            sleep 30 # 실제 운영에서는 API 헬스체크 엔드포인트를 호출하는 방식으로 개선
+            sleep 30
 
-            # 5. '교통 경찰' Nginx의 설정을 새 그룹으로 변경
+            # 리버스 프록시 설정 변경 및 재시작
             echo "Switching reverse-proxy to $TARGET_GROUP..."
-            # nginx.template.conf 파일이 nginx-proxy 폴더 안에 있다고 가정
             sed "s/##TARGET_GROUP##/$TARGET_GROUP/g" ./nginx-proxy/nginx.template.conf > ./nginx-proxy/nginx.conf
-
-            # 6. '교통 경찰' Nginx 재시작하여 설정 적용
-            # reverse-proxy 컨테이너는 docker-compose.yml이 아닌 별도로 실행되고 있다고 가정
             docker restart reverse-proxy
             echo "✅ Switched to $TARGET_GROUP successfully!"
 
-            # 7. 이전 버전 그룹 컨테이너 정리
+            # 이전 그룹 정리 (💡 docker compose V2 문법으로 수정)
             docker compose -f docker-compose.yml -p $OLD_GROUP down --volumes || true
             echo "🧹 Cleaned up $OLD_GROUP group."
