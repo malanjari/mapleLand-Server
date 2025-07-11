@@ -314,6 +314,18 @@ public class OrbisMonsterDataInitializer {
                         .build(),
                 MapDropItemEntity.builder()
                         .mapName("스카이로드: 구름공원6")
+                        .itemName("스틸 마누트")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082086/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원6")
+                        .itemName("블루 고니슈즈")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1072128/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+                MapDropItemEntity.builder()
+                        .mapName("스카이로드: 구름공원6")
                         .itemName("배틀 실드")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1092007/icon?resize=2")
                         .dropRate(0.01)
