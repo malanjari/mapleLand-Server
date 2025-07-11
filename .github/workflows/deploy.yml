@@ -65,6 +65,14 @@ jobs:
 
           # docker-compose.yml 복사
           cp ./docker-compose.yml ./deploy/
+          
+      - name: 🔍 Verify deployment structure
+        run: |
+          echo "📦 Deployment structure details:"
+          ls -alh ./deploy
+          echo "---"
+          echo "💾 Total size of deployment folder:"
+          du -sh ./deploy          
 
       # --- CD: Deploy to Server ---
       - name: 🚚 Transfer Build Artifacts to EC2
