@@ -45,9 +45,17 @@ jobs:
           npm ci
           npm run build
 
-      - name: Debug - List all files
-        run: ls -R
-      
+      - name: ✅ Check build outputs
+        run: |
+          echo "📦 Backend libs:"
+          ls -al ./backend/build/libs
+          echo "📦 Frontend dist:"
+          ls -al ./frontend/dist
+          echo "📝 docker-compose.yml:"
+          ls -al ./docker-compose.yml
+          echo "🌐 nginx-proxy:"
+          ls -al ./nginx-proxy
+
       # --- CD: Deploy to Server ---
       - name: 🚚 Transfer Build Artifacts to EC2
         uses: appleboy/scp-action@master
