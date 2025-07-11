@@ -72,7 +72,10 @@ const WorldDetailPage = () => {
             />
           )}
           <Link to={`/jari/register/`} className="w-full">
-            <Button className="mt-4 text-white px-4 py-2 rounded-md font-semibold transition w-full">
+            <Button
+              variant="register"
+              className="mt-4 text-white px-4 py-2 rounded-md font-semibold transition w-full"
+            >
               + 자리 등록하기
             </Button>
           </Link>

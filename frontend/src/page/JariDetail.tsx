@@ -9,7 +9,7 @@ import { DropItem, getMonsterInfo } from "@/feature/jari/api/monsterInfo";
 import { Card, CardContent } from "@/shared/ui/card/card";
 import { useJariList } from "@/feature/jari/hooks/useJariList";
 import { getPriceStat, DailyPriceStat } from "@/entity/price/api/priceStat";
-import { PriceChart } from "@/entity/price/ui/priceChart";
+import { PriceChart } from "@/entity/price/ui/PriceChart";
 
 const JariDetailPage = () => {
   const { name } = useParams();
@@ -19,8 +19,6 @@ const JariDetailPage = () => {
   const [dropItems, setDropItems] = useState<DropItem[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [priceStats, setPriceStats] = useState<DailyPriceStat[]>([]);
-  const [priceLoading, setPriceLoading] = useState(true);
-  const [priceError, setPriceError] = useState("");
 
   const { data: jari, refetch } = useJariList(name || "");
   useEffect(() => {
@@ -28,15 +26,11 @@ const JariDetailPage = () => {
 
     const loadPriceStats = async () => {
       try {
-        setPriceLoading(true);
         const stat = await getPriceStat(name);
         console.log("스탯", stat);
         setPriceStats(stat);
       } catch (error) {
         console.error("가격 통계 에러:", error);
-        setPriceError("가격 통계를 불러오는 데 실패했습니다.");
-      } finally {
-        setPriceLoading(false);
       }
     };
 

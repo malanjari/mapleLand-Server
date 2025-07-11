@@ -24,15 +24,10 @@ interface Props {
 }
 
 export const PriceChart = ({ data }: Props) => {
-  const labels = data.map((d) =>
-    new Date(d.dateTime).toLocaleDateString("ko-KR", {
-      month: "numeric",
-      day: "numeric",
-    })
-  );
+  const labels = data.map((d) => new Date(d.dateTime).getHours() + "시");
 
   const prices = data.map((d) => d.price);
-
+  console.log("데이터", data);
   const chartData = {
     labels,
     datasets: [
