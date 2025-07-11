@@ -55,7 +55,7 @@ jobs:
           cp ./backend/build/libs/*.jar ./deploy/backend/build/libs/
 
           # 프론트엔드 관련 파일 복사 (빌드 결과물)
-          cp -r ./frontend/dist/* ./deploy/frontend/
+          cp -r ./frontend/dist ./deploy/frontend/
 
           # 서비스 Nginx 관련 파일 복사 (Dockerfile + 설정 파일)
           cp -r ./nginx/* ./deploy/nginx/
