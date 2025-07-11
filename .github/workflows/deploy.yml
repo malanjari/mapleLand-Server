@@ -56,6 +56,21 @@ jobs:
           echo "🌐 nginx-proxy:"
           ls -al ./nginx-proxy
 
+      # --- 파일 구조 정리 ---
+      - name: 📁 Prepare deployment structure
+        run: |
+          mkdir -p ./deploy/libs
+          mkdir -p ./deploy/frontend
+          cp ./backend/build/libs/*.jar ./deploy/libs/
+          cp -r ./frontend/dist/* ./deploy/frontend/
+          cp ./docker-compose.yml ./deploy/
+          cp -r ./nginx-proxy ./deploy/
+
+      - name: 🔍 Verify deployment structure
+        run: |
+          echo "📦 Deployment structure:"
+          find ./deploy -type f -name "*.jar" -o -name "*.html" -o -name "*.yml" -o -name "*.conf" | head -20
+
       # --- CD: Deploy to Server ---
       - name: 🚚 Transfer Build Artifacts to EC2
         uses: appleboy/scp-action@master
@@ -63,12 +78,9 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: |
-            ./backend/build/libs/*.jar
-            ./frontend/dist/**/*
-            ./docker-compose.yml
-            ./nginx-proxy/**
+          source: "./deploy/*"
           target: "~/app"
+          strip_components: 1
 
       - name: 🚀 Deploy to EC2 with SSH
         uses: appleboy/ssh-action@master
@@ -79,7 +91,8 @@ jobs:
           script: |
             # 0. 환경 변수 설정
             cd ~/app
-            JAR_FILE=$(ls ./libs/*.jar) # jar 파일 이름 변수 설정
+            JAR_FILE=$(ls ./libs/*.jar | head -n 1) # jar 파일 이름 변수 설정 (첫 번째 파일 선택)
+            JAR_NAME=$(basename "$JAR_FILE") # 파일명만 추출
 
             # 1. .env 파일 동적 생성 (보안 강화)
             echo "DB_URL=${{ secrets.DB_URL }}" > .env
@@ -88,7 +101,7 @@ jobs:
             echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" >> .env
             echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
             echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
-            echo "JAR_FILE=${JAR_FILE}" >> .env # 💡 추가점: docker-compose에서 jar 파일명을 알 수 있도록 추가
+            echo "JAR_FILE=${JAR_NAME}" >> .env # 💡 수정점: 파일명만 저장
 
             # 2. 현재 실행 중인 그룹 확인하여 다음 타겟 그룹 결정
             IS_BLUE_RUNNING=$(docker ps --filter "name=blue-app-1" --format "{{.Names}}")
@@ -101,9 +114,9 @@ jobs:
             fi
             echo "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
 
-            # 3. 새로운 그룹 빌드 및 실행 (이제 서버에서 빌드하지 않음)
+            # 3. 새로운 그룹 빌드 및 실행
             # -p 옵션으로 프로젝트 이름을 지정하여 컨테이너 이름에 접두사(blue/green)를 붙입니다.
-            docker-compose -f docker-compose.yml -p $TARGET_GROUP up -d --no-build # 💡 변경점: --build 옵션 제거
+            docker-compose -f docker-compose.yml -p $TARGET_GROUP up -d --no-build
 
             # 4. 새 그룹이 정상적으로 실행될 때까지 대기 (Health Check)
             echo "Waiting for $TARGET_GROUP to be healthy..."
