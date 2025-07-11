@@ -55,13 +55,12 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          source: | # 💡 변경점: 빌드 결과물들을 서버로 전송
-            backend/build/libs/*.jar
-            frontend/dist/
-            docker-compose.yml
-            nginx/
-          target: "~/app" # EC2 서버의 배포 폴더
-          strip_components: 1 # 💡 추가점: 상위 폴더(backend, frontend) 없이 내용물만 전송
+          source: |
+            ./backend/build/libs/*.jar
+            ./frontend/dist/**/*
+            ./docker-compose.yml
+            ./nginx-proxy/**
+          target: "~/app"
 
       - name: 🚀 Deploy to EC2 with SSH
         uses: appleboy/ssh-action@master
