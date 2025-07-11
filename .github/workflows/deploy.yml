@@ -1,3 +1,5 @@
+# .github/workflows/deploy.yml
+
 name: Deploy Spring Boot + React to EC2 (Blue-Green)
 
 on:
@@ -9,12 +11,16 @@ jobs:
   deploy:
     name: Build and Deploy (Blue-Green)
     runs-on: ubuntu-latest
+    
+    defaults:
+      run:
+        working-directory: ./
 
     steps:
       - name: 📦 Checkout Repository
         uses: actions/checkout@v3
 
-      # CI 단계: GitHub Actions Runner에서 빌드 수행 (서버 부하 감소)
+      # --- CI: Build Artifacts ---
       - name: ☕ Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -22,38 +28,60 @@ jobs:
           distribution: 'temurin'
 
       - name: Grant execute permission to gradlew
-        run: chmod +x gradlew
-        working-directory: ./backend
+        run: chmod +x ./backend/gradlew
 
       - name: 🛠️ Build Spring Boot with Gradle
         run: ./gradlew build -x test
         working-directory: ./backend
-        
+
       - name: 🧱 Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
 
       - name: 🧾 Build React App
+        working-directory: ./frontend
         run: |
           npm ci
           npm run build
-        working-directory: ./frontend
+      
+      # --- CD: Deploy to Server ---
+      - name: 🚚 Transfer Build Artifacts to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: | # 💡 변경점: 빌드 결과물들을 서버로 전송
+            ./backend/build/libs/*.jar
+            ./frontend/dist/
+            ./docker-compose.yml
+            ./nginx-proxy/
+          target: "~/app" # EC2 서버의 배포 폴더
+          strip_components: 1 # 💡 추가점: 상위 폴더(backend, frontend) 없이 내용물만 전송
 
-      # CD 단계: SSH로 서버에 접속하여 배포 수행
-      - name: 🚀 Deploy to EC2
+      - name: 🚀 Deploy to EC2 with SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 1. 서버에서 최신 코드 가져오기
+            # 0. 환경 변수 설정
             cd ~/app
-            git pull origin main
+            JAR_FILE=$(ls ./libs/*.jar) # jar 파일 이름 변수 설정
+
+            # 1. .env 파일 동적 생성 (보안 강화)
+            echo "DB_URL=${{ secrets.DB_URL }}" > .env
+            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" >> .env
+            echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
+            echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
+            echo "JAR_FILE=${JAR_FILE}" >> .env # 💡 추가점: docker-compose에서 jar 파일명을 알 수 있도록 추가
 
             # 2. 현재 실행 중인 그룹 확인하여 다음 타겟 그룹 결정
-            IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx_app-1" --format "{{.Names}}")
+            IS_BLUE_RUNNING=$(docker ps --filter "name=blue-app-1" --format "{{.Names}}")
             if [ -n "$IS_BLUE_RUNNING" ]; then
               TARGET_GROUP=green
               OLD_GROUP=blue
@@ -63,30 +91,24 @@ jobs:
             fi
             echo "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
 
-            # 3. .env 파일 동적 생성 (보안 강화)
-            echo "DB_URL=${{ secrets.DB_URL }}" > .env
-            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-            echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" >> .env
-            echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
-            echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
-
-            # 4. 새로운 그룹 빌드 및 실행
+            # 3. 새로운 그룹 빌드 및 실행 (이제 서버에서 빌드하지 않음)
             # -p 옵션으로 프로젝트 이름을 지정하여 컨테이너 이름에 접두사(blue/green)를 붙입니다.
-            docker-compose -f docker-compose.yml -p $TARGET_GROUP up --build -d
+            docker-compose -f docker-compose.yml -p $TARGET_GROUP up -d --no-build # 💡 변경점: --build 옵션 제거
 
-            # 5. 새 그룹이 정상적으로 실행될 때까지 대기 (Health Check)
+            # 4. 새 그룹이 정상적으로 실행될 때까지 대기 (Health Check)
             echo "Waiting for $TARGET_GROUP to be healthy..."
             sleep 30 # 실제 운영에서는 API 헬스체크 엔드포인트를 호출하는 방식으로 개선
 
-            # 6. '교통 경찰' Nginx의 설정을 새 그룹으로 변경
+            # 5. '교통 경찰' Nginx의 설정을 새 그룹으로 변경
             echo "Switching reverse-proxy to $TARGET_GROUP..."
-            sed "s/##TARGET_GROUP##/$TARGET_GROUP/g" ~/app/nginx-proxy/nginx.template.conf > ~/app/nginx-proxy/nginx.conf
+            # nginx.template.conf 파일이 nginx-proxy 폴더 안에 있다고 가정
+            sed "s/##TARGET_GROUP##/$TARGET_GROUP/g" ./nginx-proxy/nginx.template.conf > ./nginx-proxy/nginx.conf
 
-            # 7. '교통 경찰' Nginx 재시작하여 설정 적용
+            # 6. '교통 경찰' Nginx 재시작하여 설정 적용
+            # reverse-proxy 컨테이너는 docker-compose.yml이 아닌 별도로 실행되고 있다고 가정
             docker restart reverse-proxy
             echo "✅ Switched to $TARGET_GROUP successfully!"
 
-            # 8. 이전 버전 그룹 컨테이너 정리
+            # 7. 이전 버전 그룹 컨테이너 정리
             docker-compose -f docker-compose.yml -p $OLD_GROUP down --volumes || true
             echo "🧹 Cleaned up $OLD_GROUP group."
