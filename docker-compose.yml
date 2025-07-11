@@ -1,4 +1,4 @@
-# docker-compose.yml
+# ./docker-compose.yml
 
 version: '3.8'
 
@@ -17,6 +17,7 @@ services:
   backend:
     build:
       context: ./backend
+      dockerfile: Dockerfile
     container_name: backend_app
     restart: always
     environment:
@@ -48,5 +49,5 @@ volumes:
 
 networks:
   maple_network:
-    # 외부에서 생성된 네트워크에 연결합니다.
     external: true
+    name: maple_network # 외부 네트워크 이름을 명시적으로 지정

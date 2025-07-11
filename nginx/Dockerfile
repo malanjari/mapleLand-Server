@@ -1,11 +1,9 @@
 # nginx/Dockerfile
 
-FROM nginx:stable-alpine
+FROM nginx:alpine
 
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
-COPY ./frontend/build /usr/share/nginx/html
-
-EXPOSE 80
+COPY ./frontend/dist /usr/share/nginx/html
 
 CMD ["nginx", "-g", "daemon off;"]
