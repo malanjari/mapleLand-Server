@@ -44,6 +44,9 @@ jobs:
         run: |
           npm ci
           npm run build
+
+      - name: Debug - List all files
+        run: ls -R
       
       # --- CD: Deploy to Server ---
       - name: 🚚 Transfer Build Artifacts to EC2
