@@ -112,7 +112,21 @@ public class GlobalValidationHandler {
     public ResponseEntity<Map<String, Object>> handleNotFoundUser(NotFoundUserException ex) {
         return ResponseEntity.badRequest().body(Map.of(
                 "status", "FAIL",
-                "errors", Map.of("mapName", ex.getMessage())
+                "errors", Map.of("message", ex.getMessage())
+        ));
+    }
+    @ExceptionHandler(DuplicatedMapInterRestException.class)
+    public ResponseEntity<Map<String, Object>> handleDuplicatedMapInterRest(DuplicatedMapInterRestException ex) {
+        return ResponseEntity.badRequest().body(Map.of(
+                "status","Fail",
+                "error" , Map.of("message", ex.getMessage())
+        ));
+    }
+    @ExceptionHandler(MaxMapInterestLimitException.class)
+    public ResponseEntity<Map<String, Object>> handleMaxMapInterestLimit(DuplicatedMapInterRestException ex) {
+        return ResponseEntity.badRequest().body(Map.of(
+                "status","Fail",
+                "error" , Map.of("message", ex.getMessage())
         ));
     }
 }

@@ -19,6 +19,6 @@ public record UserMapRegistrationDto(
         Boolean isCompleted,
         String userImage,
         int userId,
-        String uniqueId
+        String discordId
 ) {
 }

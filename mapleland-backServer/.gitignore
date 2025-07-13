@@ -1,37 +1,41 @@
-HELP.md
-.gradle
+# 기본 빌드/IDE 관련 무시
+.gradle/
 build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
 bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
-
-### IntelliJ IDEA ###
-.idea
+out/
+nbbuild/
+dist/
+nbdist/
+HELP.md
+.vscode/
+.idea/
 *.iws
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
 
-### NetBeans ###
+# STS(Spring Tool Suite)
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans/
+.sts4-cache/
+
+# NetBeans
 /nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
 /.nb-gradle/
 
-### VS Code ###
-.vscode/
+# 민감정보
+src/main/resources/application.properties
+
+# 예외 처리 (꼭 필요한 경우만!)
+!gradle/wrapper/gradle-wrapper.jar
+
+# 특정 경로의 빌드 폴더 예외
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+!**/src/main/**/out/
+!**/src/test/**/out/
+!**/src/main/**/build/
+!**/src/test/**/build/

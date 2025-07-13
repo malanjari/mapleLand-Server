@@ -5,9 +5,13 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.mapleLand.maplelanbackserver.cache.MapPriceStatCacheService;
+import org.mapleLand.maplelanbackserver.dto.Map.MapInterestRequestDto;
 import org.mapleLand.maplelanbackserver.dto.Map.MapListDto;
 import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
 import org.mapleLand.maplelanbackserver.dto.Map.MapDto;
@@ -144,5 +148,10 @@ public class MapController {
         return ResponseEntity.status(HttpStatus.OK).body("서버 색깔이 수정 되었습니다.");
     }
 
+    @PostMapping("/api/create/interRest")
+    public ResponseEntity<?> createInterRest(@RequestBody MapInterestRequestDto dto) {
+        mapService.MapInterRestServiceMethod(dto);
 
+        return ResponseEntity.ok(Map.of("message","관심 등록이 완료 되었습니다."));
+    }
 }
