@@ -43,5 +43,7 @@ import org.mapleLand.maplelanbackserver.enumType.TradeType;
       @NotNull(message = "거래 유형을 선택하세요.")
       @Schema(description = "거래 유형 (BUY = 삽니다, SELL = 팝니다)", example = "SELL")
       private TradeType tradeType;
+     @NotNull(message = "맵Id")
+     private int mapId;
    }
 

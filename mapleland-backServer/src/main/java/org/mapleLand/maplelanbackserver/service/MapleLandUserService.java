@@ -71,11 +71,14 @@ public class MapleLandUserService{
                         e.getIsCompleted(),
                          userResult.getImage(),
                          userResult.getUserId(),
-                         userResult.getDiscordId()
+                         userResult.getDiscordId(),
+                         userResult.getGlobalName()
 
                 );
                 })
                 .toList();
+
+
 
         return new UserDetailResponseDto(userInfo, mapRegistrationDtos);
     }

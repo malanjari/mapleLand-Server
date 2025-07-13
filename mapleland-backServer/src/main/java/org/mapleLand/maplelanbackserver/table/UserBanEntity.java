@@ -1,22 +1,20 @@
 package org.mapleLand.maplelanbackserver.table;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class MapInterestEntity {
+public class UserBanEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  int interestId;
+    private int UserBanId;
     @ManyToOne
-    @JoinColumn(name = "maple_land_map_list_id")
-    private MapleLandMapListEntity mapleLandMapListEntity;
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private MapleJariUserEntity mapleJariUserEntity;
+
+
 }
