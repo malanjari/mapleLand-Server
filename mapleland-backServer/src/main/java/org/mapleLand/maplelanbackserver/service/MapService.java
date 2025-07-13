@@ -20,9 +20,12 @@ import org.mapleLand.maplelanbackserver.repository.*;
 import org.mapleLand.maplelanbackserver.resolve.RegionResolver;
 import org.mapleLand.maplelanbackserver.table.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.time.LocalDateTime;
 
@@ -43,9 +46,12 @@ public class MapService {
     private final MapInterestRepository interestRepository;
 
     String message;
+    @Value("${frontend.redirect-url}")
+    private String redirectUrl;
 
 
     public void mapRegisterServiceMethod(MapRegistrationDto dto) {
+
 
         //사용자 검색 -> 사용자 값 꺼내옴
         MapleJariUserEntity user = userRepository.findByUserId(dto.getUserId())
@@ -81,31 +87,49 @@ public class MapService {
         registerRepository.save(entity);
 
     }
+
+
+    public String buildMapUrl(String mapName) {
+        String encoded = URLEncoder.encode(mapName, StandardCharsets.UTF_8)
+                .replace("+", "%20");
+        return redirectUrl + "/jari/" + encoded;
+    }
     public void interRestUser(MapRegistrationDto dto){
 
         Set<Integer> alreadySendCheck = new HashSet<>();
 
-        List<MapInterestEntity> allByMapName = interestRepository.findAllByMapName(dto.getMapName());
+        List<MapInterestEntity> allByMapName = interestRepository.findByMapleLandMapListEntity_MapleLandMapListId(dto.getMapId());
 
+        String url = buildMapUrl(dto.getMapName());
 
         for(MapInterestEntity user : allByMapName) {
             String discordId = user.getMapleJariUserEntity().getDiscordId();
             MapleJariUserEntity targetUser = user.getMapleJariUserEntity();
+            int targetUserId = targetUser.getUserId();
+
+
+            if (alreadySendCheck.contains(targetUserId)) continue;
 
             if(targetUser.getUserId().equals(dto.getUserId())) {
                 message =  String.format("""
-                            📢 알림을 받은 : **%s**가 등록 되었습니다.
-        
-                            💰 가격: %,d 메소
-
-                            ⚠️ **분쟁 자리 또는 허위 매물 등록 시 제재될 수 있습니다.**
-                         """, dto.getMapName(), dto.getPrice());
+                📢 **%s** 맵이(가) 등록되었습니다!
+                        
+                💰 가격: %,d 메소 \s
+                
+                🔗 바로가기: <%s>
+                        
+                ⚠️ 분쟁 자리 또는 허위 매물 등록 시 제재될 수 있습니다.
+                """, dto.getMapName(), dto.getPrice(), url);
             }else  {
                 message =  String.format("""
-            📢 관심 맵 **%s** 이 등록되었습니다!
-            
-            💰 가격: %,d 메소
-            """, dto.getMapName(), dto.getPrice());
+               📢 관심뱁 : **%s** 맵이(가) 등록되었습니다!
+                        
+                💰 가격: %,d 메소 \s
+                
+                🔗 바로가기: <%s>
+                        
+                        
+            """, dto.getMapName(), dto.getPrice(),url);
             }
 
 
@@ -122,12 +146,14 @@ public class MapService {
 
             if(discordId!= null) {
                 String selfMessage = String.format("""
-                 📢  **%s**가 등록 되었습니다.
-
-                 💰  가격: %,d 메소
-
-                 ⚠️ **분쟁 자리 또는 허위 매물 등록 시 제재될 수 있습니다.**
-            """, dto.getMapName(), dto.getPrice());
+                 📢  **%s** 맵이(가) 등록되었습니다!
+                        
+                  💰 가격: %,d 메소 \s
+                  
+                  🔗 바로가기: <%s>
+                        
+                  ⚠️ 분쟁 자리 또는 허위 매물 등록 시 제재될 수 있습니다.
+            """, dto.getMapName(), dto.getPrice(),url);
 
                 dmService.sendToUser(discordId, selfMessage);
             }
@@ -140,10 +166,12 @@ public class MapService {
         Optional<MapleJariUserEntity> byUserId = userRepository.findByUserId(dto.userId());
         if(byUserId.isEmpty()) throw new NotFoundUserException("사용자를 찾을 수 없습니다.");
 
-        boolean exists = interestRepository.
-                existsByMapNameAndMapleJariUserEntity(dto.mapName(), byUserId.get());
+        MapleLandMapListEntity jari = mapleLandMapListRepository.findById(dto.mapId()).get();
 
-        if(exists) throw new DuplicatedMapInterRestException("⛔ 이미 등록된 관심 맵입니다:" + dto.mapName());
+        boolean exists = interestRepository
+                .existsByMapleLandMapListEntityAndMapleJariUserEntity(jari,byUserId.get());
+
+        if(exists) throw new DuplicatedMapInterRestException("⛔ 이미 등록된 관심 맵입니다:");
 
         long count = interestRepository.countByMapleJariUserEntity(byUserId.get());
 
@@ -151,7 +179,7 @@ public class MapService {
 
 
         interestRepository.save(
-                MapInterestEntity.builder().mapName(dto.mapName())
+                MapInterestEntity.builder().mapleLandMapListEntity(jari)
                         .mapleJariUserEntity(byUserId.get())
                         .build());
 

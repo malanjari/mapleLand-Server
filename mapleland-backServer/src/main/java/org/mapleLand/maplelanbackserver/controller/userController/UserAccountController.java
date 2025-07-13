@@ -2,6 +2,7 @@ package org.mapleLand.maplelanbackserver.controller.userController;
 
 import lombok.RequiredArgsConstructor;
 import org.mapleLand.maplelanbackserver.dto.user.UserDetailResponseDto;
+import org.mapleLand.maplelanbackserver.dto.user.UserMapRegistrationDto;
 import org.mapleLand.maplelanbackserver.service.MapleLandUserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -50,6 +51,9 @@ public class UserAccountController {
     @GetMapping("/api/user/{userId}")
     public ResponseEntity<UserDetailResponseDto> getUserDetail(@PathVariable Integer userId) {
         UserDetailResponseDto userDetail = mapleLandUserService.getUserDetailServiceMethod(userId);
+
+
+
         return ResponseEntity.ok(userDetail);
     }
 }

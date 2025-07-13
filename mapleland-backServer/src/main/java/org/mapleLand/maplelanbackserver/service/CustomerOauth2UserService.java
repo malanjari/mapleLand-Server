@@ -1,6 +1,7 @@
 package org.mapleLand.maplelanbackserver.service;
 
 import lombok.RequiredArgsConstructor;
+import org.mapleLand.maplelanbackserver.filter.AdminCheckFilter;
 import org.mapleLand.maplelanbackserver.repository.MapleJariUserRepository;
 import org.mapleLand.maplelanbackserver.table.MapleJariUserEntity;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -33,6 +34,7 @@ public class CustomerOauth2UserService implements OAuth2UserService<OAuth2UserRe
         String globalName  = (String) attribute.get("global_name");
         String avatar =  (String)attribute.get("avatar");
 
+        String role = AdminCheckFilter.adminCheckFilter(discordId);
 
         /**
          * 함수형 인터페이스
@@ -49,7 +51,7 @@ public class CustomerOauth2UserService implements OAuth2UserService<OAuth2UserRe
                             .manonTicket(5)
                             .pianusTicket(5)
                             .mapTicket(true)
-                            .role("ROLE_USER")
+                            .role(role)
                             .userReportCount(0)
                             .image(avatar)
                             .isActive(true)

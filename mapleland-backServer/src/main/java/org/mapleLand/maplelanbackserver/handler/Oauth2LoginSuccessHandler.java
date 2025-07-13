@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mapleLand.maplelanbackserver.filter.AdminCheckFilter;
 import org.mapleLand.maplelanbackserver.jwtUtil.JwtUtil;
 import org.mapleLand.maplelanbackserver.repository.MapleJariUserRepository;
 import org.mapleLand.maplelanbackserver.table.MapleJariUserEntity;
@@ -36,7 +37,6 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private String frontEndRedirectUrl;
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final MapleJariUserRepository mapleJariUserRepository;
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
@@ -46,7 +46,8 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String avatar     = oAuth2User.getAttribute("avatar");
         String username   = oAuth2User.getAttribute("username");
         String globalName = oAuth2User.getAttribute("global_name");
-        String role       = "ROLE_USER";
+
+        String role = AdminCheckFilter.adminCheckFilter(discordId);
 
 
         Optional<MapleJariUserEntity> userEntity = mapleJariUserRepository.findByDiscordId(discordId);
