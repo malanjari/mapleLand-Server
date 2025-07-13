@@ -52,6 +52,7 @@ dependencies {
     implementation 'software.amazon.awssdk:regions:2.20.27'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+    implementation 'net.dv8tion:JDA:5.0.0-beta.13'
 
 
 }

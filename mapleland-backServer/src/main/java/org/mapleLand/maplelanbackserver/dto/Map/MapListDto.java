@@ -7,8 +7,7 @@ import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
 import java.util.List;
 
 public record MapListDto(
-        @Schema(description = "맵 정보가 들어있는 Dto")
-        List<MapDto> mapDto,
+
         @Schema(description = "몬스터 정보가 들어있는 Dto")
         List<DropItemDto> dropItemDto,
         @Schema(description = "IQR 정보가 들어있는 Dto")
