@@ -241,6 +241,5 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
-
-
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,intellij+all,gradle,java
+mapleland-backServer/src/main/resources/application.properties
