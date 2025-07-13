@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapleLand.maplelanbackserver.controller.errorController.*;
 import org.mapleLand.maplelanbackserver.dto.*;
 
-import org.mapleLand.maplelanbackserver.dto.Map.MapDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapInterestRequestDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapListDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapRegistrationDto;
+import org.mapleLand.maplelanbackserver.dto.Map.*;
 import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateIsCompletedDto;
@@ -382,5 +379,14 @@ public class MapService {
 
         registerRepository.save(byUserMapId);
 
+    }
+
+    public MapNameListResponseDto findAllMaps() {
+        List<MapName> MapNameList = mapleLandMapListRepository.findAll()
+                .stream()
+                .map(e -> new MapName(e.getMapleLandMapListId(), e.getMapName()))
+                .toList();
+
+        return new MapNameListResponseDto(MapNameList);
     }
 }

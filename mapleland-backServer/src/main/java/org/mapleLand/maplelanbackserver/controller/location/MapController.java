@@ -11,11 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.mapleLand.maplelanbackserver.cache.MapPriceStatCacheService;
-import org.mapleLand.maplelanbackserver.dto.Map.MapInterestRequestDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapListDto;
+import org.mapleLand.maplelanbackserver.dto.Map.*;
 import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapRegistrationDto;
 import org.mapleLand.maplelanbackserver.dto.PriceStatDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateIsCompletedDto;
@@ -24,6 +21,7 @@ import org.mapleLand.maplelanbackserver.dto.update.MapUpdateServerColorDto;
 import org.mapleLand.maplelanbackserver.service.MapService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -153,5 +151,12 @@ public class MapController {
         mapService.MapInterRestServiceMethod(dto);
 
         return ResponseEntity.ok(Map.of("message","관심 등록이 완료 되었습니다."));
+    }
+
+    @GetMapping("/api/maps/all")
+    public ResponseEntity<?> findAllMaps() {
+        MapNameListResponseDto response = mapService.findAllMaps();
+
+        return ResponseEntity.ok(response);
     }
 }
