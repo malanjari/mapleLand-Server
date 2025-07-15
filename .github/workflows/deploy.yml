@@ -20,51 +20,43 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            # --- 0. 데이터베이스 컨테이너 실행 보장 ---
+            # 'maple-db' 컨테이너가 실행 중이 아니면 docker-compose.db.yml을 사용하여 새로 생성합니다.
+            if [ ! "$(docker ps -q -f name=maple-db)" ]; then
+              echo "Database container not found. Starting a new one..."
+              # DB 비밀번호를 위한 임시 .env 파일 생성
+              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > ~/db.env
+              # docker-compose.db.yml 파일이 EC2 홈 디렉토리에 있다고 가정하고 실행
+              docker compose -f ~/docker-compose.db.yml --env-file ~/db.env up -d
+              rm ~/db.env # 보안을 위해 비밀번호 파일 즉시 삭제
+            else
+              echo "Database container is already running."
+            fi
+
             # --- 1. 소스코드 준비 ---
-            # app 폴더가 없으면 deploy 브랜치를 직접 클론하고, 있으면 최신 코드를 받아옵니다.
             if [ ! -d "~/app" ]; then
-              echo "Cloning 'deploy' branch from repository..."
               git clone -b deploy https://github.com/malanjari/mapleLand-Server.git ~/app
             fi
             cd ~/app
-            git checkout deploy
             git pull origin deploy
 
-            # --- 1.5. 서버 환경 자동 설정 (Java, Node.js 설치) ---
-            # Java 17 설치 (없는 경우에만)
+            # --- 1.5. 서버 환경 자동 설정 ---
             if ! java -version 2>&1 | grep -q "openjdk 17"; then
-              echo "Java 17 not found, installing..."
-              sudo apt-get update -y
-              sudo apt-get install -y openjdk-17-jdk
-            else
-              echo "Java 17 is already installed."
+              sudo apt-get update -y && sudo apt-get install -y openjdk-17-jdk
             fi
-
-            # Node.js 20 설치 (없거나 버전이 다른 경우에만)
             if ! command -v node &> /dev/null || ! node -v | grep -q "v20."; then
-              echo "Node.js v20 not found or version is not 20, installing..."
               curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
               sudo apt-get install -y nodejs
-            else
-              echo "Node.js v20 is already installed."
             fi
 
             # --- 2. 서버에서 직접 빌드 ---
-            echo "🛠️ Building Spring Boot App on server..."
             chmod +x ./backend/gradlew
             ./backend/gradlew build -x test -p ./backend
-
-            echo "🧾 Building React App on server..."
-            # frontend 디렉토리로 이동하여 npm install 및 build 실행
-            cd ./frontend
-            npm ci
-            npm run build
-            cd .. # 다시 app 루트 디렉토리로 복귀
+            cd ./frontend && npm ci && npm run build && cd ..
 
             # --- 3. Docker로 블루/그린 배포 ---
             echo "🚀 Starting Blue-Green Deployment..."
 
-            # .env 파일 생성
             echo "DB_URL=${{ secrets.DB_URL }}" > .env
             echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
@@ -72,7 +64,6 @@ jobs:
             echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
             echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
 
-            # 현재 실행 중인 그룹 확인
             IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx-1" --format "{{.Names}}")
             if [ -n "$IS_BLUE_RUNNING" ]; then
               TARGET_GROUP=green
@@ -83,19 +74,18 @@ jobs:
             fi
             echo "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
 
-            # 새로운 그룹 빌드 및 실행
             docker compose -f docker-compose.yml -p $TARGET_GROUP up -d --build
 
-            # 헬스 체크 대기
             echo "Waiting for $TARGET_GROUP to be healthy..."
             sleep 30
 
-            # 리버스 프록시 설정 변경 및 재시작
             echo "Switching reverse-proxy to $TARGET_GROUP..."
             sed "s/##TARGET_GROUP##/$TARGET_GROUP/g" ./nginx-proxy/nginx.template.conf > ./nginx-proxy/nginx.conf
-            docker restart reverse-proxy
-            echo "✅ Switched to $TARGET_GROUP successfully!"
+            docker restart ubuntu-proxy-1 || true
 
-            # 이전 그룹 정리
-            docker compose -f docker-compose.yml -p $OLD_GROUP down --volumes || true
+            docker compose -f docker-compose.yml -p $OLD_GROUP down || true
             echo "🧹 Cleaned up $OLD_GROUP group."
+
+            # --- 4. 사용하지 않는 도커 이미지 정리 ---
+            echo "🧹 Cleaning up unused docker images..."
+            docker image prune -a -f

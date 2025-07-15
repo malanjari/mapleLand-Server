@@ -1,0 +1,22 @@
+# ./docker-compose.db.yml
+
+services:
+  db:
+    container_name: maple-db
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: mapledb
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - maple_network
+
+volumes:
+  db_data:
+
+networks:
+  maple_network:
+    external: true
+    name: maple_network

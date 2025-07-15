@@ -1,7 +1,5 @@
 # ./docker-compose.yml
 
-version: '3.8'
-
 services:
   nginx:
     build:
@@ -25,26 +23,10 @@ services:
       DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
       DISCORD_REDIRECT_URI: ${DISCORD_REDIRECT_URI}
-    depends_on:
-      - db
     networks:
       - maple_network
-
-  db:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_DATABASE: mapledb
-    volumes:
-      - db_data:/var/lib/mysql
-    networks:
-      - maple_network
-
-volumes:
-  db_data:
 
 networks:
   maple_network:
     external: true
-    name: maple_network # 외부 네트워크 이름을 명시적으로 지정
+    name: maple_network
