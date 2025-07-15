@@ -40,7 +40,7 @@ jobs:
           npm run build
         working-directory: ./frontend
 
-      # CD 단계: SSH로 서버에 접속하여 배포 수행
+      # CD 단계: SSH로 서버에 접속하여 배포 수행함
       - name: 🚀 Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
