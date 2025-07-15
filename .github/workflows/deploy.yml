@@ -98,6 +98,11 @@ jobs:
             echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
             echo "FRONTEND_REDIRECT_URL=${{ secrets.FRONTEND_REDIRECT_URL }}" >> .env
             echo "DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}" >> .env
+            
+            # --- 디버깅 단계: 생성된 .env 파일 내용 확인 ---
+            echo "---- Verifying .env file content on EC2 ----"
+            cat .env
+            echo "--------------------------------------------"
 
             # --- 2. Docker Hub에서 최신 이미지 받아오기 ---
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
