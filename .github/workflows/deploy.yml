@@ -21,6 +21,10 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: 🛠️ Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        working-directory: ./backend
+
       - name: 🛠️ Build Spring Boot with Gradle
         run: ./gradlew build
         working-directory: ./backend
@@ -68,12 +72,11 @@ jobs:
             echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
 
             # 4. 새로운 그룹 빌드 및 실행
-            # -p 옵션으로 프로젝트 이름을 지정하여 컨테이너 이름에 접두사(blue/green)를 붙입니다.
             docker-compose -f docker-compose.yml -p $TARGET_GROUP up --build -d
 
             # 5. 새 그룹이 정상적으로 실행될 때까지 대기 (Health Check)
             echo "Waiting for $TARGET_GROUP to be healthy..."
-            sleep 30 # 실제 운영에서는 API 헬스체크 엔드포인트를 호출하는 방식으로 개선
+            sleep 30
 
             # 6. '교통 경찰' Nginx의 설정을 새 그룹으로 변경
             echo "Switching reverse-proxy to $TARGET_GROUP..."
