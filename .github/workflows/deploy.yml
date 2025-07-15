@@ -1,6 +1,4 @@
-# .github/workflows/deploy.yml
-
-name: Build on GitHub and Deploy to EC2
+name: Deploy Spring Boot + React to EC2 (Blue-Green)
 
 on:
   push:
@@ -8,105 +6,50 @@ on:
       - deploy
 
 jobs:
-  # -------------------- 1. 빌드 및 이미지 푸시 --------------------
-  build:
-    name: Build & Push Docker Images
+  deploy:
+    name: Build and Deploy (Blue-Green)
     runs-on: ubuntu-latest
+
     steps:
-      - name: ⬇️ Checkout source code
+      - name: 📦 Checkout Repository
         uses: actions/checkout@v3
 
-      # --- Backend Build ---
+      # CI 단계: GitHub Actions Runner에서 빌드 수행 (서버 부하 감소)
       - name: ☕ Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: ✅ Grant execute permission to gradlew
-        run: chmod +x ./backend/gradlew
-      - name: 🛠️ Build Spring Boot App with Gradle
-        run: ./backend/gradlew build -x test -p ./backend
 
-      # --- Frontend Build ---
-      - name: 🟢 Set up Node.js
+      - name: 🛠️ Build Spring Boot with Gradle
+        run: ./gradlew build
+        working-directory: ./backend
+
+      - name: 🧱 Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
-      - name: 📦 Install Frontend Dependencies
-        run: npm ci --prefix ./frontend
-      - name: 🧾 Build Frontend App
-        run: npm run build --prefix ./frontend
+          node-version: '18'
 
-      # --- Docker Push ---
-      - name: 🔑 Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: 🧾 Build React App
+        run: |
+          npm ci
+          npm run build
+        working-directory: ./frontend
 
-      - name: 🖼️ Build and push Backend image
-        uses: docker/build-push-action@v4
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
-
-      - name: 🖼️ Build and push Frontend image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: ./nginx/Dockerfile
-          push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
-
-  # -------------------- 2. EC2에 배포 --------------------
-  deploy:
-    name: Deploy to EC2
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: 🚀 Connect to EC2 and Deploy
+      # CD 단계: SSH로 서버에 접속하여 배포 수행
+      - name: 🚀 Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          timeout: 5m
           script: |
-            # --- 0. 데이터베이스 컨테이너 실행 보장 ---
-            if [ ! "$(docker ps -q -f name=maple-db)" ]; then
-              echo "Database container not found. Starting a new one..."
-              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > ~/db.env
-              docker compose -f ~/docker-compose.db.yml --env-file ~/db.env up -d
-              rm ~/db.env
-            fi
-
-            # --- 1. 최신 소스코드 및 .env 파일 준비 ---
-            if [ ! -d "~/app" ]; then
-              git clone -b deploy https://github.com/malanjari/mapleLand-Server.git ~/app
-            fi
+            # 1. 서버에서 최신 코드 가져오기
             cd ~/app
-            git pull origin deploy
+            git pull origin main
 
-            # .env 파일 생성
-            echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" > .env
-            echo "DB_URL=${{ secrets.DB_URL }}" >> .env
-            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-            echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" >> .env
-            echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
-            echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
-            echo "FRONTEND_REDIRECT_URL=${{ secrets.FRONTEND_REDIRECT_URL }}" >> .env
-            echo "DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}" >> .env
-
-            # --- 2. Docker Hub에서 최신 이미지 받아오기 ---
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker pull ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
-
-            # --- 3. Docker로 블루/그린 배포 ---
-            IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx-1" --format "{{.Names}}")
+            # 2. 현재 실행 중인 그룹 확인하여 다음 타겟 그룹 결정
+            IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx_app-1" --format "{{.Names}}")
             if [ -n "$IS_BLUE_RUNNING" ]; then
               TARGET_GROUP=green
               OLD_GROUP=blue
@@ -116,13 +59,30 @@ jobs:
             fi
             echo "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
 
-            # 이전 그룹 중지
-            docker compose -f docker-compose.yml -p $OLD_GROUP down || true
+            # 3. .env 파일 동적 생성 (보안 강화)
+            echo "DB_URL=${{ secrets.DB_URL }}" > .env
+            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
+            echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" >> .env
+            echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
+            echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
 
-            # 새로운 그룹 실행
-            docker compose -f docker-compose.yml -p $TARGET_GROUP up -d
+            # 4. 새로운 그룹 빌드 및 실행
+            # -p 옵션으로 프로젝트 이름을 지정하여 컨테이너 이름에 접두사(blue/green)를 붙입니다.
+            docker-compose -f docker-compose.yml -p $TARGET_GROUP up --build -d
 
-            echo "✅ Deployment to $TARGET_GROUP completed!"
+            # 5. 새 그룹이 정상적으로 실행될 때까지 대기 (Health Check)
+            echo "Waiting for $TARGET_GROUP to be healthy..."
+            sleep 30 # 실제 운영에서는 API 헬스체크 엔드포인트를 호출하는 방식으로 개선
 
-            # --- 4. 사용하지 않는 도커 이미지 정리 ---
-            docker image prune -a -f
+            # 6. '교통 경찰' Nginx의 설정을 새 그룹으로 변경
+            echo "Switching reverse-proxy to $TARGET_GROUP..."
+            sed "s/##TARGET_GROUP##/$TARGET_GROUP/g" ~/app/nginx-proxy/nginx.template.conf > ~/app/nginx-proxy/nginx.conf
+
+            # 7. '교통 경찰' Nginx 재시작하여 설정 적용
+            docker restart reverse-proxy
+            echo "✅ Switched to $TARGET_GROUP successfully!"
+
+            # 8. 이전 버전 그룹 컨테이너 정리
+            docker-compose -f docker-compose.yml -p $OLD_GROUP down --volumes || true
+            echo "🧹 Cleaned up $OLD_GROUP group."
