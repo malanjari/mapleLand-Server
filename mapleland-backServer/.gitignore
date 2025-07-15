@@ -1,26 +1,24 @@
 HELP.md
-
-# === Gradle ===
-.gradle/
+.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-# === STS(Spring Tool Suite) ===
-.apt_generated/
+### STS ###
+.apt_generated
 .classpath
 .factorypath
 .project
-.settings/
-.springBeans/
-.sts4-cache/
+.settings
+.springBeans
+.sts4-cache
 bin/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
-# === IntelliJ IDEA ===
-.idea/
+### IntelliJ IDEA ###
+.idea
 *.iws
 *.iml
 *.ipr
@@ -28,30 +26,16 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-# === NetBeans ===
+### NetBeans ###
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
-.nb-gradle/
+/.nb-gradle/
 
-# === VS Code ===
+### VS Code ###
 .vscode/
 
-# === Java: 로그, 캐시, 빌드 ===
-*.log
-*.tmp
-*.bak
-*.swp
-
-# === OS 관련 ===
-.DS_Store
-Thumbs.db
-
-# === 환경 설정 파일 (보안) ===
-**/application.properties
-**/application.yml
-**/.env
 /develop
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,intellij+all,gradle,java

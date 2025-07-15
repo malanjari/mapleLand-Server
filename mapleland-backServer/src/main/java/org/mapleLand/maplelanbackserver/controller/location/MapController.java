@@ -1,6 +1,11 @@
 package org.mapleLand.maplelanbackserver.controller.location;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -161,8 +166,7 @@ public class MapController {
     }
 
 
-
-    // 자동완성 api
+    @Operation(summary = "모든 맵 이름을 조회하는 API")
     @GetMapping("/api/maps/all")
     public ResponseEntity<?> findAllMaps() {
         MapNameListResponseDto response = mapService.findAllMaps();

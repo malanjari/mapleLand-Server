@@ -14,7 +14,6 @@ import org.mapleLand.maplelanbackserver.dto.update.MapUpdatePriceDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateServerColorDto;
 import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.enumType.alert.AlertStatus;
-import org.mapleLand.maplelanbackserver.jwtUtil.JwtUtil;
 import org.mapleLand.maplelanbackserver.repository.*;
 import org.mapleLand.maplelanbackserver.resolve.RegionResolver;
 import org.mapleLand.maplelanbackserver.table.*;
@@ -374,7 +373,7 @@ public class MapService {
         List<MapName> MapNameList = mapleLandMapListRepository.findAll()
                 .stream()
                 .map(e -> new MapName(e.getMapleLandMapListId(),
-                        e.getMapName(),e.getMiniMapImageLogoUrl()))
+                        e.getMapName(), e.getMonsterImageUrl()))
                 .toList();
 
         return new MapNameListResponseDto(MapNameList);
