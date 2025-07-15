@@ -384,7 +384,7 @@ public class MapService {
     public MapNameListResponseDto findAllMaps() {
         List<MapName> MapNameList = mapleLandMapListRepository.findAll()
                 .stream()
-                .map(e -> new MapName(e.getMapleLandMapListId(), e.getMapName()))
+                .map(e -> new MapName(e.getMapleLandMapListId(), e.getMapName(), e.getMonsterImageUrl()))
                 .toList();
 
         return new MapNameListResponseDto(MapNameList);

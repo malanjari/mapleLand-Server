@@ -153,6 +153,7 @@ public class MapController {
         return ResponseEntity.ok(Map.of("message","관심 등록이 완료 되었습니다."));
     }
 
+    @Operation(summary = "모든 맵 이름을 조회하는 API")
     @GetMapping("/api/maps/all")
     public ResponseEntity<?> findAllMaps() {
         MapNameListResponseDto response = mapService.findAllMaps();
