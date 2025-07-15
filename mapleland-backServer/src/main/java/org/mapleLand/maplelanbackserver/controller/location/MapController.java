@@ -40,13 +40,15 @@ public class MapController {
     private final MapService mapService;
     private final MapPriceStatCacheService service;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     @PostMapping("/api/create/mapRegister")
     @Operation(summary = "맵 등록 api" , description = "사용자 맵 등록 api")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<Map<String, String>> MapRegister(@RequestBody @Valid MapRegistrationDto dto) {
+    public ResponseEntity<Map<String, String>>
+    MapRegister(@RequestBody @Valid MapRegistrationDto dto,@RequestHeader("Authorization")String token) {
 
 
-        mapService.mapRegisterServiceMethod(dto);
+        mapService.mapRegisterServiceMethod(dto,token);
 
         Map<String, String> map = Map.of(
                 "상태", "200 OK",
@@ -109,7 +111,7 @@ public class MapController {
     }
 
     // -----------Update -----------------------------------------
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     @PostMapping("/api/maps/update/filed")
     @Operation(summary = "사용자가 수정을 누를때 수정하는 api",
     description = "색상 = 초채 , 가격 : 5000만원 , 사용자 코멘트 : 수정완료")
@@ -135,13 +137,20 @@ public class MapController {
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     @PostMapping("/api/alert/interest")
-    public ResponseEntity<Map<String,Serializable>> createInterRest(@RequestBody InterestAlertRequestDto dto) {
-        AlertStatus alertStatus = mapService.MapInterRestServiceMethod(dto);
+    public ResponseEntity<Map<String,Serializable>>
+    createInterRest(@RequestBody InterestAlertRequestDto dto,@RequestHeader("Authorization")String token) {
+        AlertStatus alertStatus = mapService.MapInterRestServiceMethod(dto,token);
 
         if(alertStatus == AlertStatus.ALERT_ON) {
             return ResponseEntity.ok(Map.of(
                     "success", alertStatus,
                     "message", "알람이 설정 되었습니다."
+            ));
+        }
+        if(alertStatus == AlertStatus.INVALID_REQUEST) {
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "Fail", alertStatus,
+                    "message","잘못된 요청입니다."
             ));
         }
 

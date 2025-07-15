@@ -17,10 +17,6 @@ import org.mapleLand.maplelanbackserver.enumType.TradeType;
       @Schema(description = "맵 이름", example = "미나르숲: 남겨진 용의 둥지")
       private String mapName;
 
-      @NotNull(message = "유저 아이디는 필수입니다.")
-      @Schema(description = "유저 PK ID", example = "1")
-      private int userId;
-
       @NotNull(message = "서버 색을 선택해주세요.")
       @Schema(description = "서버 색상 (Red, Yellow, Green 중 하나)", example = "Red")
       private String serverColor;

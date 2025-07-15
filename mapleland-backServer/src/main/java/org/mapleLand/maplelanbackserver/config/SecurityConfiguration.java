@@ -40,11 +40,7 @@ public class SecurityConfiguration {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http, ClientRegistrationRepository clients) throws Exception {
-//        DefaultOAuth2AuthorizationRequestResolver resolver =
-//                new DefaultOAuth2AuthorizationRequestResolver(clients, "/oauth2/authorization");
-//        resolver.setAuthorizationRequestCustomizer(customizer ->
-//                customizer.redirectUri("https://bug-known-goblin.ngrok-free.app/login/oauth2/code/discord")
-//        );
+
 
         http
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)

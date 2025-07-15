@@ -7,6 +7,7 @@ import org.mapleLand.maplelanbackserver.controller.errorController.MaxMapInteres
 import org.mapleLand.maplelanbackserver.controller.errorController.NotFoundUserException;
 import org.mapleLand.maplelanbackserver.dto.Map.InterestAlertRequestDto;
 import org.mapleLand.maplelanbackserver.enumType.alert.AlertStatus;
+import org.mapleLand.maplelanbackserver.jwtUtil.JwtUtil;
 import org.mapleLand.maplelanbackserver.repository.*;
 import org.mapleLand.maplelanbackserver.service.DiscordDmService;
 import org.mapleLand.maplelanbackserver.service.MapleLandUserService;
@@ -26,30 +27,32 @@ public class UtilMethod {
     private final MapInterestRepository interestRepository;
 
 
-    public AlertStatus updateAlertInterest(InterestAlertRequestDto dto) {
+    public AlertStatus updateAlertInterest(InterestAlertRequestDto dto,String token) {
+
+        int userId = JwtUtil.getUserId(token);
 
         //fasle 알람버튼을 안눌렀을 때
         if (dto.alertStatus() == AlertStatus.ALERT_ON) {
-            Optional<MapleJariUserEntity> byUserId = userRepository.findByUserId(dto.userId());
-            if (byUserId.isEmpty()) throw new NotFoundUserException("사용자를 찾을 수 없습니다.");
+            Optional<MapleJariUserEntity> user = userRepository.findByUserId(userId);
+            if (user.isEmpty()) throw new NotFoundUserException("사용자를 찾을 수 없습니다.");
 
             //마뇽 자리
 
             MapleLandMapListEntity jari = mapleLandMapListRepository.findById(dto.mapId()).get();
 
-            boolean exists = interestRepository.existsByMapleLandMapListEntity_MapleLandMapListIdAndMapleJariUserEntity_UserId(dto.mapId(), dto.userId());
+            boolean exists = interestRepository.existsByMapleLandMapListEntity_MapleLandMapListIdAndMapleJariUserEntity_UserId(dto.mapId(),userId);
 
             if (exists) throw new DuplicatedMapInterRestException("⛔ 이미 등록된 관심 맵입니다:");
 
-            long count = interestRepository.countByMapleJariUserEntity(byUserId.get());
+            long count = interestRepository.countByMapleJariUserEntity(user.get());
 
-            log.info("카운터 갯수 = {}",count);
-            if (count > 1) throw new MaxMapInterestLimitException("⛔ 최대 관심 개수를 초과 하였습니다");
+
+            if (count > 1) throw new MaxMapInterestLimitException("⛔ 최대 2개까지 알람 등록이 가능합니다.");
 
 
             interestRepository.save(
                     MapInterestEntity.builder().mapleLandMapListEntity(jari)
-                            .mapleJariUserEntity(byUserId.get())
+                            .mapleJariUserEntity(user.get())
                             .build());
 
             return AlertStatus.ALERT_ON;
@@ -74,6 +77,6 @@ public class UtilMethod {
                 return AlertStatus.ALERT_OFF;
             }
         }
-        return null;
+        return AlertStatus.INVALID_REQUEST;
     }
 }

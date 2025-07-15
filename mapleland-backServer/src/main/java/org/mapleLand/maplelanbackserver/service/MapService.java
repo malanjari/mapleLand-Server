@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapleLand.maplelanbackserver.controller.errorController.*;
 import org.mapleLand.maplelanbackserver.dto.*;
-
 import org.mapleLand.maplelanbackserver.dto.Map.*;
 import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateDto;
@@ -14,6 +13,7 @@ import org.mapleLand.maplelanbackserver.dto.update.MapUpdatePriceDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateServerColorDto;
 import org.mapleLand.maplelanbackserver.enumType.Region;
 import org.mapleLand.maplelanbackserver.enumType.alert.AlertStatus;
+import org.mapleLand.maplelanbackserver.jwtUtil.JwtUtil;
 import org.mapleLand.maplelanbackserver.repository.*;
 import org.mapleLand.maplelanbackserver.resolve.RegionResolver;
 import org.mapleLand.maplelanbackserver.table.*;
@@ -22,7 +22,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -50,11 +49,13 @@ public class MapService {
     private String redirectUrl;
 
 
-    public void mapRegisterServiceMethod(MapRegistrationDto dto) {
+    public void mapRegisterServiceMethod(MapRegistrationDto dto,String token) {
+
+        int userId = JwtUtil.getUserId(token);
 
 
         //사용자 검색 -> 사용자 값 꺼내옴
-        MapleJariUserEntity user = userRepository.findByUserId(dto.getUserId())
+        MapleJariUserEntity user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
 
         //사용자 벤 체크 -> False 벤
@@ -98,15 +99,16 @@ public class MapService {
 
         Set<Integer> alreadySendCheck = new HashSet<>();
 
+
         List<MapInterestEntity> allByMapName = interestRepository.findByMapleLandMapListEntity_MapleLandMapListId(dto.getMapId());
 
         String url = buildMapUrl(dto.getMapName());
 
         for(MapInterestEntity user : allByMapName) {
             String discordId = user.getMapleJariUserEntity().getDiscordId();
+
             MapleJariUserEntity targetUser = user.getMapleJariUserEntity();
             int targetUserId = targetUser.getUserId();
-
 
             if (alreadySendCheck.contains(targetUserId)) continue;
 
@@ -122,7 +124,7 @@ public class MapService {
                 """, dto.getMapName(), dto.getPrice(), url);
             }else  {
                 message =  String.format("""
-               📢 관심뱁 : **%s** 맵이(가) 등록되었습니다!
+               📢 관심맵 : **%s** 맵이(가) 등록되었습니다!
                         
                 💰 가격: %,d 메소 \s
                 
@@ -134,7 +136,6 @@ public class MapService {
 
 
             dmService.sendToUser(discordId,message);
-            alreadySendCheck.add(dto.getUserId());
             alreadySendCheck.add(targetUser.getUserId());
         }
 
@@ -160,9 +161,9 @@ public class MapService {
         }
 
     }
-    public AlertStatus MapInterRestServiceMethod(InterestAlertRequestDto dto) {
+    public AlertStatus MapInterRestServiceMethod(InterestAlertRequestDto dto,String token) {
 
-        return utilMethod.updateAlertInterest(dto);
+        return utilMethod.updateAlertInterest(dto,token);
     }
 
     public MapListDto searchMapsListKeyword(String keyword){

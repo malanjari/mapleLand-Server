@@ -124,7 +124,7 @@ public class GlobalValidationHandler {
         ));
     }
     @ExceptionHandler(MaxMapInterestLimitException.class)
-    public ResponseEntity<Map<String, Object>> handleMaxMapInterestLimit(DuplicatedMapInterRestException ex) {
+    public ResponseEntity<Map<String, Object>> handleMaxMapInterestLimit(MaxMapInterestLimitException ex) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
                 "status","Fail",
                 "error" , Map.of("message", ex.getMessage())

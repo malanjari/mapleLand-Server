@@ -1,9 +1,13 @@
 package org.mapleLand.maplelanbackserver.jwtUtil;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -53,31 +57,27 @@ public class JwtUtil {
                 .compact();
     }
     public static int getUserId(String token) {
-        if (token == null || token.isBlank()) {
-            return 0; // 비로그인 사용자
+        if (token == null || !token.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("❌ 유효하지 않은 Authorization 헤더 형식입니다.");
         }
 
         try {
-            // "Bearer " 접두어 제거 + 공백 제거
-            if (token.startsWith("Bearer ")) {
-                token = token.substring(7).trim();
-            } else {
-                token = token.trim();
+            String jwtToken = token.substring(7).trim(); // "Bearer " 제거
+
+            JwtDecoder jwtDecoder = JwtDecoders.fromIssuerLocation("your-issuer"); // 또는 커스텀 설정
+            Jwt jwt = jwtDecoder.decode(jwtToken);
+
+            Object idObj = jwt.getClaims().get("userId");
+            if (!(idObj instanceof Number number)) {
+                throw new IllegalStateException("❌ userId 클레임이 숫자 타입이 아닙니다: " + idObj);
             }
 
-            Claims claims = getClaims(token);
-            Object value = claims.get("userId");
+            return number.intValue();
 
-            if (value instanceof Number number) {
-                return number.intValue();
-            } else {
-                return 0;
-            }
-        } catch (Exception e) {
-            // 잘못된 토큰 처리: 비로그인 간주
-            System.out.println("❌ JWT 파싱 실패: " + e.getMessage());
-            return 0;
+        } catch (JwtException e) {
+            throw new IllegalArgumentException("❌ JWT 토큰 디코딩 실패: " + e.getMessage(), e);
         }
     }
+
 
 }
