@@ -16,12 +16,15 @@ jobs:
       - name: ⬇️ Checkout source code
         uses: actions/checkout@v3
 
-      # --- 백엔드 빌드 단계 추가 ---
       - name: ☕ Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: ✅ Grant execute permission to gradlew
+        run: chmod +x ./backend/gradlew
+
       - name: 🛠️ Build Spring Boot App with Gradle
         run: ./backend/gradlew build -x test -p ./backend
 
@@ -42,15 +45,15 @@ jobs:
       - name: 🖼️ Build and push Frontend image
         uses: docker/build-push-action@v4
         with:
-          context: . # 프론트엔드 Dockerfile의 context는 프로젝트 루트입니다.
-          file: ./nginx/Dockerfile # Frontend Dockerfile 경로
+          context: .
+          file: ./nginx/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
 
   # -------------------- 2. EC2에 배포 --------------------
   deploy:
     name: Deploy to EC2
-    needs: build # build 작업이 성공해야 실행됩니다.
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: 🚀 Connect to EC2 and Deploy
