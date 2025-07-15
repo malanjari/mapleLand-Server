@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.enumType.victoria;
+package org.mapleland.maplelanbackserver.enumType.victoria;
 
 import lombok.Getter;
 

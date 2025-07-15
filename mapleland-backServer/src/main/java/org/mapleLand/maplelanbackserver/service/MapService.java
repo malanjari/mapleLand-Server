@@ -1,21 +1,25 @@
-package org.mapleLand.maplelanbackserver.service;
+package org.mapleland.maplelanbackserver.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapleLand.maplelanbackserver.controller.errorController.*;
-import org.mapleLand.maplelanbackserver.dto.*;
-
-import org.mapleLand.maplelanbackserver.dto.Map.*;
-import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
-import org.mapleLand.maplelanbackserver.dto.update.MapUpdateDto;
-import org.mapleLand.maplelanbackserver.dto.update.MapUpdateIsCompletedDto;
-import org.mapleLand.maplelanbackserver.dto.update.MapUpdatePriceDto;
-import org.mapleLand.maplelanbackserver.dto.update.MapUpdateServerColorDto;
-import org.mapleLand.maplelanbackserver.enumType.Region;
-import org.mapleLand.maplelanbackserver.repository.*;
-import org.mapleLand.maplelanbackserver.resolve.RegionResolver;
-import org.mapleLand.maplelanbackserver.table.*;
+import org.mapleland.maplelanbackserver.dto.Map.*;
+import org.mapleland.maplelanbackserver.dto.response.DropItemResponse;
+import org.mapleland.maplelanbackserver.dto.request.JariUpdateRequest;
+import org.mapleland.maplelanbackserver.dto.request.JariIsCompletedRequest;
+import org.mapleland.maplelanbackserver.dto.response.PriceStatDto;
+import org.mapleland.maplelanbackserver.dto.update.PriceUpdateRequest;
+import org.mapleland.maplelanbackserver.dto.update.ServerColorRequest;
+import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
+import org.mapleland.maplelanbackserver.exception.NotFoundMapException;
+import org.mapleland.maplelanbackserver.exception.NotFoundMapTicketException;
+import org.mapleland.maplelanbackserver.exception.NotFoundUserException;
+import org.mapleland.maplelanbackserver.jwtUtil.JwtUtil;
+import org.mapleland.maplelanbackserver.repository.*;
+import org.mapleland.maplelanbackserver.resolve.RegionResolver;
+import org.mapleland.maplelanbackserver.table.*;
+import org.mapleland.maplelanbackserver.utilmethod.UtilMethod;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -33,25 +37,28 @@ import java.time.LocalDateTime;
 public class MapService {
 
     ModelMapper modelMapper = new ModelMapper();
-    private final UserMapRegisterRepository registerRepository;
-    private final MapleJariUserRepository userRepository;
-    private final MapleLandUserService userActiveCheckService;
-    private final MapleLandMapListRepository mapleLandMapListRepository;
-    private final UserMapRegisterRepository userMapRegisterRepository;
-    private final MapDropItemRepository mapDropItemRepository;
+    private final jariRepository registerRepository;
+    private final userRepository userRepository;
+    private final UserService userActiveCheckService;
+    private final MapleMapRepository mapleMapRepository;
+    private final jariRepository jariRepository;
+    private final MonsterDropItemRepository monsterDropItemRepository;
     private final DiscordDmService dmService;
-    private final MapInterestRepository interestRepository;
+    private final MapInterRestRepository interestRepository;
+    private final UtilMethod utilMethod;
 
     String message;
     @Value("${frontend.redirect-url}")
     private String redirectUrl;
 
 
-    public void mapRegisterServiceMethod(MapRegistrationDto dto) {
+    public void mapRegisterServiceMethod(JariCreatedRequest dto, String token) {
+
+        int userId = JwtUtil.getUserId(token);
 
 
         //사용자 검색 -> 사용자 값 꺼내옴
-        MapleJariUserEntity user = userRepository.findByUserId(dto.getUserId())
+        User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
 
         //사용자 벤 체크 -> False 벤
@@ -62,7 +69,7 @@ public class MapService {
 
 
         // 매칭 맵 정보 추출
-        MapleLandMapListEntity mapInfo = getFirstMatchedMap(dto.getMapName());
+        MapleMap mapInfo = getFirstMatchedMap(dto.getMapName());
 
         // 등록 티켓 확인
         if (!user.getMapTicket()) {
@@ -73,14 +80,14 @@ public class MapService {
         user.setMapTicket(true);
 
         // Entity 변환 및 등록
-        MapRegistrationEntity entity = modelMapper.map(dto, MapRegistrationEntity.class);
+        jari entity = modelMapper.map(dto, jari.class);
         entity.setUserMapId(null);
         entity.setArea(region);
         entity.setIsCompleted(false);
         entity.setMonsterImageUrl(mapInfo.getMonsterImageUrl());
-        entity.setMapleJariUserEntity(user);
+        entity.setUser(user);
 
-        interRestUser(dto);
+        interRestUser(dto,userId);
         registerRepository.save(entity);
 
     }
@@ -91,23 +98,25 @@ public class MapService {
                 .replace("+", "%20");
         return redirectUrl + "/jari/" + encoded;
     }
-    public void interRestUser(MapRegistrationDto dto){
+    public void interRestUser(JariCreatedRequest dto, int userId){
 
         Set<Integer> alreadySendCheck = new HashSet<>();
 
-        List<MapInterestEntity> allByMapName = interestRepository.findByMapleLandMapListEntity_MapleLandMapListId(dto.getMapId());
+
+        List<MapInterRest> allByMapName = interestRepository.
+                findByMapleMap_MapleLandMapListId(dto.getMapId());
 
         String url = buildMapUrl(dto.getMapName());
 
-        for(MapInterestEntity user : allByMapName) {
-            String discordId = user.getMapleJariUserEntity().getDiscordId();
-            MapleJariUserEntity targetUser = user.getMapleJariUserEntity();
-            int targetUserId = targetUser.getUserId();
+        for(MapInterRest user : allByMapName) {
+            String discordId = user.getUser().getDiscordId();
 
+            User targetUser = user.getUser();
+            int targetUserId = targetUser.getUserId();
 
             if (alreadySendCheck.contains(targetUserId)) continue;
 
-            if(targetUser.getUserId().equals(dto.getUserId())) {
+            if(targetUser.getUserId().equals(userId)) {
                 message =  String.format("""
                 📢 **%s** 맵이(가) 등록되었습니다!
                         
@@ -119,7 +128,7 @@ public class MapService {
                 """, dto.getMapName(), dto.getPrice(), url);
             }else  {
                 message =  String.format("""
-               📢 관심뱁 : **%s** 맵이(가) 등록되었습니다!
+               📢 관심맵 : **%s** 맵이(가) 등록되었습니다!
                         
                 💰 가격: %,d 메소 \s
                 
@@ -131,12 +140,11 @@ public class MapService {
 
 
             dmService.sendToUser(discordId,message);
-            alreadySendCheck.add(dto.getUserId());
             alreadySendCheck.add(targetUser.getUserId());
         }
 
-        if(!alreadySendCheck.contains(dto.getUserId())) {
-            MapleJariUserEntity user = userRepository.findByUserId(dto.getUserId()).
+        if(!alreadySendCheck.contains(userId)) {
+            User user = userRepository.findByUserId(userId).
                     orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
 
             String discordId = user.getDiscordId();
@@ -157,43 +165,28 @@ public class MapService {
         }
 
     }
-    public void MapInterRestServiceMethod(MapInterestRequestDto dto) {
+    public AlertStatus MapInterRestServiceMethod(AlertRequest dto, String token) {
 
-
-        Optional<MapleJariUserEntity> byUserId = userRepository.findByUserId(dto.userId());
-        if(byUserId.isEmpty()) throw new NotFoundUserException("사용자를 찾을 수 없습니다.");
-
-        MapleLandMapListEntity jari = mapleLandMapListRepository.findById(dto.mapId()).get();
-
-        boolean exists = interestRepository
-                .existsByMapleLandMapListEntityAndMapleJariUserEntity(jari,byUserId.get());
-
-        if(exists) throw new DuplicatedMapInterRestException("⛔ 이미 등록된 관심 맵입니다:");
-
-        long count = interestRepository.countByMapleJariUserEntity(byUserId.get());
-
-        if(count > 2) throw new MaxMapInterestLimitException("⛔ 최대 관심 개수를 초과 하였습니다");
-
-
-        interestRepository.save(
-                MapInterestEntity.builder().mapleLandMapListEntity(jari)
-                        .mapleJariUserEntity(byUserId.get())
-                        .build());
-
+        return utilMethod.updateAlertInterest(dto,token);
     }
 
-    public MapListDto searchMapsListKeyword(String keyword){
+    public MapResponse searchMapsListKeyword(String keyword){
 //        List<MapDto> mapDtos = searchMapsByKeyword(keyword);
-        List<DropItemDto> dropItemDtos = monsterInfo(keyword);
+
+
+        List<DropItemResponse> dropItemResponses = monsterInfo(keyword);
         List<PriceStatDto> priceStatDtos = iqrPriceAvgLast6Hours(keyword);
-        return new MapListDto(dropItemDtos,priceStatDtos);
+
+
+
+        return new MapResponse(dropItemResponses, priceStatDtos);
     }
 
 
 
-    public List<MapDto> searchMapsByKeyword(String keyword) {
+    public List<JariResponse> searchMapsByKeyword(String keyword) {
         PageRequest pageRequest = PageRequest.of(0, 100); // 첫 페이지, 100개
-        List<MapRegistrationEntity> results = userMapRegisterRepository.findTop100ByMapNameWithUser(keyword,pageRequest);
+        List<jari> results = jariRepository.findTop100ByMapNameWithUser(keyword,pageRequest);
         System.out.println("🔍 검색된 결과 수: " + results.size());
 
 
@@ -202,8 +195,8 @@ public class MapService {
 
         return results.stream()
                 .map(e -> {
-                    var user = e.getMapleJariUserEntity();
-                    return new MapDto(
+                    var user = e.getUser();
+                    return new JariResponse(
                             e.getUserMapId(),
                             e.getMapName(),
                             e.getServerColor(),
@@ -224,8 +217,8 @@ public class MapService {
                 .toList();
     }
 
-    public MapleLandMapListEntity getFirstMatchedMap(String keyword) {
-        return mapleLandMapListRepository
+    public MapleMap getFirstMatchedMap(String keyword) {
+        return mapleMapRepository
                 .findByMapNameExact(keyword)
                 .stream()
                 .findFirst()
@@ -233,12 +226,12 @@ public class MapService {
     }
 
 
-    public List<DropItemDto> monsterInfo(String keyword) {
+    public List<DropItemResponse> monsterInfo(String keyword) {
 
-        List<MapDropItemEntity> byMapName = mapDropItemRepository.findByMapName(keyword);
+        List<MonsterDropItem> byMapName = monsterDropItemRepository.findByMapName(keyword);
 
         return byMapName.stream().map(
-                        p-> new DropItemDto(p.getMapName(),
+                        p-> new DropItemResponse(p.getMapName(),
                                 p.getItemName(),
                                 p.getItemImageUrl(),p.getDropRate()))
                 .toList();
@@ -246,15 +239,15 @@ public class MapService {
 
 
 
-    public List<MapDto> findByRegionTag(String keyword){
-        List<MapRegistrationEntity> byArea = userMapRegisterRepository.findByArea(Region.valueOf(keyword));
+    public List<JariResponse> findByRegionTag(String keyword){
+        List<jari> byArea = jariRepository.findByArea(Region.valueOf(keyword));
 
 
 
         return byArea.stream()
                 .map(e -> {
-                    var user = e.getMapleJariUserEntity();
-                    return new MapDto(
+                    var user = e.getUser();
+                    return new JariResponse(
                             e.getUserMapId(),
                             e.getMapName(),
                             e.getServerColor(),
@@ -282,8 +275,8 @@ public class MapService {
         LocalDateTime endTime = now;
 
         // 2. 최근 6시간 거래 조회 (isCompleted = true)
-        List<MapRegistrationEntity> completed =
-                userMapRegisterRepository.findCompletedByMapNameIgnoreSpaceAndDate(keyword, startTime, endTime);
+        List<jari> completed =
+                jariRepository.findCompletedByMapNameIgnoreSpaceAndDate(keyword, startTime, endTime);
 
         // 3. 시간 슬롯 생성 (6개)
         List<LocalDateTime> hourlySlots = new ArrayList<>();
@@ -301,7 +294,7 @@ public class MapService {
 
             List<Integer> prices = completed.stream()
                     .filter(e -> !e.getCreateTime().isBefore(slotStart) && e.getCreateTime().isBefore(slotEnd))
-                    .map(MapRegistrationEntity::getPrice)
+                    .map(jari::getPrice)
                     .toList();
 
             if (prices.isEmpty()) {
@@ -334,44 +327,44 @@ public class MapService {
         return filtered.stream().mapToInt(i -> i).average().orElse(0);
     }
 
-    public void mapUpdateAll(MapUpdateDto mapUpdateDto){
-        log.info("mapUpdateDto.mapId() = {}", mapUpdateDto.mapId());
-        MapRegistrationEntity byUserMapId = registerRepository.findByUserMapId(mapUpdateDto.mapId());
+    public void mapUpdateAll(JariUpdateRequest jariUpdateRequest){
+        log.info("mapUpdateDto.mapId() = {}", jariUpdateRequest.mapId());
+        jari byUserMapId = registerRepository.findByUserMapId(jariUpdateRequest.mapId());
         if (byUserMapId == null) {
-            log.error("❌ 해당 mapId로 MapRegistrationEntity 를 찾을 수 없습니다: {}", mapUpdateDto.mapId());
-            throw new RuntimeException("존재하지 않는 mapId입니다: " + mapUpdateDto.mapId());
+            log.error("❌ 해당 mapId로 MapRegistrationEntity 를 찾을 수 없습니다: {}", jariUpdateRequest.mapId());
+            throw new RuntimeException("존재하지 않는 mapId입니다: " + jariUpdateRequest.mapId());
         }
 
-        byUserMapId.setServerColor(mapUpdateDto.serverColor());
-        byUserMapId.setPrice(mapUpdateDto.price());
-        byUserMapId.setNegotiationOption(mapUpdateDto.negotiationOption());
-        byUserMapId.setComment(mapUpdateDto.comment());
+        byUserMapId.setServerColor(jariUpdateRequest.serverColor());
+        byUserMapId.setPrice(jariUpdateRequest.price());
+        byUserMapId.setNegotiationOption(jariUpdateRequest.negotiationOption());
+        byUserMapId.setComment(jariUpdateRequest.comment());
 
         registerRepository.save(byUserMapId);
 
     }
 
 
-    public void mapUpdatePrice(MapUpdatePriceDto priceDto) {
-        MapRegistrationEntity byUserId = registerRepository.findByUserMapId(priceDto.mapId());
+    public void mapUpdatePrice(PriceUpdateRequest priceDto) {
+        jari byUserId = registerRepository.findByUserMapId(priceDto.mapId());
         byUserId.setPrice(priceDto.price());
         registerRepository.save(byUserId);
 
     }
 
-    public void mapUpdateServerColor(MapUpdateServerColorDto dto) {
-        MapRegistrationEntity byUserId = registerRepository.findByUserMapId(dto.mapId());
+    public void mapUpdateServerColor(ServerColorRequest dto) {
+        jari byUserId = registerRepository.findByUserMapId(dto.mapId());
         byUserId.setServerColor(dto.color());
         registerRepository.save(byUserId);
     }
 
     public void mapDelete(int mapId) {
-        MapRegistrationEntity byUserId = registerRepository.findByUserMapId(mapId);
+        jari byUserId = registerRepository.findByUserMapId(mapId);
         registerRepository.delete(byUserId);
     }
 
-    public void updateIsCompleted(MapUpdateIsCompletedDto dto) {
-        MapRegistrationEntity byUserMapId = registerRepository.findByUserMapId(dto.mapId());
+    public void updateIsCompleted(JariIsCompletedRequest dto) {
+        jari byUserMapId = registerRepository.findByUserMapId(dto.mapId());
 
         if(byUserMapId == null) throw new NotFoundMapException("게시글을 찾을 수 없습니다.");
 
@@ -381,12 +374,17 @@ public class MapService {
 
     }
 
-    public MapNameListResponseDto findAllMaps() {
-        List<MapName> MapNameList = mapleLandMapListRepository.findAll()
+    public MapNameListResponse findAllMaps() {
+        List<MapName> MapNameList = mapleMapRepository.findAll()
                 .stream()
-                .map(e -> new MapName(e.getMapleLandMapListId(), e.getMapName(), e.getMonsterImageUrl(), e.getMiniMapImageUrl()))
+                .map(e -> new MapName(e.getMapleLandMapListId(),
+                        e.getMapName(),
+                        e.getMonsterImageUrl(),
+                        e.getMiniMapImageUrl(),
+                        e.getMiniMapImageLogoUrl()
+                ))
                 .toList();
 
-        return new MapNameListResponseDto(MapNameList);
+        return new MapNameListResponse(MapNameList);
     }
 }

@@ -1,16 +1,16 @@
-package org.mapleLand.maplelanbackserver.init.map;
+package org.mapleland.maplelanbackserver.init.map;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.enumType.Region;
-import org.mapleLand.maplelanbackserver.enumType.victoria.VictoriaLoadRegion;
-import org.mapleLand.maplelanbackserver.repository.MapleLandMapListRepository;
-import org.mapleLand.maplelanbackserver.table.MapleLandMapListEntity;
+import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.victoria.VictoriaLoadRegion;
+import org.mapleland.maplelanbackserver.repository.MapleMapRepository;
+import org.mapleland.maplelanbackserver.table.MapleMap;
 import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class VictoriaMapInitializer {
 
-    private final MapleLandMapListRepository mapleLandMapListRepository;
+    private final MapleMapRepository mapleMapRepository;
 
 
         public void VictoriaInit(){
@@ -18,7 +18,7 @@ public class VictoriaMapInitializer {
 
             // --------------- 빅토리아 아일랜드 --------------------------------------------
 
-                mapleLandMapListRepository.save(MapleLandMapListEntity
+                mapleMapRepository.save(MapleMap
                         .builder().
                         mapName("히든스트리트: 골렘의 숲")
                         .region(Region.Victoria)
@@ -28,7 +28,7 @@ public class VictoriaMapInitializer {
                         .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/item/4001148/icon?resize=2")
                         .build());
 
-                mapleLandMapListRepository.save(MapleLandMapListEntity
+                mapleMapRepository.save(MapleMap
                         .builder().
                         mapName("일본:버섯의 전당")
                         .region(Region.Victoria)

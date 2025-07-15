@@ -1,6 +1,6 @@
-package org.mapleLand.maplelanbackserver.cache;
+package org.mapleland.maplelanbackserver.cache;
 
-import org.mapleLand.maplelanbackserver.dto.PriceStatDto;
+import org.mapleland.maplelanbackserver.dto.response.PriceStatDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;

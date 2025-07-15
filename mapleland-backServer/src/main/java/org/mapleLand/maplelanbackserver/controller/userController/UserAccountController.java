@@ -1,58 +1,35 @@
-package org.mapleLand.maplelanbackserver.controller.userController;
+package org.mapleland.maplelanbackserver.controller.userController;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.dto.user.UserDetailResponseDto;
-import org.mapleLand.maplelanbackserver.dto.user.UserMapRegistrationDto;
-import org.mapleLand.maplelanbackserver.service.MapleLandUserService;
+import org.mapleland.maplelanbackserver.dto.user.LoginStatusResponse;
+import org.mapleland.maplelanbackserver.dto.user.ResponseUserDetailDto;
+import org.mapleland.maplelanbackserver.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
-
 @RestController
 @RequiredArgsConstructor
 public class UserAccountController {
 
     private final JwtDecoder jwtDecoder;
-    private final MapleLandUserService mapleLandUserService;
+    private final UserService userService;
 
     @GetMapping("/api/user")
     public ResponseEntity<?> getUserAccount(
-            @RequestHeader(name = "Authorization", required = false) String authHeader
-    ) {
-        // 1) 인증 헤더가 없는 경우 → 로그인 안 한 사용자로 간주
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.ok(Map.of("loggedIn", false));
-        }
+            @RequestHeader(name = "Authorization", required = false) String authHeader) {
 
-        String token = authHeader.substring(7);
+        LoginStatusResponse loginStatusResponse = userService.checkLoginStatus(authHeader);
 
-        Jwt jwt;
-        try {
-            jwt = jwtDecoder.decode(token);
-        } catch (Exception ex) {
-            // 토큰은 있는데 유효하지 않으면 → 로그인 만료 or 변조된 토큰
-            return ResponseEntity.ok(Map.of("loggedIn", false));
-        }
-
-        // 로그인된 사용자
-        return ResponseEntity.ok(Map.of(
-                "loggedIn", true,
-                "user", jwt.getClaims()  // 또는 필요한 필드만 추려서 반환
-        ));
-    // 또는 필요한 필드만 추려서 반환
+        return ResponseEntity.ok(loginStatusResponse);
     }
 
     @GetMapping("/api/user/{userId}")
-    public ResponseEntity<UserDetailResponseDto> getUserDetail(@PathVariable Integer userId) {
-        UserDetailResponseDto userDetail = mapleLandUserService.getUserDetailServiceMethod(userId);
-
-
+    public ResponseEntity<ResponseUserDetailDto> getUserDetail(@PathVariable Integer userId) {
+        ResponseUserDetailDto userDetail = userService.getUserDetailServiceMethod(userId);
 
         return ResponseEntity.ok(userDetail);
     }

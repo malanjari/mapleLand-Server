@@ -1,23 +1,24 @@
-package org.mapleLand.maplelanbackserver.service;
+package org.mapleland.maplelanbackserver.service;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.repository.MapleLandMapListRepository;
-import org.mapleLand.maplelanbackserver.table.MapleLandMapListEntity;
+import org.mapleland.maplelanbackserver.repository.MapleMapRepository;
+import org.mapleland.maplelanbackserver.table.MapleMap;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Deprecated
 public class AutoCompleteService {
 
-    private final MapleLandMapListRepository mapleLandMapListRepository;
+    private final MapleMapRepository mapleMapRepository;
     private final MapPopularityService popularityService;
 
 
-    public List<MapleLandMapListEntity> getSuggestedMapNames(String keyword) {
+    public List<MapleMap> getSuggestedMapNames(String keyword) {
         String cleanedKeyword = keyword.replaceAll("\\s+", "");
-        List<MapleLandMapListEntity> byMapName = mapleLandMapListRepository.findByMapName(cleanedKeyword);
+        List<MapleMap> byMapName = mapleMapRepository.findByMapName(cleanedKeyword);
         byMapName.forEach(e -> System.out.println(e.toString()));
         return byMapName;
     }

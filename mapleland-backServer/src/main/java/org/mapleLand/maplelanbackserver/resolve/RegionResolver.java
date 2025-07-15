@@ -1,14 +1,13 @@
-package org.mapleLand.maplelanbackserver.resolve;
+package org.mapleland.maplelanbackserver.resolve;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mapleLand.maplelanbackserver.controller.errorController.MapNameMismatchException;
-import org.mapleLand.maplelanbackserver.enumType.aquarium.Aquarium;
-import org.mapleLand.maplelanbackserver.enumType.elnath.Elnath;
-import org.mapleLand.maplelanbackserver.enumType.Region;
-import org.mapleLand.maplelanbackserver.enumType.leafre.Leafre;
-import org.mapleLand.maplelanbackserver.enumType.ludibrium.Ludibrium;
-import org.mapleLand.maplelanbackserver.enumType.victoria.VictoriaLoad;
-import org.springframework.stereotype.Component;
+import org.mapleland.maplelanbackserver.exception.MapNameMismatchException;
+import org.mapleland.maplelanbackserver.enumType.aquarium.Aquarium;
+import org.mapleland.maplelanbackserver.enumType.elnath.Elnath;
+import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.leafre.Leafre;
+import org.mapleland.maplelanbackserver.enumType.ludibrium.Ludibrium;
+import org.mapleland.maplelanbackserver.enumType.victoria.VictoriaLoad;
 
 import java.util.Arrays;
 

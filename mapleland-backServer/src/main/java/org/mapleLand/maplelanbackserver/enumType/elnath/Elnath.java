@@ -1,9 +1,6 @@
-package org.mapleLand.maplelanbackserver.enumType.elnath;
+package org.mapleland.maplelanbackserver.enumType.elnath;
 
 import lombok.Getter;
-import org.mapleLand.maplelanbackserver.controller.errorController.MapNameMismatchException;
-
-import java.util.Arrays;
 
 @Getter
 public enum Elnath {

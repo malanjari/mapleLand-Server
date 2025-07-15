@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.dto.user;
+package org.mapleland.maplelanbackserver.dto.user;
 
 import java.time.LocalDateTime;
 
@@ -9,6 +9,4 @@ public record UserInfoDto(
         String globalName,
         Boolean mapTicket,
         String userName,
-        String email
-) {
-} 
+        String email) { }

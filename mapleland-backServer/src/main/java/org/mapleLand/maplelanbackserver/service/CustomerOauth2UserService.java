@@ -1,9 +1,9 @@
-package org.mapleLand.maplelanbackserver.service;
+package org.mapleland.maplelanbackserver.service;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.filter.AdminCheckFilter;
-import org.mapleLand.maplelanbackserver.repository.MapleJariUserRepository;
-import org.mapleLand.maplelanbackserver.table.MapleJariUserEntity;
+import org.mapleland.maplelanbackserver.filter.AdminCheckFilter;
+import org.mapleland.maplelanbackserver.repository.userRepository;
+import org.mapleland.maplelanbackserver.table.User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -19,7 +19,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomerOauth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final MapleJariUserRepository mapleJariUserRepository;
+    private final userRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -41,9 +41,9 @@ public class CustomerOauth2UserService implements OAuth2UserService<OAuth2UserRe
          * {}는 여러 줄 실행 또는 return을 명시해야 할 때 사용.
          */
 
-        mapleJariUserRepository.findByDiscordId(discordId).
+        userRepository.findByDiscordId(discordId).
                 orElseGet(() -> {
-                    MapleJariUserEntity mapleJariUserEntity = MapleJariUserEntity.builder()
+                    User user = User.builder()
                             .discordId(discordId)
                             .email(email)
                             .userName(username)
@@ -56,25 +56,25 @@ public class CustomerOauth2UserService implements OAuth2UserService<OAuth2UserRe
                             .image(avatar)
                             .isActive(true)
                             .build();
-                    return mapleJariUserRepository.save(mapleJariUserEntity);
+                    return userRepository.save(user);
                 });
 
-        Optional<MapleJariUserEntity> byDiscordId = mapleJariUserRepository.findByDiscordId(discordId);
-        MapleJariUserEntity mapleJariUserEntity = byDiscordId.get();
+        Optional<User> byDiscordId = userRepository.findByDiscordId(discordId);
+        User user = byDiscordId.get();
         boolean update = false;
 
-        if(!Objects.equals(mapleJariUserEntity.getGlobalName(),globalName)) {
-            mapleJariUserEntity.setGlobalName(globalName);
+        if(!Objects.equals(user.getGlobalName(),globalName)) {
+            user.setGlobalName(globalName);
             update = true;
         }
 
-        if(!Objects.equals(mapleJariUserEntity.getImage(),avatar)) {
-            mapleJariUserEntity.setImage(avatar);
+        if(!Objects.equals(user.getImage(),avatar)) {
+            user.setImage(avatar);
             update = true;
         }
 
         if(update) {
-            mapleJariUserRepository.save(mapleJariUserEntity);
+            userRepository.save(user);
         }
 
         return oAuth2User;

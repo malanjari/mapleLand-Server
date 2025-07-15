@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.filter;
+package org.mapleland.maplelanbackserver.filter;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -7,9 +7,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapleLand.maplelanbackserver.repository.MapleJariUserRepository;
-import org.mapleLand.maplelanbackserver.table.MapleJariUserEntity;
-import org.mapleLand.maplelanbackserver.jwtUtil.JwtUtil;
+import org.mapleland.maplelanbackserver.repository.userRepository;
+import org.mapleland.maplelanbackserver.table.User;
+import org.mapleland.maplelanbackserver.jwtUtil.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,7 +23,7 @@ import java.util.List;
 @Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final MapleJariUserRepository mapleJariUserRepository;
+    private final userRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -46,7 +46,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 Claims claims = JwtUtil.getClaims(token);
                 String discordId = claims.get("id", String.class);
 
-                MapleJariUserEntity user = mapleJariUserRepository.findByDiscordId(discordId)
+                User user = userRepository.findByDiscordId(discordId)
                         .orElseThrow();
 
 

@@ -1,8 +1,8 @@
-package org.mapleLand.maplelanbackserver.cache;
+package org.mapleland.maplelanbackserver.cache;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.mapleLand.maplelanbackserver.dto.PriceStatDto;
+import org.mapleland.maplelanbackserver.dto.response.PriceStatDto;
 
 import java.time.LocalDateTime;
 import java.util.List;

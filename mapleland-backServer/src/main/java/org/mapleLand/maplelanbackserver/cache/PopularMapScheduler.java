@@ -1,7 +1,7 @@
-package org.mapleLand.maplelanbackserver.cache;
+package org.mapleland.maplelanbackserver.cache;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.service.MapPopularityService;
+import org.mapleland.maplelanbackserver.service.MapPopularityService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

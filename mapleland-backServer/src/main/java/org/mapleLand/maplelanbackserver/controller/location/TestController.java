@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.controller.location;
+package org.mapleland.maplelanbackserver.controller.location;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.config;
+package org.mapleland.maplelanbackserver.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.security.SecurityScheme;

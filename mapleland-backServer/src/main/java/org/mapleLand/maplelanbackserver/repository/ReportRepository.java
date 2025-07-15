@@ -1,9 +1,9 @@
-package org.mapleLand.maplelanbackserver.repository;
+package org.mapleland.maplelanbackserver.repository;
 
-import org.mapleLand.maplelanbackserver.table.MapleLandMapListEntity;
+import org.mapleland.maplelanbackserver.table.MapleMap;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReportRepository extends JpaRepository<MapleLandMapListEntity, Integer> {
+public interface ReportRepository extends JpaRepository<MapleMap, Integer> {
 
 }
 

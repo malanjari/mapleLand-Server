@@ -1,9 +1,6 @@
-package org.mapleLand.maplelanbackserver.enumType.leafre;
+package org.mapleland.maplelanbackserver.enumType.leafre;
 
 import lombok.Getter;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Arrays;
 
 @Getter
 public enum Leafre {

@@ -1,7 +1,7 @@
-package org.mapleLand.maplelanbackserver.init.map;
+package org.mapleland.maplelanbackserver.init.map;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.service.MapPopularityService;
+import org.mapleland.maplelanbackserver.service.MapPopularityService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver;
+package org.mapleland.maplelanbackserver;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

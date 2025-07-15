@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.config;
+package org.mapleland.maplelanbackserver.config;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;

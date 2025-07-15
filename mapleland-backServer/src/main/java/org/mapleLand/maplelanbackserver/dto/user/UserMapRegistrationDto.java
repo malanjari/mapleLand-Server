@@ -1,7 +1,7 @@
-package org.mapleLand.maplelanbackserver.dto.user;
+package org.mapleland.maplelanbackserver.dto.user;
 
-import org.mapleLand.maplelanbackserver.enumType.Region;
-import org.mapleLand.maplelanbackserver.enumType.TradeType;
+import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.TradeType;
 
 import java.time.LocalDateTime;
 

@@ -1,27 +1,27 @@
-package org.mapleLand.maplelanbackserver.service;
+package org.mapleland.maplelanbackserver.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapleLand.maplelanbackserver.dto.Map.MapPopularityDto;
-import org.mapleLand.maplelanbackserver.enumType.Region;
-import org.mapleLand.maplelanbackserver.repository.UserMapRegisterRepository;
-import org.mapleLand.maplelanbackserver.table.MapRegistrationEntity;
+import org.mapleland.maplelanbackserver.dto.Map.MapPopularityResponse;
+import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.repository.jariRepository;
+import org.mapleland.maplelanbackserver.table.jari;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class MapPopularityService {
 
-    private List<MapPopularityDto> cachedPopularMaps = List.of();
+    private List<MapPopularityResponse> cachedPopularMaps = List.of();
 
-    private final UserMapRegisterRepository mapRegisterRepository;
+    private final jariRepository mapRegisterRepository;
 
 
     private static final Map<Region, List<String>> regionPrefixes = Map.of(
@@ -34,30 +34,30 @@ public class MapPopularityService {
             // 필요한 지역 더 추가 가능
     );
 
-    public List<MapPopularityDto> getTopPopularMaps(int limit) {
+    public List<MapPopularityResponse> getTopPopularMaps(int limit) {
         return cachedPopularMaps.stream().limit(limit).toList();
     }
     public void refreshPopularMaps() {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
-        List<MapRegistrationEntity> entities = mapRegisterRepository.findAllWithinOneWeek(oneWeekAgo);
+        List<jari> entities = mapRegisterRepository.findAllWithinOneWeek(oneWeekAgo);
 
         System.out.println("🕒 [인기맵 갱신] 최근 일주일 등록 수: " + entities.size());
 
-        Map<String, List<MapRegistrationEntity>> grouped = entities.stream()
-                .collect(Collectors.groupingBy(MapRegistrationEntity::getMapName));
+        Map<String, List<jari>> grouped = entities.stream()
+                .collect(Collectors.groupingBy(jari::getMapName));
 
         this.cachedPopularMaps = grouped.entrySet().stream()
                 .map(entry -> {
                     String mapName = entry.getKey();
-                    List<MapRegistrationEntity> maps = entry.getValue();
+                    List<jari> maps = entry.getValue();
 
                     int registerCount = maps.size();
                     String area = maps.get(0).getArea().name();
                     String monsterImg = maps.get(0).getMonsterImageUrl();
 
-                    return new MapPopularityDto(mapName, registerCount, area, monsterImg);
+                    return new MapPopularityResponse(mapName, registerCount, area, monsterImg);
                 })
-                .sorted(Comparator.comparingInt(MapPopularityDto::registerCount).reversed())
+                .sorted(Comparator.comparingInt(MapPopularityResponse::registerCount).reversed())
                 .limit(9)
                 .toList();
 
@@ -73,6 +73,7 @@ public class MapPopularityService {
         }
         return input;
     }
+
     private double getPercentile(List<Integer> sortedList, double percentile) {
         if (sortedList.isEmpty()) return 0;
         int index = (int) Math.ceil(percentile / 100.0 * sortedList.size()) - 1;

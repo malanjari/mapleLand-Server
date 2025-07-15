@@ -1,10 +1,10 @@
-package org.mapleLand.maplelanbackserver.controller.location;
+package org.mapleland.maplelanbackserver.controller.location;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.service.AutoCompleteService;
-import org.mapleLand.maplelanbackserver.table.MapleLandMapListEntity;
+import org.mapleland.maplelanbackserver.service.AutoCompleteService;
+import org.mapleland.maplelanbackserver.table.MapleMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +20,7 @@ public class MapAutoCompleteController {
 
     @GetMapping("/api/map/autocomplete")
     @Operation(summary = "사용자 검색시 자동검색 해주는 api")
-    public List<MapleLandMapListEntity> autoComplete(@RequestParam(defaultValue = "") String keyword) {
+    public List<MapleMap> autoComplete(@RequestParam(defaultValue = "") String keyword) {
 
         System.out.println("keyword = " + keyword);
 

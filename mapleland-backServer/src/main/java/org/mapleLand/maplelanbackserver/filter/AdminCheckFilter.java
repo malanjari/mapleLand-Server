@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.filter;
+package org.mapleland.maplelanbackserver.filter;
 
 public class AdminCheckFilter {
 

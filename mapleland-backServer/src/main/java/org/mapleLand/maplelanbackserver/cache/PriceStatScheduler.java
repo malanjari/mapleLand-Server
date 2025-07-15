@@ -1,8 +1,8 @@
-package org.mapleLand.maplelanbackserver.cache;
+package org.mapleland.maplelanbackserver.cache;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.dto.PriceStatDto;
-import org.mapleLand.maplelanbackserver.service.MapService;
+import org.mapleland.maplelanbackserver.dto.response.PriceStatDto;
+import org.mapleland.maplelanbackserver.service.MapService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 

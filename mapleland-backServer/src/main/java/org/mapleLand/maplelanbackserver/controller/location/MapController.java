@@ -1,29 +1,26 @@
-package org.mapleLand.maplelanbackserver.controller.location;
+package org.mapleland.maplelanbackserver.controller.location;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityRequirements;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.cache.MapPriceStatCacheService;
-import org.mapleLand.maplelanbackserver.dto.Map.*;
-import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
-import org.mapleLand.maplelanbackserver.dto.PriceStatDto;
-import org.mapleLand.maplelanbackserver.dto.update.MapUpdateDto;
-import org.mapleLand.maplelanbackserver.dto.update.MapUpdateIsCompletedDto;
-import org.mapleLand.maplelanbackserver.dto.update.MapUpdatePriceDto;
-import org.mapleLand.maplelanbackserver.dto.update.MapUpdateServerColorDto;
-import org.mapleLand.maplelanbackserver.service.MapService;
+import org.mapleland.maplelanbackserver.cache.MapPriceStatCacheService;
+import org.mapleland.maplelanbackserver.dto.Map.*;
+import org.mapleland.maplelanbackserver.dto.response.DropItemResponse;
+import org.mapleland.maplelanbackserver.dto.response.PriceStatDto;
+import org.mapleland.maplelanbackserver.dto.request.JariUpdateRequest;
+import org.mapleland.maplelanbackserver.dto.request.JariIsCompletedRequest;
+import org.mapleland.maplelanbackserver.dto.update.PriceUpdateRequest;
+import org.mapleland.maplelanbackserver.dto.update.ServerColorRequest;
+import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
+import org.mapleland.maplelanbackserver.service.MapService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -38,13 +35,15 @@ public class MapController {
     private final MapService mapService;
     private final MapPriceStatCacheService service;
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     @PostMapping("/api/create/mapRegister")
     @Operation(summary = "맵 등록 api" , description = "사용자 맵 등록 api")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<Map<String, String>> MapRegister(@RequestBody @Valid MapRegistrationDto dto) {
+    public ResponseEntity<Map<String, String>>
+    MapRegister(@RequestBody @Valid JariCreatedRequest dto, @RequestHeader("Authorization")String token) {
 
 
-        mapService.mapRegisterServiceMethod(dto);
+        mapService.mapRegisterServiceMethod(dto,token);
 
         Map<String, String> map = Map.of(
                 "상태", "200 OK",
@@ -57,32 +56,35 @@ public class MapController {
     @GetMapping("/api/maps")
     @Operation(summary = "목록 리스트 불러오는 api" ,
             description = "사용자 검색 -> 미나르숲:마뇽의 숲 -> 목록 리스트")
-    public ResponseEntity<List<MapDto>> searchMaps(@RequestParam String keyword) {
-        List<MapDto> results = mapService.searchMapsByKeyword(keyword);
+    public ResponseEntity<List<JariResponse>> searchMaps(@RequestParam String keyword) {
+        List<JariResponse> results = mapService.searchMapsByKeyword(keyword);
         return ResponseEntity.ok(results);
     }
+
+
     @Operation(summary = "목록 리스트 불러오는 api",
-            description = "IQR 평균 리스트 , MapList, 몬스터 Drop테이블 총 3개 묶어서 불러옴")
+            description = "IQR 평균 리스트 , MapList, 몬스터 Drop테이블 총 2개 묶어서 불러옴")
     @GetMapping("/api/mapList")
-    public ResponseEntity<MapListDto> searchMapList(@RequestParam String keyword) {
-        MapListDto mapListDto = mapService.searchMapsListKeyword(keyword);
-        return ResponseEntity.ok(mapListDto);
+    public ResponseEntity<MapResponse> searchMapList(@RequestParam String keyword) {
+        MapResponse mapResponse = mapService.searchMapsListKeyword(keyword);
+        return ResponseEntity.ok(mapResponse);
     }
 
-
+        //  --------- 현재 사용 X ----------------------------------
+    @Deprecated
     @GetMapping("/api/monsterInfo")
     @Operation(summary = "목록 리스트에서 몬스터 드랍 테이블 가져오는 api" ,
-            description = "마뇽의 드랍템 [일비표창 , 레드 크리븐]등")
-    public ResponseEntity<List<DropItemDto>> monsterInfo(@RequestParam String keyword) {
-        List<DropItemDto> result = mapService.monsterInfo(keyword);
+            description = "현재 사용 안함")
+    public ResponseEntity<List<DropItemResponse>> monsterInfo(@RequestParam String keyword) {
+        List<DropItemResponse> result = mapService.monsterInfo(keyword);
         return ResponseEntity.ok(result);
     }
 
     @GetMapping("/api/region")
     @Operation(summary = "지역 태그별로 가져오는 api",
     description = "[리프레 , 엘나스 , 루디브리엄] 태그 글릭시 해당 태그 목록 모두 조회")
-    public ResponseEntity<List<MapDto>> region(@RequestParam String keyword) {
-        List<MapDto> byRegionTag = mapService.findByRegionTag(keyword);
+    public ResponseEntity<List<JariResponse>> region(@RequestParam String keyword) {
+        List<JariResponse> byRegionTag = mapService.findByRegionTag(keyword);
         return ResponseEntity.ok(byRegionTag);
     }
 
@@ -108,10 +110,11 @@ public class MapController {
 
     // -----------Update -----------------------------------------
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     @PostMapping("/api/maps/update/filed")
     @Operation(summary = "사용자가 수정을 누를때 수정하는 api",
     description = "색상 = 초채 , 가격 : 5000만원 , 사용자 코멘트 : 수정완료")
-    public ResponseEntity<?> updateFiled(@RequestBody MapUpdateDto updateDto) {
+    public ResponseEntity<?> updateFiled(@RequestBody JariUpdateRequest updateDto) {
         mapService.mapUpdateAll(updateDto);
         return ResponseEntity.ok(Map.of("message", "게시글이 수정 되었습니다."));
     }
@@ -119,7 +122,7 @@ public class MapController {
     @PostMapping("/api/maps/update/isCompleted")
     @Operation(summary = "사용자가 자리 거래 완료 누르는 api",
             description = "isCompleted = false 자리 판매중 -> true 자리 판매 완료")
-    public ResponseEntity<?> updateIsCompleted(@RequestBody MapUpdateIsCompletedDto dto) {
+    public ResponseEntity<?> updateIsCompleted(@RequestBody JariIsCompletedRequest dto) {
         mapService.updateIsCompleted(dto);
 
         return ResponseEntity.ok(Map.of("message","거래가 완료 되었습니다."));
@@ -131,32 +134,53 @@ public class MapController {
         return ResponseEntity.ok(Map.of("message", "게시글이 삭제 되었습니다."));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
+    @PostMapping("/api/alert/interest")
+    public ResponseEntity<Map<String,Serializable>>
+    createInterRest(@RequestBody AlertRequest dto, @RequestHeader("Authorization")String token) {
+        AlertStatus alertStatus = mapService.MapInterRestServiceMethod(dto,token);
 
+        if(alertStatus == AlertStatus.ALERT_ON) {
+            return ResponseEntity.ok(Map.of(
+                    "success", alertStatus,
+                    "message", "알람이 설정 되었습니다."
+            ));
+        }
+        if(alertStatus == AlertStatus.INVALID_REQUEST) {
+            return  ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                    "Fail", alertStatus,
+                    "message","잘못된 요청입니다."
+            ));
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "success", alertStatus,
+                "message", "알람이 제거 되었습니다."
+        ));
+    }
+
+        // ------------현재 사용 안함 -------------------
 
     @PostMapping("/api/maps/update/price")
-    public ResponseEntity<?> updatePrice(@RequestBody MapUpdatePriceDto dto) {
+    public ResponseEntity<?> updatePrice(@RequestBody PriceUpdateRequest dto) {
         mapService.mapUpdatePrice(dto);
         return ResponseEntity.status(HttpStatus.OK).body("가격이 수정 되었습니다.");
     }
 
 
+    // ------------현재 사용 안함 -------------------
+
     @PostMapping("/api/maps/update/server-color")
-    public ResponseEntity<?> updateServerColor(@RequestBody MapUpdateServerColorDto dto) {
+    public ResponseEntity<?> updateServerColor(@RequestBody ServerColorRequest dto) {
         mapService.mapUpdateServerColor(dto);
         return ResponseEntity.status(HttpStatus.OK).body("서버 색깔이 수정 되었습니다.");
     }
 
-    @PostMapping("/api/create/interRest")
-    public ResponseEntity<?> createInterRest(@RequestBody MapInterestRequestDto dto) {
-        mapService.MapInterRestServiceMethod(dto);
-
-        return ResponseEntity.ok(Map.of("message","관심 등록이 완료 되었습니다."));
-    }
 
     @Operation(summary = "모든 맵 이름을 조회하는 API")
     @GetMapping("/api/maps/all")
     public ResponseEntity<?> findAllMaps() {
-        MapNameListResponseDto response = mapService.findAllMaps();
+        MapNameListResponse response = mapService.findAllMaps();
 
         return ResponseEntity.ok(response);
     }
