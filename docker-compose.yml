@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: nginx/Dockerfile
     restart: always
+    ports:
+      - "80:80"
     depends_on:
       - backend
     networks:
@@ -23,6 +25,8 @@ services:
       DISCORD_CLIENT_ID: ${DISCORD_CLIENT_ID}
       DISCORD_CLIENT_SECRET: ${DISCORD_CLIENT_SECRET}
       DISCORD_REDIRECT_URI: ${DISCORD_REDIRECT_URI}
+      FRONTEND_REDIRECT_URL: ${FRONTEND_REDIRECT_URL}
+      DISCORD_BOT_TOKEN: ${DISCORD_BOT_TOKEN}
     networks:
       - maple_network
 
