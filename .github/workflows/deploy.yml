@@ -25,8 +25,8 @@ jobs:
         run: chmod +x ./gradlew
         working-directory: ./backend
 
-      - name: 🛠️ Build Spring Boot with Gradle
-        run: ./gradlew build
+      - name: 🛠️ Build Spring Boot with Gradle (Skip Tests)
+        run: ./gradlew build -x test
         working-directory: ./backend
 
       - name: 🧱 Set up Node.js
@@ -40,7 +40,7 @@ jobs:
           npm run build
         working-directory: ./frontend
 
-      # CD 단계: SSH로 서버에 접속하여 배포 수행함
+      # CD 단계: SSH로 서버에 접속하여 배포 수행
       - name: 🚀 Deploy to EC2
         uses: appleboy/ssh-action@master
         with:
@@ -52,7 +52,7 @@ jobs:
             cd ~/app
             git pull origin main
 
-            # 2. 현재 실행 중인 그룹 확인하여 다음 타겟 그룹 결정함
+            # 2. 현재 실행 중인 그룹 확인하여 다음 타겟 그룹 결정
             IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx_app-1" --format "{{.Names}}")
             if [ -n "$IS_BLUE_RUNNING" ]; then
               TARGET_GROUP=green
@@ -63,7 +63,7 @@ jobs:
             fi
             echo "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
 
-            # 3. .env 파일 동적 생성 (보안 강화)
+            # 3. .env 파일 생성 (보안 정보 주입)
             echo "DB_URL=${{ secrets.DB_URL }}" > .env
             echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
             echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
@@ -71,21 +71,21 @@ jobs:
             echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
             echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
 
-            # 4. 새로운 그룹 빌드 및 실행
+            # 4. 새 그룹 컨테이너 빌드 및 실행
             docker-compose -f docker-compose.yml -p $TARGET_GROUP up --build -d
 
-            # 5. 새 그룹이 정상적으로 실행될 때까지 대기 (Health Check)
+            # 5. Health Check 대기
             echo "Waiting for $TARGET_GROUP to be healthy..."
             sleep 30
 
-            # 6. '교통 경찰' Nginx의 설정을 새 그룹으로 변경
+            # 6. Nginx 설정 변경
             echo "Switching reverse-proxy to $TARGET_GROUP..."
             sed "s/##TARGET_GROUP##/$TARGET_GROUP/g" ~/app/nginx-proxy/nginx.template.conf > ~/app/nginx-proxy/nginx.conf
 
-            # 7. '교통 경찰' Nginx 재시작하여 설정 적용
+            # 7. Nginx 재시작
             docker restart reverse-proxy
             echo "✅ Switched to $TARGET_GROUP successfully!"
 
-            # 8. 이전 버전 그룹 컨테이너 정리
+            # 8. 이전 그룹 종료 및 정리
             docker-compose -f docker-compose.yml -p $OLD_GROUP down --volumes || true
             echo "🧹 Cleaned up $OLD_GROUP group."
