@@ -5,6 +5,10 @@ import { useUser } from "@/entity/user/hooks/useUser";
 
 export const HeaderProfileButton = ({ onClick }: { onClick: () => void }) => {
   const user = useUser();
+  const discordUser = user?.user;
+  const avatarUrl = discordUser?.avatar
+    ? `https://cdn.discordapp.com/avatars/${discordUser.id}/${discordUser.avatar}.png`
+    : null;
 
   return (
     <Button
@@ -13,27 +17,14 @@ export const HeaderProfileButton = ({ onClick }: { onClick: () => void }) => {
       title="프로필"
       className="bg-[#5865F2] hover:bg-[#4752c4]"
     >
-      {user ? (
-        <>
-          {user.user.avatar ? (
-            <img
-              src={`https://cdn.discordapp.com/avatars/${user.user.id}/${user.user.avatar}.png`}
-              alt="avatar"
-              className="w-5 h-5 rounded-full"
-            />
-          ) : (
-            <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
-          )}
-          <span className="text-xs hidden mb:block">
-            {user.user.globalName}
-          </span>
-        </>
+      {avatarUrl ? (
+        <img src={avatarUrl} alt="avatar" className="w-5 h-5 rounded-full" />
       ) : (
-        <>
-          <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
-          <span className="text-xs hidden mb:block">로그인</span>
-        </>
+        <FontAwesomeIcon icon={faDiscord} className="w-5 h-5" />
       )}
+      <span className="text-xs hidden mb:block">
+        {discordUser?.globalName || "로그인"}
+      </span>
     </Button>
   );
 };

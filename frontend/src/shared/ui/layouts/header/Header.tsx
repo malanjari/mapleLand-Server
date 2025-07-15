@@ -5,27 +5,33 @@ import {
   HeaderProfileButton,
   HeaderTradeButton,
 } from "./index";
-import { useProfileMenu } from "@/feature/auth/ui/hooks/useProfileMenu";
+import { useProfileMenu } from "@/feature/user/hooks/useProfileMenu";
 import { useLocation } from "react-router-dom";
-import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
+import { SearchInputWithSuggestions } from "@/shared/ui/search/SearchInputWithSuggestions";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 const Header = () => {
   const user = useUser();
   const { menuOpen, toggleMenu, closeMenu, dropdownRef, handleDiscordLogin } =
     useProfileMenu();
   const location = useLocation();
   const pathname = location.pathname;
-  const hideSearchBar = /^\/jari\/register(\/.*)?$/.test(pathname);
+  const hideSearchBar = useMemo(
+    () => /^\/jari\/register(\/.*)?$/.test(pathname),
+    [pathname]
+  );
   const navigate = useNavigate();
   const [isSticky, setIsSticky] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => {
-      setIsSticky(window.scrollY > 0);
+    const handleScroll = () => {
+      requestAnimationFrame(() => {
+        setIsSticky(window.scrollY > 0);
+      });
     };
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
@@ -40,22 +46,26 @@ const Header = () => {
       {!hideSearchBar && (
         <SearchInputWithSuggestions
           onSelect={(val) => {
-            navigate(`/jari/${encodeURIComponent(val)}`); // ← 여기서 페이지 이동
+            navigate(`/jari/${encodeURIComponent(val)}`); // 페이지 이동
           }}
           placeholder="자리를 검색해 보세요..."
           className=" flex-1 xmb:max-w-[500px] mx-2"
         />
       )}
       <div className="flex gap-1">
-        {user && <HeaderTradeButton />}
-        <div ref={dropdownRef} className="relative">
-          <HeaderProfileButton
-            onClick={user ? toggleMenu : handleDiscordLogin}
-          />
-          {user && (
-            <HeaderDropdownMenu menuOpen={menuOpen} closeMenu={closeMenu} />
-          )}
-        </div>
+        {user ? (
+          <>
+            <HeaderTradeButton />
+            <div ref={dropdownRef} className="relative">
+              <HeaderProfileButton onClick={toggleMenu} />
+              <HeaderDropdownMenu menuOpen={menuOpen} closeMenu={closeMenu} />
+            </div>
+          </>
+        ) : (
+          <div className="relative">
+            <HeaderProfileButton onClick={handleDiscordLogin} />
+          </div>
+        )}
       </div>
     </header>
   );

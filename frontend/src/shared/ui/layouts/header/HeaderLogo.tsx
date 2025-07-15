@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import logo from "@/shared/assets/logo/logo.png";
+import logo from "@/shared/assets/logo/logo.webp";
 
 export const HeaderLogo = () => (
   <Link className="flex gap-2 items-center" to="/">

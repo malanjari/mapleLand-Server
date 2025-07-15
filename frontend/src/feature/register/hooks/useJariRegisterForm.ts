@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useUser } from "@/entity/user/hooks/useUser";
-import { fetchAutocomplete, MapItem } from "@/feature/jari/api/autocomplete";
+import { fetchAutocomplete, MapItem } from "@/entity/jari/api/autocomplete";
 import {
   JariRegisterPayload,
   registerJari,
-} from "@/feature/register/api/registerJari";
+} from "@/entity/jari/api/registerJari";
 import { toast } from "@/shared/hooks/use-toast";
 
 type TradeType = "SELL" | "BUY";
@@ -26,7 +26,7 @@ export const useJariRegisterForm = () => {
   const navigate = useNavigate();
   const [mapData, setMapData] = useState<MapItem | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
-
+  console.log(mapData);
   const [form, setForm] = useState<FormState>({
     tradeType: null,
     mapName: name,
@@ -89,12 +89,14 @@ export const useJariRegisterForm = () => {
       serverColor: form.serverColor!,
       price: Number(form.price),
       tradeType: form.tradeType!,
+      mapId: mapData!.mapleLandMapListId,
     };
 
     try {
       await registerJari(payload);
       toast({
         title: "자리 등록 완료",
+        variant: "success",
         description: "성공적으로 등록되었습니다.",
       });
       navigate(`/jari/${form.mapName}`);

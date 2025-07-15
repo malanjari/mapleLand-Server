@@ -1,4 +1,4 @@
-import notFoundImg from "@/shared/assets/notFoundImg.png";
+import notFoundImg from "@/shared/assets/cryingMushroom.webp";
 const NotFoundPage = () => {
   return (
     <div className="h-dvh flex flex-col items-center justify-center text-center px-4">

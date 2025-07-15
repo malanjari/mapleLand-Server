@@ -1,7 +1,7 @@
-import minarForest from "./minarForest.jpg";
-import victoria from "./victoria.jpg";
-import elnath from "./elnath.jpg";
-import ludusLake from "./ludusLake.jpg";
-import aquaRoad from "./aquaRoad.jpg";
+import minarForest from "./minarForest.webp";
+import victoria from "./victoria.webp";
+import elnath from "./elnath.webp";
+import ludusLake from "./ludusLake.webp";
+import aquaRoad from "./aquaRoad.webp";
 
 export { victoria, minarForest, elnath, ludusLake, aquaRoad };

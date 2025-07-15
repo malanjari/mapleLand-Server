@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import { getRegionMaps } from "@/feature/worldJari/api/worldJari";
-import { RegionMap } from "@/feature/worldJari/api/worldJari";
+import { getRegionMaps } from "@/entity/jari/api/worldJari";
+import { RegionMap } from "@/entity/jari/api/worldJari";
 
 export const useRegionMaps = (keyword: string) => {
   return useQuery<RegionMap[]>({

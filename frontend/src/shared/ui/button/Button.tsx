@@ -19,10 +19,15 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        blue: "bg-blue-500 text-white hover:bg-blue-600",
+        blue: "bg-blue-600 text-white hover:bg-blue-700",
         register: "bg-green-500 text-white hover:bg-green-600 w-full",
         red: "bg-red-500 text-white hover:bg-red-600",
+        discord: "bg-[#5865f2] text-white hover:bg-[#4752c4]",
         none: "",
+        favorite:
+          "border border-yellow-500 text-yellow-400 hover:bg-yellow-500/20",
+        favoriteActive:
+          "bg-yellow-500 text-white border-yellow-400 hover:bg-yellow-600",
       },
       size: {
         default: "h-9 px-4 py-2",
