@@ -2,7 +2,7 @@
 
 services:
   nginx:
-    image: ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
+    image: ${DOCKER_USERNAME}/maple-frontend:latest
     restart: always
     ports:
       - "80:80"
@@ -12,7 +12,7 @@ services:
       - maple_network
 
   backend:
-    image: ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
+    image: ${DOCKER_USERNAME}/maple-backend:latest
     restart: always
     environment:
       DB_URL: ${DB_URL}
