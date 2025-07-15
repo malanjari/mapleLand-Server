@@ -1,17 +1,20 @@
-// src/app/router/router.tsx
-
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import AppLayout from "@/shared/ui/layouts/AppLayout";
-import Home from "@/page/Home";
-import NotFound from "@/page/NotFound";
-import JariDetail from "@/page/JariDetail";
-import OAuthSuccessPage from "@/page/OAuthSuccess";
-import JariRegisterPage from "@/page/JariRegister";
-import JariRegisterDetailPage from "@/page/JariRegisterDetail";
-import { RequireAuth } from "../guard/RequireAuth";
-import ProfilePage from "@/page/Profile";
-import WorldDetailPage from "@/page/WorldDetail";
+import { lazy, Suspense } from "react";
 
+import AppLayout from "@/shared/ui/layouts/AppLayout";
+import { RequireAuth } from "../guard/RequireAuth";
+import { Spinner } from "@/shared/ui/spinner/Spinner";
+
+const Home = lazy(() => import("@/page/Home"));
+const NotFound = lazy(() => import("@/page/NotFound"));
+const JariDetail = lazy(() => import("@/page/JariDetail"));
+const OAuthSuccessPage = lazy(() => import("@/page/OAuthSuccess"));
+const JariRegisterPage = lazy(() => import("@/page/JariRegister"));
+const JariRegisterDetailPage = lazy(() => import("@/page/JariRegisterDetail"));
+const ProfilePage = lazy(() => import("@/page/Profile"));
+const WorldDetailPage = lazy(() => import("@/page/WorldDetail"));
+const NotificationGuide = lazy(() => import("@/page/NotificationGuide"));
+const Notice = lazy(() => import("@/page/Notice"));
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +27,8 @@ const router = createBrowserRouter([
         path: "profile/:userId",
         element: <ProfilePage />,
       },
+      { path: "notification-guide", element: <NotificationGuide /> },
+      { path: "notice", element: <Notice /> },
       {
         path: "jari/register",
         element: (
@@ -40,18 +45,18 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
-
       { path: "oauth2/success", element: <OAuthSuccessPage /> },
     ],
   },
-  {
-    path: "*",
-    element: <NotFound />,
-  },
+  { path: "*", element: <NotFound /> },
 ]);
 
 const AppRouter = () => {
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<Spinner />}>
+      <RouterProvider router={router} />
+    </Suspense>
+  );
 };
 
 export default AppRouter;

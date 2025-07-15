@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRegionMaps, RegionMap } from "../api/worldJari";
+import { getRegionMaps, RegionMap } from "../../../entity/jari/api/worldJari";
 
 export const useWorldDetail = (worldKey?: string) => {
   const [jari, setJari] = useState<RegionMap[]>([]);

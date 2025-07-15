@@ -1,4 +1,4 @@
-import { SearchInputWithSuggestions } from "@/feature/jari/ui/SearchInputWithSuggestions";
+import { SearchInputWithSuggestions } from "@/shared/ui/search/SearchInputWithSuggestions";
 import { useNavigate } from "react-router-dom";
 const JariRegisterPage = () => {
   const navigate = useNavigate();

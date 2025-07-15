@@ -15,7 +15,7 @@ export const CommentTextarea = ({
       <textarea
         value={comment}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full h-12 p-2 bg-neutral-700 text-white rounded border border-neutral-600"
+        className="w-full h-16 p-2 bg-neutral-700 text-white rounded border border-neutral-600"
         placeholder="거래 관련 안내 메시지"
         minLength={0}
         maxLength={60}

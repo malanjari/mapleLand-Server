@@ -11,6 +11,11 @@ export interface Me {
 export interface AuthResponse {
   user: Me;
   loggedIn: boolean;
+  alertDtoList: AlertDto[];
+}
+export interface AlertDto {
+  mapId: number;
+  alertStatus: "ALERT_ON" | "ALERT_OFF";
 }
 // 프로필 API 응답용 (다른 유저든 내 정보든)
 export interface User {

@@ -71,7 +71,17 @@ textarea {
 *::after {
   box-sizing: border-box;
 }
+/* Chrome, Safari, Edge */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -143,6 +153,14 @@ textarea {
 }
 @layer utilities {
   .overflow-y-auto {
-    @apply scrollbar-thin;
+    @apply scrollbar-thin scrollbar-thumb-neutral-600 scrollbar-track-transparent;
   }
+}
+@font-face {
+  font-family: "SBAggroB";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2108@1.1/SBAggroB.woff")
+    format("woff");
+  font-display: swap;
+  font-weight: normal;
+  font-style: normal;
 }

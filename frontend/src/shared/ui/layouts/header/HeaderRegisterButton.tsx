@@ -1,5 +1,5 @@
 import { Button } from "../../button/Button";
-import mesoIcon from "@/shared/assets/icon/mesoIcon.png";
+import mesoIcon from "@/shared/assets/icon/mesoIcon.webp";
 import { useNavigate } from "react-router-dom";
 
 export const HeaderTradeButton = () => {

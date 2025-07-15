@@ -3,16 +3,19 @@ import Footer from "./footer/Footer";
 import Header from "./header/Header";
 import { useEffect } from "react";
 
-import { useAuthActions } from "@/entity/user/hooks/useUser";
+import { useAuthActions, useUser } from "@/entity/user/hooks/useUser";
 import ScrollToTop from "@/app/ScrollToTop";
 import { Toaster } from "../toast/toaster";
 
 const AppLayout = () => {
   const { initialize } = useAuthActions();
+  const user = useUser();
 
   useEffect(() => {
-    initialize();
-  }, [initialize]);
+    if (!user?.loggedIn) {
+      initialize();
+    }
+  }, [user, initialize]);
   return (
     <div className="flex flex-col flex-grow   w-full min-h-dvh mx-auto  ">
       <Header />
