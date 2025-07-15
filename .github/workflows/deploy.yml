@@ -52,7 +52,7 @@ jobs:
             cd ~/app
             git pull origin main
 
-            # 2. 현재 실행 중인 그룹 확인하여 다음 타겟 그룹 결정
+            # 2. 현재 실행 중인 그룹 확인하여 다음 타겟 그룹 결정함
             IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx_app-1" --format "{{.Names}}")
             if [ -n "$IS_BLUE_RUNNING" ]; then
               TARGET_GROUP=green
