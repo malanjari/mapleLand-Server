@@ -1,6 +1,10 @@
 package org.mapleLand.maplelanbackserver.dto.user;
 
+import org.mapleLand.maplelanbackserver.dto.alert.ResponseAlterDto;
+import org.mapleLand.maplelanbackserver.table.MapInterestEntity;
+
 import java.time.LocalDateTime;
+import java.util.List;
 
 public record UserInfoDto(
         String discordId,
@@ -9,6 +13,4 @@ public record UserInfoDto(
         String globalName,
         Boolean mapTicket,
         String userName,
-        String email
-) {
-} 
+        String email) { }

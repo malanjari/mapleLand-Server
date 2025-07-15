@@ -6,19 +6,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapleLand.maplelanbackserver.controller.errorController.*;
 import org.mapleLand.maplelanbackserver.dto.*;
 
-import org.mapleLand.maplelanbackserver.dto.Map.MapDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapInterestRequestDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapListDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapRegistrationDto;
+import org.mapleLand.maplelanbackserver.dto.Map.*;
 import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateIsCompletedDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdatePriceDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateServerColorDto;
 import org.mapleLand.maplelanbackserver.enumType.Region;
+import org.mapleLand.maplelanbackserver.enumType.alert.AlertStatus;
+import org.mapleLand.maplelanbackserver.jwtUtil.JwtUtil;
 import org.mapleLand.maplelanbackserver.repository.*;
 import org.mapleLand.maplelanbackserver.resolve.RegionResolver;
 import org.mapleLand.maplelanbackserver.table.*;
+import org.mapleLand.maplelanbackserver.utilMethod.UtilMethod;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
@@ -44,6 +44,7 @@ public class MapService {
     private final MapDropItemRepository mapDropItemRepository;
     private final DiscordDmService dmService;
     private final MapInterestRepository interestRepository;
+    private final UtilMethod utilMethod;
 
     String message;
     @Value("${frontend.redirect-url}")
@@ -160,35 +161,20 @@ public class MapService {
         }
 
     }
-    public void MapInterRestServiceMethod(MapInterestRequestDto dto) {
+    public AlertStatus MapInterRestServiceMethod(InterestAlertRequestDto dto) {
 
-
-        Optional<MapleJariUserEntity> byUserId = userRepository.findByUserId(dto.userId());
-        if(byUserId.isEmpty()) throw new NotFoundUserException("사용자를 찾을 수 없습니다.");
-
-        MapleLandMapListEntity jari = mapleLandMapListRepository.findById(dto.mapId()).get();
-
-        boolean exists = interestRepository
-                .existsByMapleLandMapListEntityAndMapleJariUserEntity(jari,byUserId.get());
-
-        if(exists) throw new DuplicatedMapInterRestException("⛔ 이미 등록된 관심 맵입니다:");
-
-        long count = interestRepository.countByMapleJariUserEntity(byUserId.get());
-
-        if(count > 2) throw new MaxMapInterestLimitException("⛔ 최대 관심 개수를 초과 하였습니다");
-
-
-        interestRepository.save(
-                MapInterestEntity.builder().mapleLandMapListEntity(jari)
-                        .mapleJariUserEntity(byUserId.get())
-                        .build());
-
+        return utilMethod.updateAlertInterest(dto);
     }
 
     public MapListDto searchMapsListKeyword(String keyword){
 //        List<MapDto> mapDtos = searchMapsByKeyword(keyword);
+
+
         List<DropItemDto> dropItemDtos = monsterInfo(keyword);
         List<PriceStatDto> priceStatDtos = iqrPriceAvgLast6Hours(keyword);
+
+
+
         return new MapListDto(dropItemDtos,priceStatDtos);
     }
 
@@ -382,5 +368,15 @@ public class MapService {
 
         registerRepository.save(byUserMapId);
 
+    }
+
+    public MapNameListResponseDto findAllMaps() {
+        List<MapName> MapNameList = mapleLandMapListRepository.findAll()
+                .stream()
+                .map(e -> new MapName(e.getMapleLandMapListId(),
+                        e.getMapName(),e.getMiniMapImageLogoUrl()))
+                .toList();
+
+        return new MapNameListResponseDto(MapNameList);
     }
 }

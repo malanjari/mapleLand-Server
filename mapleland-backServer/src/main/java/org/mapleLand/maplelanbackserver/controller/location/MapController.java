@@ -1,31 +1,26 @@
 package org.mapleLand.maplelanbackserver.controller.location;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityRequirements;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.mapleLand.maplelanbackserver.cache.MapPriceStatCacheService;
-import org.mapleLand.maplelanbackserver.dto.Map.MapInterestRequestDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapListDto;
+import org.mapleLand.maplelanbackserver.dto.Map.*;
 import org.mapleLand.maplelanbackserver.dto.item.DropItemDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapDto;
-import org.mapleLand.maplelanbackserver.dto.Map.MapRegistrationDto;
 import org.mapleLand.maplelanbackserver.dto.PriceStatDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateIsCompletedDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdatePriceDto;
 import org.mapleLand.maplelanbackserver.dto.update.MapUpdateServerColorDto;
+import org.mapleLand.maplelanbackserver.enumType.alert.AlertStatus;
 import org.mapleLand.maplelanbackserver.service.MapService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -71,10 +66,10 @@ public class MapController {
         return ResponseEntity.ok(mapListDto);
     }
 
-
+        //  --------- 현재 사용 X ----------------------------------
     @GetMapping("/api/monsterInfo")
     @Operation(summary = "목록 리스트에서 몬스터 드랍 테이블 가져오는 api" ,
-            description = "마뇽의 드랍템 [일비표창 , 레드 크리븐]등")
+            description = "현재 사용 안함")
     public ResponseEntity<List<DropItemDto>> monsterInfo(@RequestParam String keyword) {
         List<DropItemDto> result = mapService.monsterInfo(keyword);
         return ResponseEntity.ok(result);
@@ -133,6 +128,23 @@ public class MapController {
         return ResponseEntity.ok(Map.of("message", "게시글이 삭제 되었습니다."));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
+    @PostMapping("/api/alert/interest")
+    public ResponseEntity<Map<String,Serializable>> createInterRest(@RequestBody InterestAlertRequestDto dto) {
+        AlertStatus alertStatus = mapService.MapInterRestServiceMethod(dto);
+
+        if(alertStatus == AlertStatus.ALERT_ON) {
+            return ResponseEntity.ok(Map.of(
+                    "success", alertStatus,
+                    "message", "알람이 설정 되었습니다."
+            ));
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "success", alertStatus,
+                "message", "알람이 제거 되었습니다."
+        ));
+    }
 
 
     @PostMapping("/api/maps/update/price")
@@ -148,10 +160,13 @@ public class MapController {
         return ResponseEntity.status(HttpStatus.OK).body("서버 색깔이 수정 되었습니다.");
     }
 
-    @PostMapping("/api/create/interRest")
-    public ResponseEntity<?> createInterRest(@RequestBody MapInterestRequestDto dto) {
-        mapService.MapInterRestServiceMethod(dto);
 
-        return ResponseEntity.ok(Map.of("message","관심 등록이 완료 되었습니다."));
+
+    // 자동완성 api
+    @GetMapping("/api/maps/all")
+    public ResponseEntity<?> findAllMaps() {
+        MapNameListResponseDto response = mapService.findAllMaps();
+
+        return ResponseEntity.ok(response);
     }
 }

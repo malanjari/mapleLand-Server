@@ -1,5 +1,6 @@
 package org.mapleLand.maplelanbackserver.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.mapleLand.maplelanbackserver.filter.JwtTokenFilter;
 import org.mapleLand.maplelanbackserver.jwtUtil.JwtUtil;
@@ -54,10 +55,17 @@ public class SecurityConfiguration {
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
-                        .requestMatchers("api/create/**").hasAnyRole("USER","MANAGER","ADMIN")
+                        .requestMatchers("api/create/**","/api/alert/**").hasAnyRole("USER","MANAGER","ADMIN")
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().permitAll()
-                )
+                ).exceptionHandling(exception -> {
+                    exception.authenticationEntryPoint((request, response, authException) -> {
+                        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                        response.setContentType("application/json;charset=UTF-8");
+                        response.getWriter().write("{\"message\": \"로그인이 필요합니다.\"}");
+                    });
+
+                })
                 .oauth2Login(oauth2 ->
                         oauth2
                                 .userInfoEndpoint(userInfo -> userInfo.userService(customerOauth2UserService))

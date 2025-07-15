@@ -52,4 +52,32 @@ public class JwtUtil {
                 .signWith(secretKey)
                 .compact();
     }
+    public static int getUserId(String token) {
+        if (token == null || token.isBlank()) {
+            return 0; // 비로그인 사용자
+        }
+
+        try {
+            // "Bearer " 접두어 제거 + 공백 제거
+            if (token.startsWith("Bearer ")) {
+                token = token.substring(7).trim();
+            } else {
+                token = token.trim();
+            }
+
+            Claims claims = getClaims(token);
+            Object value = claims.get("userId");
+
+            if (value instanceof Number number) {
+                return number.intValue();
+            } else {
+                return 0;
+            }
+        } catch (Exception e) {
+            // 잘못된 토큰 처리: 비로그인 간주
+            System.out.println("❌ JWT 파싱 실패: " + e.getMessage());
+            return 0;
+        }
+    }
+
 }

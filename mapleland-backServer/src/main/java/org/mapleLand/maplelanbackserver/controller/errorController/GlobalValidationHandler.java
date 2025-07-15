@@ -14,6 +14,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.swing.plaf.PanelUI;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -124,9 +125,17 @@ public class GlobalValidationHandler {
     }
     @ExceptionHandler(MaxMapInterestLimitException.class)
     public ResponseEntity<Map<String, Object>> handleMaxMapInterestLimit(DuplicatedMapInterRestException ex) {
-        return ResponseEntity.badRequest().body(Map.of(
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
                 "status","Fail",
                 "error" , Map.of("message", ex.getMessage())
         ));
     }
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<Map<String, Object>> handleUnauthorized(UnauthorizedException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                "stauts" , "Fail",
+                "error" , Map.of("message", ex.getMessage())
+        ));
+    }
+
 }

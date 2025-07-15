@@ -22,5 +22,11 @@ public interface MapInterestRepository extends JpaRepository<MapInterestEntity, 
     boolean existsByMapleLandMapListEntityAndMapleJariUserEntity(MapleLandMapListEntity mapleLandMapListEntity,
                                                                  MapleJariUserEntity mapleJariUserEntity);
 
+    boolean existsByMapleLandMapListEntity_MapleLandMapListIdAndMapleJariUserEntity_UserId(int mapleLandMapListEntityMapleLandMapListId,
+                                                                                           int mapleJariUserEntityUserId);
+
+    Optional<MapInterestEntity> findByMapleJariUserEntity_UserIdAndMapleLandMapListEntity_MapleLandMapListId(int mapleJariUserEntityUserId, int mapleLandMapListEntityMapleLandMapListId);
+
 
 }
+

@@ -1,6 +1,8 @@
 package org.mapleLand.maplelanbackserver.controller.userController;
 
 import lombok.RequiredArgsConstructor;
+import org.mapleLand.maplelanbackserver.dto.user.LoginStatusResponse;
+import org.mapleLand.maplelanbackserver.dto.user.ResponseApiUserDto;
 import org.mapleLand.maplelanbackserver.dto.user.UserDetailResponseDto;
 import org.mapleLand.maplelanbackserver.dto.user.UserMapRegistrationDto;
 import org.mapleLand.maplelanbackserver.service.MapleLandUserService;
@@ -23,36 +25,16 @@ public class UserAccountController {
 
     @GetMapping("/api/user")
     public ResponseEntity<?> getUserAccount(
-            @RequestHeader(name = "Authorization", required = false) String authHeader
-    ) {
-        // 1) 인증 헤더가 없는 경우 → 로그인 안 한 사용자로 간주
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return ResponseEntity.ok(Map.of("loggedIn", false));
-        }
+            @RequestHeader(name = "Authorization", required = false) String authHeader) {
 
-        String token = authHeader.substring(7);
+        LoginStatusResponse loginStatusResponse = mapleLandUserService.checkLoginStatus(authHeader);
 
-        Jwt jwt;
-        try {
-            jwt = jwtDecoder.decode(token);
-        } catch (Exception ex) {
-            // 토큰은 있는데 유효하지 않으면 → 로그인 만료 or 변조된 토큰
-            return ResponseEntity.ok(Map.of("loggedIn", false));
-        }
-
-        // 로그인된 사용자
-        return ResponseEntity.ok(Map.of(
-                "loggedIn", true,
-                "user", jwt.getClaims()  // 또는 필요한 필드만 추려서 반환
-        ));
-    // 또는 필요한 필드만 추려서 반환
+        return ResponseEntity.ok(loginStatusResponse);
     }
 
     @GetMapping("/api/user/{userId}")
     public ResponseEntity<UserDetailResponseDto> getUserDetail(@PathVariable Integer userId) {
         UserDetailResponseDto userDetail = mapleLandUserService.getUserDetailServiceMethod(userId);
-
-
 
         return ResponseEntity.ok(userDetail);
     }

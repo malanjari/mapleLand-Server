@@ -20,4 +20,7 @@ public interface MapleLandMapListRepository extends JpaRepository<MapleLandMapLi
 
     List<MapleLandMapListEntity> findByRegion(Region region);
 
+
+
+
 }
