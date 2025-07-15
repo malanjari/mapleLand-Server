@@ -2,6 +2,7 @@ package org.mapleLand.maplelanbackserver.dto.Map;
 
 public record MapName(
         Integer mapId,
-        String mapName
+        String mapName,
+        String monsterImageUrl
 ) {
 }
