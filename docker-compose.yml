@@ -2,9 +2,7 @@
 
 services:
   nginx:
-    build:
-      context: .
-      dockerfile: nginx/Dockerfile
+    image: ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
     restart: always
     ports:
       - "80:80"
@@ -14,9 +12,7 @@ services:
       - maple_network
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
     restart: always
     environment:
       DB_URL: ${DB_URL}

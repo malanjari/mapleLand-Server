@@ -1,6 +1,6 @@
 # .github/workflows/deploy.yml
 
-name: Deploy Spring Boot + React to EC2 (Blue-Green with ALB)
+name: Build on GitHub and Deploy to EC2
 
 on:
   push:
@@ -8,10 +8,44 @@ on:
       - deploy
 
 jobs:
-  deploy:
-    name: Build and Deploy (Blue-Green with ALB)
+  # -------------------- 1. 빌드 및 이미지 푸시 --------------------
+  build:
+    name: Build & Push Docker Images
     runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout source code
+        uses: actions/checkout@v3
 
+      - name: 🛠️ Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: 🔑 Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 🖼️ Build and push Backend image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
+
+      - name: 🖼️ Build and push Frontend image
+        uses: docker/build-push-action@v4
+        with:
+          context: . # Dockerfile이 있는 위치를 지정
+          file: ./nginx/Dockerfile # Frontend Dockerfile 경로
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
+
+  # -------------------- 2. EC2에 배포 --------------------
+  deploy:
+    name: Deploy to EC2
+    needs: build # build 작업이 성공해야 실행됩니다.
+    runs-on: ubuntu-latest
     steps:
       - name: 🚀 Connect to EC2 and Deploy
         uses: appleboy/ssh-action@master
@@ -19,6 +53,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
+          timeout: 5m # 배포 시간이 짧아졌으므로 타임아웃을 줄여도 됩니다.
           script: |
             # --- 0. 데이터베이스 컨테이너 실행 보장 ---
             if [ ! "$(docker ps -q -f name=maple-db)" ]; then
@@ -26,33 +61,15 @@ jobs:
               echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > ~/db.env
               docker compose -f ~/docker-compose.db.yml --env-file ~/db.env up -d
               rm ~/db.env
-            else
-              echo "Database container is already running."
             fi
 
-            # --- 1. 소스코드 준비 ---
+            # --- 1. 최신 소스코드 및 .env 파일 준비 ---
+            # docker-compose.yml 파일을 최신 버전으로 유지하기 위해 git pull 실행
             if [ ! -d "~/app" ]; then
               git clone -b deploy https://github.com/malanjari/mapleLand-Server.git ~/app
             fi
             cd ~/app
             git pull origin deploy
-
-            # --- 1.5. 서버 환경 자동 설정 ---
-            if ! java -version 2>&1 | grep -q "openjdk 17"; then
-              sudo apt-get update -y && sudo apt-get install -y openjdk-17-jdk
-            fi
-            if ! command -v node &> /dev/null || ! node -v | grep -q "v20."; then
-              curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-              sudo apt-get install -y nodejs
-            fi
-
-            # --- 2. 서버에서 직접 빌드 ---
-            chmod +x ./backend/gradlew
-            ./backend/gradlew build -x test -p ./backend
-            cd ./frontend && npm ci && npm run build && cd ..
-
-            # --- 3. Docker로 블루/그린 배포 ---
-            echo "🚀 Starting Blue-Green Deployment..."
 
             # .env 파일 생성
             echo "DB_URL=${{ secrets.DB_URL }}" > .env
@@ -64,7 +81,12 @@ jobs:
             echo "FRONTEND_REDIRECT_URL=${{ secrets.FRONTEND_REDIRECT_URL }}" >> .env
             echo "DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}" >> .env
 
-            # 현재 실행 중인 그룹 확인
+            # --- 2. Docker Hub에서 최신 이미지 받아오기 ---
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
+
+            # --- 3. Docker로 블루/그린 배포 ---
             IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx-1" --format "{{.Names}}")
             if [ -n "$IS_BLUE_RUNNING" ]; then
               TARGET_GROUP=green
@@ -75,16 +97,13 @@ jobs:
             fi
             echo "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
 
-            # 이전 그룹을 먼저 중지하여 포트 충돌 방지
-            echo "Stopping $OLD_GROUP group to free up port 80..."
+            # 이전 그룹 중지 (ALB 사용 시 포트 충돌 방지)
             docker compose -f docker-compose.yml -p $OLD_GROUP down || true
 
-            # 새로운 그룹 빌드 및 실행
-            echo "Starting $TARGET_GROUP group..."
-            docker compose -f docker-compose.yml -p $TARGET_GROUP up -d --build
+            # 새로운 그룹 실행 (이제 빌드 없이 바로 실행)
+            docker compose -f docker-compose.yml -p $TARGET_GROUP up -d
 
             echo "✅ Deployment to $TARGET_GROUP completed!"
 
             # --- 4. 사용하지 않는 도커 이미지 정리 ---
-            echo "🧹 Cleaning up unused docker images..."
             docker image prune -a -f
