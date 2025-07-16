@@ -37,7 +37,6 @@ public class SecurityConfiguration {
 
     @Value("${frontend.redirect-url}")
     String redirectUrl;
-    String hi;
     private final CustomerOauth2UserService customerOauth2UserService;
     private final Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
     private final Oauth2FailHandler oauth2FailHandler;

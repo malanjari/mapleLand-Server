@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.service;
+package org.mapleland.maplelanbackserver.service;
 
 import lombok.RequiredArgsConstructor;
 import org.mapleland.maplelanbackserver.filter.AdminCheckFilter;
