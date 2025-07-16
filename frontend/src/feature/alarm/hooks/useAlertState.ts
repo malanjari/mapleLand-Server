@@ -13,7 +13,7 @@ export const useAlertStatus = (mapId?: number, mapName?: string) => {
   const isAlarmOn = !!alertDtoList.some(
     (item) => item.mapId === mapId && item.alertStatus === "ALERT_ON"
   );
-  console.log(auth?.alertDtoList);
+
   const toggleAlarm = useCallback(async () => {
     if (!userId || !mapId) return;
 

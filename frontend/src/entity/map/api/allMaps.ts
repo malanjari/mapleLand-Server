@@ -24,7 +24,7 @@ export const fetchAllMaps = async (): Promise<MapItem[]> => {
     }
 
     const json = await res.json();
-    console.log(json);
+
     return json.MapNameList;
   } catch (err) {
     console.error("fetchAllMaps 에러:", err);
