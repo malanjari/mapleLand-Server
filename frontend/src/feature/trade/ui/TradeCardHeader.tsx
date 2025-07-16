@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import mesoIcon from "@/shared/assets/icon/mesoIcon.webp";
+import AdminKebabMenu from "@/feature/delete/ui/AdminKebabMenu";
 
 interface Props {
   mapName: string;
@@ -13,6 +14,9 @@ interface Props {
   globalName: string;
   createTime: string;
   discordId: string;
+  isAdmin: boolean;
+  refetch: () => void;
+  mapId: number;
 }
 
 export const TradeCardHeader = ({
@@ -24,6 +28,9 @@ export const TradeCardHeader = ({
   globalName,
   createTime,
   discordId,
+  isAdmin,
+  refetch,
+  mapId,
 }: Props) => {
   return (
     <div className="flex items-center justify-center gap-3 w-full">
@@ -37,7 +44,7 @@ export const TradeCardHeader = ({
         />
       </Link>
       {/* 맵 이름 + 가격 */}
-      <div className="flex flex-col w-full">
+      <div className="flex flex-col w-full relative">
         <div className="flex justify-between items-center pb-1 border-b border-neutral-700">
           <p className="text-xs lg:text-base font-bold">
             {mapName.includes(":") ? mapName.split(":")[1].trim() : mapName}
@@ -57,6 +64,13 @@ export const TradeCardHeader = ({
             />
             <span className="text-[10px] lg:text-xs">{globalName}</span>
           </Link>
+          {isAdmin && (
+            <AdminKebabMenu
+              isAdmin={isAdmin}
+              mapId={mapId}
+              onDeleted={refetch}
+            />
+          )}
         </div>
 
         <div className="text-sm text-gray-200 flex items-center justify-between gap-1 border-b py-1 border-neutral-700">

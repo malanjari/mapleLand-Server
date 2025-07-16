@@ -17,8 +17,9 @@ import { TradeCardHeader } from "./TradeCardHeader";
 import { useTradeCard } from "../hooks/useTradeCard";
 const TradeCard = ({ item, refetch, showEditButton }: Props) => {
   const user = useUser();
-  const isOwner = user?.user?.userId === item.userId;
 
+  const isOwner = user?.user?.userId === item.userId;
+  const isAdmin = user?.user?.role === "ROLE_ADMIN";
   const {
     editPrice,
     setEditPrice,
@@ -34,7 +35,7 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
     showEditBox,
     setShowEditBox,
   } = useTradeCard(item, refetch);
-
+  console.log(item.userMapId);
   return (
     <div
       className={clsx(
@@ -53,6 +54,9 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
         globalName={item.globalName}
         createTime={item.createTime}
         discordId={item.discordId}
+        isAdmin={isAdmin}
+        refetch={refetch}
+        mapId={item.userMapId}
       />
 
       {/* 협의 옵션 및 코멘트 */}

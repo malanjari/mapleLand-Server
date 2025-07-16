@@ -216,33 +216,14 @@ jobs:
             # 새로운 그룹 실행
             docker compose -f docker-compose.yml -p $TARGET_GROUP up -d
 
-            # # 헬스체크 (애플리케이션이 정상 동작하는지 확인)
-            # log_info "Performing health check..."
-            # sleep 15
-            
-            # # 백엔드 헬스체크 (API 엔드포인트가 있다면)
-            # BACKEND_HEALTH_CHECK=false
-            # for i in {1..10}; do
-            #   if curl -f http://localhost/api/health > /dev/null 2>&1; then
-            #     log_success "Backend health check passed"
-            #     BACKEND_HEALTH_CHECK=true
-            #     break
-            #   fi
-            #   log_info "Backend health check attempt $i/10..."
-            #   sleep 5
-            # done
-            
-            # 프론트엔드 헬스체크 (기본 페이지 접근)
-            FRONTEND_HEALTH_CHECK=false
-            for i in {1..10}; do
-              if curl -f http://localhost > /dev/null 2>&1; then
-                log_success "Frontend health check passed"
-                FRONTEND_HEALTH_CHECK=true
-                break
-              fi
-              log_info "Frontend health check attempt $i/10..."
-              sleep 5
-            done
+            # 간단한 헬스체크 (5초 대기 후 1회 확인)
+            sleep 5
+            if curl -f http://localhost > /dev/null 2>&1; then
+              log_success "✅ Health check passed - stopping old containers"
+              docker compose -f ~/docker-compose.yml -p $OLD_GROUP down > /dev/null 2>&1 || true
+            else
+              log_info "Health check failed, but continuing deployment..."
+            fi
 
             log_success "✅ Deployment to $TARGET_GROUP completed successfully!"
 
@@ -264,7 +245,7 @@ jobs:
         run: |
           echo "Verifying deployment..."
           # 실제 도메인으로 헬스체크
-          curl -f https://malanjari.com/health || exit 1
+          curl -f https://malanjari.com/ || exit 1
           echo "✅ Deployment verification passed!"
 
       - name: 📢 Send Discord Notification

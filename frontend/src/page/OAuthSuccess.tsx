@@ -8,8 +8,9 @@ const OAuthSuccessPage = () => {
 
   const navigate = useNavigate();
   const setToken = useAuthStore((state) => state.setToken);
-
+  console.log(accessToken);
   useEffect(() => {
+    console.log("hi");
     if (accessToken) {
       setToken(accessToken);
 
