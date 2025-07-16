@@ -2,7 +2,7 @@ import { API_BASE_URL } from "@/shared/config/api";
 export const markAsCompleted = async (mapId: number, isCompleted: boolean) => {
   try {
     const token = localStorage.getItem("accessToken");
-    console.log(token);
+
     const res = await fetch(`${API_BASE_URL}/api/maps/update/isCompleted`, {
       method: "POST",
       headers: {

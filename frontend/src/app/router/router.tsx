@@ -15,6 +15,7 @@ const ProfilePage = lazy(() => import("@/page/Profile"));
 const WorldDetailPage = lazy(() => import("@/page/WorldDetail"));
 const NotificationGuide = lazy(() => import("@/page/NotificationGuide"));
 const Notice = lazy(() => import("@/page/Notice"));
+const AdminDashboardPage = lazy(() => import("@/page/admin/DashboardPage"));
 const router = createBrowserRouter([
   {
     path: "/",
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
         path: "profile/:userId",
         element: <ProfilePage />,
       },
+
       { path: "notification-guide", element: <NotificationGuide /> },
       { path: "notice", element: <Notice /> },
       {
@@ -45,6 +47,7 @@ const router = createBrowserRouter([
           </RequireAuth>
         ),
       },
+      { path: "admin", element: <AdminDashboardPage /> },
       { path: "oauth2/success", element: <OAuthSuccessPage /> },
     ],
   },

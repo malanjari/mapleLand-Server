@@ -24,7 +24,7 @@ export const getMonsterInfo = async (keyword: string) => {
     }
 
     const json = await res.json();
-    console.log("몬스터 드랍 정보:", json);
+
     return json;
   } catch (err) {
     console.error("getMonsterInfo 에러:", err);

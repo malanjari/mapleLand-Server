@@ -11,7 +11,7 @@ const NotificationGuide = () => {
           <br />
           👉{" "}
           <a
-            href="https://discord.gg/tmrzYvFh"
+            href="https://discord.gg/6kb8jwbTvR"
             target="_blank"
             rel="noopener noreferrer"
             className="text-yellow-300 underline hover:text-yellow-200"
