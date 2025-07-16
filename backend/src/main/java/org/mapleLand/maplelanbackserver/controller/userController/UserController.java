@@ -1,12 +1,11 @@
-package org.mapleLand.maplelanbackserver.controller.userController;
+package org.mapleland.maplelanbackserver.controller.userController;
 
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.controller.errorController.NotFoundUserException;
-import org.mapleLand.maplelanbackserver.dto.BannedDto;
-import org.mapleLand.maplelanbackserver.repository.MapleJariUserRepository;
-import org.mapleLand.maplelanbackserver.table.MapleJariUserEntity;
+import org.mapleland.maplelanbackserver.exception.NotFoundUserException;
+import org.mapleland.maplelanbackserver.dto.BannedDto;
+import org.mapleland.maplelanbackserver.repository.userRepository;
+import org.mapleland.maplelanbackserver.table.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,17 +18,17 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final MapleJariUserRepository mapleJariUserRepository;
+    private final userRepository userRepository;
 
     @PostMapping("/admin/api/banUser")
     public ResponseEntity<Map<String,String>> banUser(@RequestBody BannedDto bannedDto) {
-        MapleJariUserEntity mapleJariUserEntity = mapleJariUserRepository
+        User user = userRepository
                 .findByDiscordId(bannedDto.getDiscordId())
                 .orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
 
-        mapleJariUserEntity.setActive(false);
-        mapleJariUserEntity.setBanedReason(bannedDto.getBanReason());
-        mapleJariUserRepository.save(mapleJariUserEntity);
+        user.setActive(false);
+        user.setBanedReason(bannedDto.getBanReason());
+        userRepository.save(user);
 
         Map<String,String> map = Map.of(
                 "stauts","200 OK",
@@ -39,13 +38,13 @@ public class UserController {
     }
     @PostMapping("/admin/api/unbanUser")
     public ResponseEntity<Map<String,String>> unbanUser(@RequestBody  BannedDto bannedDto) {
-        MapleJariUserEntity mapleJariUserEntity = mapleJariUserRepository
+        User user = userRepository
                 .findByDiscordId(bannedDto.getDiscordId())
                 .orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
 
-        mapleJariUserEntity.setActive(true);
-        mapleJariUserEntity.setBanedReason(bannedDto.getBanReason());
-        mapleJariUserRepository.save(mapleJariUserEntity);
+        user.setActive(true);
+        user.setBanedReason(bannedDto.getBanReason());
+        userRepository.save(user);
 
         Map<String,String> map = Map.of(
                 "stauts","200 OK",

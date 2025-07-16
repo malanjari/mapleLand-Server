@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.dto;
+package org.mapleland.maplelanbackserver.dto;
 
 import lombok.Data;
 import lombok.Getter;

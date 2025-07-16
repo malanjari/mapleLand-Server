@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.enumType.elnath;
+package org.mapleland.maplelanbackserver.enumType.elnath;
 
 import lombok.Getter;
 

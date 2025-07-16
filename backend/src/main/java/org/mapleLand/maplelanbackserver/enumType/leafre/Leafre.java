@@ -1,9 +1,6 @@
-package org.mapleLand.maplelanbackserver.enumType.leafre;
+package org.mapleland.maplelanbackserver.enumType.leafre;
 
 import lombok.Getter;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-
-import java.util.Arrays;
 
 @Getter
 public enum Leafre {
@@ -22,7 +19,9 @@ public enum Leafre {
     Battlefield_of_Fire_and_Water("미나르숲:불과 물의 전장"),
     Dangerous_Dragon_Nest("미나르숲:위험한 용의 둥지"),
     Sky_Nest_2("미나르숲:하늘 둥지2"),
-    Abandoned_Dragon_Nest("미나르 숲: 남겨진 용의 둥지");
+    Abandoned_Dragon_Nest("미나르 숲: 남겨진 용의 둥지"),
+    Forest_of_Manon("미나르 숲: 마뇽의 숲"),
+    Forest_of_Griffey("미나르 숲 : 그리프의 숲");
     private final String displayName;
 
     Leafre(String displayName) {

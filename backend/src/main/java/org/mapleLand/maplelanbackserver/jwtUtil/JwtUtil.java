@@ -1,15 +1,19 @@
-package org.mapleLand.maplelanbackserver.jwtUtil;
+package org.mapleland.maplelanbackserver.jwtUtil;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 
 @Getter
+@RequiredArgsConstructor
 public class JwtUtil {
+
 
     @Getter
     private static final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
@@ -32,6 +36,7 @@ public class JwtUtil {
                 .compact();
     }
 
+
     public static Claims getClaims(String token) {
 
         return Jwts.parserBuilder()
@@ -52,4 +57,32 @@ public class JwtUtil {
                 .signWith(secretKey)
                 .compact();
     }
+
+    public static int getUserId(String token) {
+        if (token == null || !token.startsWith("Bearer ")) {
+            throw new IllegalArgumentException("❌ 유효하지 않은 Authorization 헤더 형식입니다.");
+        }
+
+        try {
+            String jwtToken = token.substring(7).trim(); // "Bearer " 제거
+
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(secretKey)
+                    .build()
+                    .parseClaimsJws(jwtToken)
+                    .getBody();
+
+            Object idObj = claims.get("userId");
+            if (!(idObj instanceof Number number)) {
+                throw new IllegalStateException("❌ userId 클레임이 숫자 타입이 아닙니다: " + idObj);
+            }
+
+            return number.intValue();
+
+        } catch (JwtException e) {
+            throw new IllegalArgumentException("❌ JWT 토큰 디코딩 실패: " + e.getMessage(), e);
+        }
+    }
+
+
 }

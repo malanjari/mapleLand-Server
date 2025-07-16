@@ -1,7 +1,7 @@
-package org.mapleLand.maplelanbackserver.repository;
+package org.mapleland.maplelanbackserver.repository;
 
-import org.mapleLand.maplelanbackserver.table.ManonEntity;
+import org.mapleland.maplelanbackserver.table.Manon;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ManonRepository extends JpaRepository<ManonEntity, Integer> {
+public interface ManonRepository extends JpaRepository<Manon, Integer> {
 }

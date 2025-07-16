@@ -1,7 +1,7 @@
-package org.mapleLand.maplelanbackserver.enumType.victoria;
+package org.mapleland.maplelanbackserver.enumType.victoria;
 
 import lombok.Getter;
-import org.mapleLand.maplelanbackserver.controller.errorController.MapNameMismatchException;
+import org.mapleland.maplelanbackserver.exception.MapNameMismatchException;
 
 import java.util.Arrays;
 

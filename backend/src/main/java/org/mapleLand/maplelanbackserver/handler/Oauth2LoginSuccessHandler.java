@@ -1,28 +1,21 @@
-package org.mapleLand.maplelanbackserver.handler;
+package org.mapleland.maplelanbackserver.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapleLand.maplelanbackserver.jwtUtil.JwtUtil;
-import org.mapleLand.maplelanbackserver.repository.MapleJariUserRepository;
-import org.mapleLand.maplelanbackserver.table.MapleJariUserEntity;
+import org.mapleland.maplelanbackserver.filter.AdminCheckFilter;
+import org.mapleland.maplelanbackserver.jwtUtil.JwtUtil;
+import org.mapleland.maplelanbackserver.repository.userRepository;
+import org.mapleland.maplelanbackserver.table.User;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.util.Map;
 import java.util.Optional;
@@ -35,8 +28,7 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Value("${frontend.redirect-url}")
     private String frontEndRedirectUrl;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final MapleJariUserRepository mapleJariUserRepository;
-
+    private final userRepository userRepository;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
@@ -46,10 +38,11 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         String avatar     = oAuth2User.getAttribute("avatar");
         String username   = oAuth2User.getAttribute("username");
         String globalName = oAuth2User.getAttribute("global_name");
-        String role       = "ROLE_USER";
+
+        String role = AdminCheckFilter.adminCheckFilter(discordId);
 
 
-        Optional<MapleJariUserEntity> userEntity = mapleJariUserRepository.findByDiscordId(discordId);
+        Optional<User> userEntity = userRepository.findByDiscordId(discordId);
 
 // 값이 없을 때만 예외 던지기
         if (userEntity.isEmpty()) {

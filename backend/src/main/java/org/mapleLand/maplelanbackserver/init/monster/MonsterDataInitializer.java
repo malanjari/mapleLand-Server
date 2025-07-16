@@ -1,7 +1,7 @@
-package org.mapleLand.maplelanbackserver.init.monster;
+package org.mapleland.maplelanbackserver.init.monster;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.repository.MapDropItemRepository;
+import org.mapleland.maplelanbackserver.repository.MonsterDropItemRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class MonsterDataInitializer implements CommandLineRunner {
 
-    private final MapDropItemRepository mapDropItemRepository;
+    private final MonsterDropItemRepository monsterDropItemRepository;
     private final VictoryMonsterDataInitializer victoryMonsterDataInitializer;
     private final OrbisMonsterDataInitializer orbisMonsterDataInitializer;
     private final LudibriumMonsterDataInitializer ludibriumMonsterDataInitializer;
@@ -19,7 +19,7 @@ public class MonsterDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        if (mapDropItemRepository.count() == 0) {
+        if (monsterDropItemRepository.count() == 0) {
             try {
                 System.out.println("🟡 victoriaMonsterInit() 시작");
                 victoryMonsterDataInitializer.victoriaMonsterInit();

@@ -1,28 +1,31 @@
-package org.mapleLand.maplelanbackserver.resolve;
+package org.mapleland.maplelanbackserver.resolve;
 
-import org.mapleLand.maplelanbackserver.controller.errorController.MapNameMismatchException;
-import org.mapleLand.maplelanbackserver.enumType.aquarium.Aquarium;
-import org.mapleLand.maplelanbackserver.enumType.elnath.Elnath;
-import org.mapleLand.maplelanbackserver.enumType.Region;
-import org.mapleLand.maplelanbackserver.enumType.leafre.Leafre;
-import org.mapleLand.maplelanbackserver.enumType.ludibrium.Ludibrium;
-import org.mapleLand.maplelanbackserver.enumType.victoria.VictoriaLoad;
+import lombok.extern.slf4j.Slf4j;
+import org.mapleland.maplelanbackserver.exception.MapNameMismatchException;
+import org.mapleland.maplelanbackserver.enumType.aquarium.Aquarium;
+import org.mapleland.maplelanbackserver.enumType.elnath.Elnath;
+import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.leafre.Leafre;
+import org.mapleland.maplelanbackserver.enumType.ludibrium.Ludibrium;
+import org.mapleland.maplelanbackserver.enumType.victoria.VictoriaLoad;
 
 import java.util.Arrays;
 
+@Slf4j
 public class RegionResolver {
 
     public static Region getRegionEnumByMapName(String inputMapName) {
 
         String normalized = normalize(inputMapName);
-
+        log.info("지역이름 = {}", inputMapName);
+        log.info("자른 후  = {}", normalized);
         // 순서 중요: 더 구체적인 Enum부터 검사
         if (belongsToLeafre(normalized)) {
 
             return Region.MinarForest;
 
         } else if (belongsToEllanas(normalized)) {
-
+            log.info("여기 들어감???   = {}", normalized);
             return Region.Elnath;
 
         } else if (belongsToLudibrium(normalized)) {

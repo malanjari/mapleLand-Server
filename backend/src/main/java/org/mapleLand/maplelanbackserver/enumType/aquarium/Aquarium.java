@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.enumType.aquarium;
+package org.mapleland.maplelanbackserver.enumType.aquarium;
 
 import lombok.Getter;
 

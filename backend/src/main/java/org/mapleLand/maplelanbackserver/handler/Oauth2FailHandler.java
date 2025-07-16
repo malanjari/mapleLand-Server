@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.handler;
+package org.mapleland.maplelanbackserver.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

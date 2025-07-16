@@ -1,19 +1,19 @@
-package org.mapleLand.maplelanbackserver.init;
+package org.mapleland.maplelanbackserver.init;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.enumType.Region;
-import org.mapleLand.maplelanbackserver.enumType.TradeType;
-import org.mapleLand.maplelanbackserver.enumType.aquarium.Aquarium;
-import org.mapleLand.maplelanbackserver.enumType.elnath.Elnath;
-import org.mapleLand.maplelanbackserver.enumType.leafre.Leafre;
-import org.mapleLand.maplelanbackserver.enumType.ludibrium.Ludibrium;
-import org.mapleLand.maplelanbackserver.repository.MapleJariUserRepository;
-import org.mapleLand.maplelanbackserver.repository.MapleLandMapListRepository;
-import org.mapleLand.maplelanbackserver.repository.UserMapRegisterRepository;
-import org.mapleLand.maplelanbackserver.resolve.RegionResolver;
-import org.mapleLand.maplelanbackserver.table.MapRegistrationEntity;
-import org.mapleLand.maplelanbackserver.table.MapleJariUserEntity;
-import org.mapleLand.maplelanbackserver.table.MapleLandMapListEntity;
+import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.TradeType;
+import org.mapleland.maplelanbackserver.enumType.aquarium.Aquarium;
+import org.mapleland.maplelanbackserver.enumType.elnath.Elnath;
+import org.mapleland.maplelanbackserver.enumType.leafre.Leafre;
+import org.mapleland.maplelanbackserver.enumType.ludibrium.Ludibrium;
+import org.mapleland.maplelanbackserver.repository.userRepository;
+import org.mapleland.maplelanbackserver.repository.MapleMapRepository;
+import org.mapleland.maplelanbackserver.repository.jariRepository;
+import org.mapleland.maplelanbackserver.resolve.RegionResolver;
+import org.mapleland.maplelanbackserver.table.jari;
+import org.mapleland.maplelanbackserver.table.User;
+import org.mapleland.maplelanbackserver.table.MapleMap;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,9 +29,9 @@ import java.util.stream.Stream;
 @org.springframework.core.annotation.Order(2) // ✅ 먼저 실행
 public class DummyDataInitializer {
 
-    private final MapleJariUserRepository userRepository;
-    private final UserMapRegisterRepository mapRegisterRepository;
-    private final MapleLandMapListRepository mapListRepository;
+    private final userRepository userRepository;
+    private final jariRepository mapRegisterRepository;
+    private final MapleMapRepository mapListRepository;
 
     @Bean
     public CommandLineRunner initDummyUsersAndMaps() {
@@ -43,8 +43,8 @@ public class DummyDataInitializer {
 
             Random random = new Random();
 
-            List<MapleJariUserEntity> users = IntStream.rangeClosed(1, 100)
-                    .mapToObj(i -> MapleJariUserEntity.builder()
+            List<User> users = IntStream.rangeClosed(1, 100)
+                    .mapToObj(i -> User.builder()
                             .userName("User" + i)
                             .discordId("discord-" + i)
                             .globalName("GlobalName" + i)
@@ -72,20 +72,21 @@ public class DummyDataInitializer {
                     )
             ).collect(Collectors.toList());
 
-            List<MapRegistrationEntity> registrations = users.stream().map(user -> {
+            List<jari> registrations = users.stream().map(user -> {
                 String mapName = mapNames.get(random.nextInt(mapNames.size()));
                 Region region = RegionResolver.getRegionEnumByMapName(mapName);
 
                 // 공백 제거해서 조회 (정확 매칭)
                 String normalizedMapName = mapName.replaceAll("\\s+", "");
                 // ✅ 공백 제거 없이, 원본 mapName으로 조회
-                MapleLandMapListEntity mapInfo = mapListRepository.findByMapNameExact(mapName)
+                MapleMap mapInfo = mapListRepository.findByMapNameExact(mapName)
                         .stream().findFirst().orElse(null);
 
-                return MapRegistrationEntity.builder()
-                        .mapleJariUserEntity(user)
+                return jari.builder()
+                        .user(user)
                         .mapName(mapName)
                         .area(region)
+                        .isCompleted(random.nextBoolean())
                         .comment("자동 생성된 더미 코멘트")
                         .serverColor(List.of("Red", "Blue", "Green").get(random.nextInt(3)))
                         .price(1000 + random.nextInt(10000))

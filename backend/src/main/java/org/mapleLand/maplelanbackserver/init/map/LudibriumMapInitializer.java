@@ -1,23 +1,23 @@
-package org.mapleLand.maplelanbackserver.init.map;
+package org.mapleland.maplelanbackserver.init.map;
 
 import lombok.RequiredArgsConstructor;
-import org.mapleLand.maplelanbackserver.enumType.Region;
-import org.mapleLand.maplelanbackserver.enumType.ludibrium.LudibriumRegion;
-import org.mapleLand.maplelanbackserver.repository.MapleLandMapListRepository;
-import org.mapleLand.maplelanbackserver.table.MapleLandMapListEntity;
+import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.ludibrium.LudibriumRegion;
+import org.mapleland.maplelanbackserver.repository.MapleMapRepository;
+import org.mapleland.maplelanbackserver.table.MapleMap;
 import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class LudibriumMapInitializer {
 
-    private final MapleLandMapListRepository mapleLandMapListRepository;
+    private final MapleMapRepository mapleMapRepository;
 
 
          public void initLudibrium(){
 
         // ----------------- 루디브리엄 --------------------------------------------
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("루디브리엄성:시간의길<1>")
                     .region(Region.LudusLake)
@@ -27,7 +27,7 @@ public class LudibriumMapInitializer {
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                     .build());
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("루디브리엄성:시간의길<2>")
                     .region(Region.LudusLake)
@@ -37,7 +37,7 @@ public class LudibriumMapInitializer {
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                     .build());
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("루디브리엄성:시간의길<3>")
                     .region(Region.LudusLake)
@@ -47,7 +47,7 @@ public class LudibriumMapInitializer {
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                     .build());
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("루디브리엄성:시간의길<4>")
                     .region(Region.LudusLake)
@@ -59,7 +59,7 @@ public class LudibriumMapInitializer {
 
             // ------------- 시계탑 최하층 ---------------------------
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("시계탑최하층:뒤틀린 시간의 길<1>")
                     .region(Region.LudusLake)
@@ -70,7 +70,7 @@ public class LudibriumMapInitializer {
                     .build());
 
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("시계탑최하층:뒤틀린 시간의 길<2>")
                     .region(Region.LudusLake)
@@ -80,7 +80,7 @@ public class LudibriumMapInitializer {
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                     .build());
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("시계탑최하층:뒤틀린 시간의 길<3>")
                     .region(Region.LudusLake)
@@ -90,7 +90,7 @@ public class LudibriumMapInitializer {
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                     .build());
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("시계탑최하층:뒤틀린 시간의 길<4>")
                     .region(Region.LudusLake)
@@ -100,7 +100,7 @@ public class LudibriumMapInitializer {
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                     .build());
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("시계탑최하층:금지된 시간")
                     .region(Region.LudusLake)
@@ -111,7 +111,7 @@ public class LudibriumMapInitializer {
                     .build());
 
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("시계탑최하층:사라진 시간")
                     .region(Region.LudusLake)
@@ -121,7 +121,7 @@ public class LudibriumMapInitializer {
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                     .build());
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("시계탑최하층:삐뚤어진 시간")
                     .region(Region.LudusLake)
@@ -131,7 +131,7 @@ public class LudibriumMapInitializer {
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                     .build());
 
-            mapleLandMapListRepository.save(MapleLandMapListEntity
+            mapleMapRepository.save(MapleMap
                     .builder().
                     mapName("시계탑최하층:꼬여버린 시간")
                     .region(Region.LudusLake)

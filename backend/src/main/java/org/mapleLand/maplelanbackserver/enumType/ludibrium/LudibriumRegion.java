@@ -1,4 +1,4 @@
-package org.mapleLand.maplelanbackserver.enumType.ludibrium;
+package org.mapleland.maplelanbackserver.enumType.ludibrium;
 
 import lombok.Getter;
 
