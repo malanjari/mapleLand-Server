@@ -198,19 +198,34 @@ jobs:
             docker tag ${{ secrets.DOCKER_USERNAME }}/maple-frontend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
 
             # --- 3. Docker로 블루/그린 배포 ---
-            log_info "Starting blue-green deployment..."
-            IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx-1" --format "{{.Names}}")
-            if [ -n "$IS_BLUE_RUNNING" ]; then
-              TARGET_GROUP=green
-              OLD_GROUP=blue
-            else
-              TARGET_GROUP=blue
-              OLD_GROUP=green
-            fi
-            log_info "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
+            # log_info "Starting blue-green deployment..."
+            # IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx-1" --format "{{.Names}}")
+            # if [ -n "$IS_BLUE_RUNNING" ]; then
+            #   TARGET_GROUP=green
+            #   OLD_GROUP=blue
+            # else
+            #   TARGET_GROUP=blue
+            #   OLD_GROUP=green
+            # fi
+            # log_info "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
 
-            # 새로운 그룹 실행
-            docker compose -f docker-compose.yml -p $TARGET_GROUP up -d
+            # # 새로운 그룹 실행
+            # docker compose -f docker-compose.yml -p $TARGET_GROUP up -d
+
+            log_info "Starting deployment..."
+
+            # 현재 실행 중인 컨테이너가 있다면 먼저 중지 및 제거
+            CURRENT_RUNNING_CONTAINERS=$(docker ps -a --filter "name=nginx" --format "{{.Names}}")
+            if [ -n "$CURRENT_RUNNING_CONTAINERS" ]; then
+                log_info "Stopping and removing currently running containers..."
+                docker compose -f docker-compose.yml down || true
+            else
+                log_info "No existing containers found to stop."
+            fi
+
+            # 이제 새로운 컨테이너를 시작
+            log_info "Starting new application containers..."
+            docker compose -f docker-compose.yml up -d
 
             # # 헬스체크 (애플리케이션이 정상 동작하는지 확인)
             # log_info "Performing health check..."
