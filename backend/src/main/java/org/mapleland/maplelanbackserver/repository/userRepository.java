@@ -1,8 +1,11 @@
 package org.mapleland.maplelanbackserver.repository;
 
 import org.mapleland.maplelanbackserver.table.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface userRepository extends JpaRepository<User, Integer> {
@@ -12,4 +15,5 @@ public interface userRepository extends JpaRepository<User, Integer> {
      */
     Optional<User> findByDiscordId(String discordId);
     Optional<User> findByUserId(int userId);
+    List<User> findAllByOrderByReportCountDesc(); // 신고 횟수 역순 정렬
 }

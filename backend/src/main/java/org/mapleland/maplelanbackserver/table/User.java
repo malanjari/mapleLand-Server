@@ -33,4 +33,9 @@ public class User {
     @CreationTimestamp
     @Column(updatable = false , columnDefinition = "DATETIME(0)")
     private LocalDateTime createTime; // 만든날짜
+    private int reportCount = 0;
+
+    public void increaseReportCount() {
+        this.reportCount++;
+    }
 }
