@@ -151,12 +151,25 @@ jobs:
 
             # --- 1. 최신 소스코드 및 .env 파일 준비 ---
             log_info "Preparing source code and environment..."
-            if [ ! -d "~/app" ]; then
-              git clone -b deploy https://github.com/malanjari/mapleLand-Server.git ~/app
+            
+            # 워킹 디렉토리 설정
+            WORK_DIR="$HOME/app"
+            
+            # 기존 디렉토리가 있으면 정리
+            if [ -d "$WORK_DIR" ]; then
+              log_info "Cleaning existing app directory..."
+              cd "$HOME"
+              rm -rf "$WORK_DIR"
             fi
-            cd ~/app
-            git fetch origin deploy
-            git reset --hard origin/deploy
+            
+            # 최신 코드 클론
+            log_info "Cloning latest source code..."
+            git clone -b deploy https://github.com/malanjari/mapleLand-Server.git "$WORK_DIR"
+            cd "$WORK_DIR"
+            
+            # 권한 확인
+            log_info "Current directory: $(pwd)"
+            log_info "Directory contents: $(ls -la)"
 
             # .env 파일 생성 (더 안전한 방법)
             cat > .env << EOL
@@ -203,29 +216,27 @@ jobs:
             # log_info "Performing health check..."
             # sleep 15
             
-            # # 백엔드 헬스체크 (포트는 실제 설정에 맞게 조정)
+            # # 백엔드 헬스체크 (API 엔드포인트가 있다면)
+            # BACKEND_HEALTH_CHECK=false
             # for i in {1..10}; do
             #   if curl -f http://localhost/api/health > /dev/null 2>&1; then
             #     log_success "Backend health check passed"
+            #     BACKEND_HEALTH_CHECK=true
             #     break
             #   fi
-            #   if [ $i -eq 10 ]; then
-            #     log_error "Backend health check failed after 10 attempts"
-            #     exit 1
-            #   fi
+            #   log_info "Backend health check attempt $i/10..."
             #   sleep 5
             # done
-
-            # # 프론트엔드 헬스체크
+            
+            # # 프론트엔드 헬스체크 (기본 페이지 접근)
+            # FRONTEND_HEALTH_CHECK=false
             # for i in {1..10}; do
-            #   if curl -f http://localhost:80 > /dev/null 2>&1; then
+            #   if curl -f http://localhost > /dev/null 2>&1; then
             #     log_success "Frontend health check passed"
+            #     FRONTEND_HEALTH_CHECK=true
             #     break
             #   fi
-            #   if [ $i -eq 10 ]; then
-            #     log_error "Frontend health check failed after 10 attempts"
-            #     exit 1
-            #   fi
+            #   log_info "Frontend health check attempt $i/10..."
             #   sleep 5
             # done
 
