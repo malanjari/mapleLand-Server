@@ -91,11 +91,11 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(redirectUrl)); // application.properties에 정의된 URL
+        config.setAllowedOriginPatterns(List.of(redirectUrl)); // 여기 수정
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowCredentials(true);
-        config.setAllowedHeaders(List.of("*")); // Authorization, Content-Type 등 허용
-        config.setExposedHeaders(List.of("Authorization", "Set-Cookie")); // 쿠키/토큰을 클라이언트에서 읽을 수 있도록
+        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.setExposedHeaders(List.of("Authorization", "Set-Cookie"));
+        config.setAllowCredentials(true); // 중요: 쿠키/헤더 같이 주고받기 위함
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
