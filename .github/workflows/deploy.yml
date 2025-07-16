@@ -16,69 +16,58 @@ env:
   FRONTEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/maple-frontend
 
 jobs:
-  # -------------------- 1. 병렬 빌드 및 이미지 푸시 --------------------
-  build-backend:
-    name: Build Backend
+  # -------------------- 1. 빌드 및 이미지 푸시 --------------------
+  build:
+    name: Build & Push Docker Images
     runs-on: ubuntu-latest
     outputs:
-      image-digest: ${{ steps.build.outputs.digest }}
+      backend-image-digest: ${{ steps.build-backend.outputs.digest }}
+      frontend-image-digest: ${{ steps.build-frontend.outputs.digest }}
     steps:
-      - name: ⬇️ Checkout
+      - name: ⬇️ Checkout source code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: ☕ Setup JDK 17
+      # --- Backend Build with Caching ---
+      - name: ☕ Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: 📦 Cache Gradle
+      - name: 📦 Cache Gradle dependencies
         uses: actions/cache@v3
         with:
           path: |
             ~/.gradle/caches
             ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: ${{ runner.os }}-gradle-
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
-      - name: 🔧 Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+      - name: ✅ Grant execute permission to gradlew
+        run: chmod +x ./backend/gradlew
 
-      - name: 🔑 Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: 🛠️ Build Spring Boot App with Gradle
+        run: ./backend/gradlew build -x test -p ./backend
 
-      - name: 🖼️ Build and push Backend
-        id: build
-        uses: docker/build-push-action@v5
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: ${{ env.BACKEND_IMAGE }}:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          platforms: linux/amd64
-
-  build-frontend:
-    name: Build Frontend
-    runs-on: ubuntu-latest
-    outputs:
-      image-digest: ${{ steps.build.outputs.digest }}
-    steps:
-      - name: ⬇️ Checkout
-        uses: actions/checkout@v4
-
-      - name: 🟢 Setup Node.js
+      # --- Frontend Build with Caching ---
+      - name: 🟢 Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: './frontend/package-lock.json'
 
-      - name: 🔧 Setup Docker Buildx
+      - name: 📦 Install Frontend Dependencies
+        run: npm ci --prefix ./frontend
+
+      - name: 🧾 Build Frontend App
+        run: npm run build --prefix ./frontend
+
+      # --- Docker Build Setup ---
+      - name: 🔧 Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
       - name: 🔑 Login to Docker Hub
@@ -87,14 +76,32 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: 🖼️ Build and push Frontend
-        id: build
+      # --- Backend Docker Build with Cache ---
+      - name: 🖼️ Build and push Backend image
+        id: build-backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          file: ./backend/Dockerfile
+          push: true
+          tags: |
+            ${{ env.BACKEND_IMAGE }}:latest
+            ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
+
+      # --- Frontend Docker Build with Cache ---
+      - name: 🖼️ Build and push Frontend image
+        id: build-frontend
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./nginx/Dockerfile
           push: true
-          tags: ${{ env.FRONTEND_IMAGE }}:latest
+          tags: |
+            ${{ env.FRONTEND_IMAGE }}:latest
+            ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
@@ -102,7 +109,7 @@ jobs:
   # -------------------- 2. EC2에 배포 --------------------
   deploy:
     name: Deploy to EC2
-    needs: [build-backend, build-frontend]
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/deploy' && github.event_name == 'push'
     environment: production
@@ -120,7 +127,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          timeout: 5m
+          timeout: 10m
           script: |
             set -e  # Exit on any error
             
@@ -228,52 +235,59 @@ jobs:
             df -h
 
   # -------------------- 3. 배포 후 검증 --------------------
-  verify:
-    name: Quick Verification
+  post-deploy-verification:
+    name: Post-Deploy Verification
     needs: deploy
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/deploy' && github.event_name == 'push'
     steps:
-      - name: 🔍 Quick Health Check
+      - name: 🔍 Verify Deployment
         run: |
-          # 기본 접근성 확인
-          curl -f https://malanjari.com/ --max-time 10 || exit 1
-          echo "✅ Site is accessible!"
+          echo "Verifying deployment..."
+          # 실제 도메인으로 헬스체크
+          curl -f https://malanjari.com/ || exit 1
+          echo "✅ Deployment verification passed!"
 
-      - name: 📢 Success Notification
+      - name: 📢 Send Discord Notification
         uses: sarisia/actions-status-discord@v1
-        if: success()
+        if: always()
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          status: "success"
-          title: "🚀 Fast Deploy Success"
+          status: ${{ job.status }}
+          title: "🚀 Deployment Status"
           description: |
-            **✅ Deployment completed successfully!**
+            **Status:** ${{ job.status }}
             **Commit:** `${{ github.sha }}`
             **Author:** ${{ github.actor }}
-            **Time:** ${{ job.started_at }}
-          color: 0x00ff00
+            **Repository:** ${{ github.repository }}
+            **Branch:** ${{ github.ref_name }}
+            **Workflow:** ${{ github.workflow }}
+          color: ${{ job.status == 'success' && 0x00ff00 || job.status == 'failure' && 0xff0000 || 0xffff00 }}
           username: "GitHub Actions"
           avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
 
-  # -------------------- 4. 실패 알림 --------------------
+  # -------------------- 4. 배포 실패 시 알림 --------------------
   notify-failure:
-    name: Failure Notification
+    name: Notify Build/Deploy Failure
     runs-on: ubuntu-latest
     if: failure()
-    needs: [build-backend, build-frontend, deploy]
+    needs: [build, deploy]
     steps:
-      - name: 🚨 Send Failure Alert
+      - name: 🚨 Send Failure Notification
         uses: sarisia/actions-status-discord@v1
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
           status: "failure"
-          title: "❌ Fast Deploy Failed"
+          title: "❌ Build/Deploy Failed"
           description: |
-            **❌ Pipeline failed**
+            **❌ Failed Stage:** ${{ needs.build.result == 'failure' && 'Build' || 'Deploy' }}
             **Commit:** `${{ github.sha }}`
             **Author:** ${{ github.actor }}
-            **Logs:** [View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            **Repository:** ${{ github.repository }}
+            **Branch:** ${{ github.ref_name }}
+            **Action URL:** [View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            **Message:** Please check the logs for more details.
           color: 0xff0000
-          username: "GitHub Actions"
+          username: "GitHub Actions - Alert"
           avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
