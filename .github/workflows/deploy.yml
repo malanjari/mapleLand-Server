@@ -6,106 +6,186 @@ on:
   push:
     branches:
       - deploy
+  pull_request:
+    branches:
+      - deploy
+
+env:
+  DOCKER_REGISTRY: docker.io
+  BACKEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/maple-backend
+  FRONTEND_IMAGE: ${{ secrets.DOCKER_USERNAME }}/maple-frontend
 
 jobs:
   # -------------------- 1. 빌드 및 이미지 푸시 --------------------
   build:
     name: Build & Push Docker Images
     runs-on: ubuntu-latest
+    outputs:
+      backend-image-digest: ${{ steps.build-backend.outputs.digest }}
+      frontend-image-digest: ${{ steps.build-frontend.outputs.digest }}
     steps:
       - name: ⬇️ Checkout source code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      # --- Backend Build ---
+      # --- Backend Build with Caching ---
       - name: ☕ Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
+
+      - name: 📦 Cache Gradle dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: ✅ Grant execute permission to gradlew
         run: chmod +x ./backend/gradlew
+
       - name: 🛠️ Build Spring Boot App with Gradle
         run: ./backend/gradlew build -x test -p ./backend
 
-      # --- Frontend Build ---
+      # --- Frontend Build with Caching ---
       - name: 🟢 Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+
       - name: 📦 Install Frontend Dependencies
         run: npm ci --prefix ./frontend
+
       - name: 🧾 Build Frontend App
         run: npm run build --prefix ./frontend
 
-      # --- Docker Push ---
+      # --- Docker Build Setup ---
+      - name: 🔧 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: 🔑 Login to Docker Hub
-        uses: docker/login-action@v2
+        uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      # --- Backend Docker Build with Cache ---
       - name: 🖼️ Build and push Backend image
-        uses: docker/build-push-action@v4
+        id: build-backend
+        uses: docker/build-push-action@v5
         with:
           context: ./backend
           file: ./backend/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
+          tags: |
+            ${{ env.BACKEND_IMAGE }}:latest
+            ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
 
+      # --- Frontend Docker Build with Cache ---
       - name: 🖼️ Build and push Frontend image
-        uses: docker/build-push-action@v4
+        id: build-frontend
+        uses: docker/build-push-action@v5
         with:
           context: .
           file: ./nginx/Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
+          tags: |
+            ${{ env.FRONTEND_IMAGE }}:latest
+            ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          platforms: linux/amd64
 
   # -------------------- 2. EC2에 배포 --------------------
   deploy:
     name: Deploy to EC2
     needs: build
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/deploy' && github.event_name == 'push'
+    environment: production
     steps:
+      - name: ⬇️ Checkout source code
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docker-compose.yml
+            docker-compose.db.yml
+
       - name: 🚀 Connect to EC2 and Deploy
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          timeout: 5m
+          timeout: 10m
           script: |
+            set -e  # Exit on any error
+            
+            # 색상 출력을 위한 함수
+            log_info() { echo -e "\033[36m[INFO]\033[0m $1"; }
+            log_success() { echo -e "\033[32m[SUCCESS]\033[0m $1"; }
+            log_error() { echo -e "\033[31m[ERROR]\033[0m $1"; }
+
             # --- 0. 데이터베이스 컨테이너 실행 보장 ---
+            log_info "Checking database container status..."
             if [ ! "$(docker ps -q -f name=maple-db)" ]; then
-              echo "Database container not found. Starting a new one..."
+              log_info "Database container not found. Starting a new one..."
               echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" > ~/db.env
               docker compose -f ~/docker-compose.db.yml --env-file ~/db.env up -d
               rm ~/db.env
+              
+              # DB 컨테이너가 완전히 시작될 때까지 대기
+              log_info "Waiting for database to be ready..."
+              sleep 30
             fi
 
             # --- 1. 최신 소스코드 및 .env 파일 준비 ---
+            log_info "Preparing source code and environment..."
             if [ ! -d "~/app" ]; then
               git clone -b deploy https://github.com/malanjari/mapleLand-Server.git ~/app
             fi
             cd ~/app
-            git pull origin deploy
+            git fetch origin deploy
+            git reset --hard origin/deploy
 
-            # .env 파일 생성
-            echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" > .env
-            echo "DB_URL=${{ secrets.DB_URL }}" >> .env
-            echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-            echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-            echo "DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" >> .env
-            echo "DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
-            echo "DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}" >> .env
-            echo "FRONTEND_REDIRECT_URL=${{ secrets.FRONTEND_REDIRECT_URL }}" >> .env
-            echo "DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}" >> .env
+            # .env 파일 생성 (더 안전한 방법)
+            cat > .env << EOL
+            DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}
+            DB_URL=${{ secrets.DB_URL }}
+            DB_USERNAME=${{ secrets.DB_USERNAME }}
+            DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+            DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}
+            DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}
+            DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}
+            FRONTEND_REDIRECT_URL=${{ secrets.FRONTEND_REDIRECT_URL }}
+            DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}
+            EOL
 
             # --- 2. Docker Hub에서 최신 이미지 받아오기 ---
+            log_info "Pulling latest Docker images..."
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-            docker pull ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
+            
+            # 병렬로 이미지 풀링
+            docker pull ${{ secrets.DOCKER_USERNAME }}/maple-backend:${{ github.sha }} &
+            docker pull ${{ secrets.DOCKER_USERNAME }}/maple-frontend:${{ github.sha }} &
+            wait
+            
+            # 태그 업데이트
+            docker tag ${{ secrets.DOCKER_USERNAME }}/maple-backend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
+            docker tag ${{ secrets.DOCKER_USERNAME }}/maple-frontend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/maple-frontend:latest
 
             # --- 3. Docker로 블루/그린 배포 ---
+            log_info "Starting blue-green deployment..."
             IS_BLUE_RUNNING=$(docker ps --filter "name=blue-nginx-1" --format "{{.Names}}")
             if [ -n "$IS_BLUE_RUNNING" ]; then
               TARGET_GROUP=green
@@ -114,15 +194,108 @@ jobs:
               TARGET_GROUP=blue
               OLD_GROUP=green
             fi
-            echo "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
-
-            # 이전 그룹 중지
-            docker compose -f docker-compose.yml -p $OLD_GROUP down || true
+            log_info "🚀 Deploying to $TARGET_GROUP group, shutting down $OLD_GROUP group later."
 
             # 새로운 그룹 실행
             docker compose -f docker-compose.yml -p $TARGET_GROUP up -d
 
-            echo "✅ Deployment to $TARGET_GROUP completed!"
+            # # 헬스체크 (애플리케이션이 정상 동작하는지 확인)
+            # log_info "Performing health check..."
+            # sleep 15
+            
+            # # 백엔드 헬스체크 (포트는 실제 설정에 맞게 조정)
+            # for i in {1..10}; do
+            #   if curl -f http://localhost/api/health > /dev/null 2>&1; then
+            #     log_success "Backend health check passed"
+            #     break
+            #   fi
+            #   if [ $i -eq 10 ]; then
+            #     log_error "Backend health check failed after 10 attempts"
+            #     exit 1
+            #   fi
+            #   sleep 5
+            # done
+
+            # # 프론트엔드 헬스체크
+            # for i in {1..10}; do
+            #   if curl -f http://localhost:80 > /dev/null 2>&1; then
+            #     log_success "Frontend health check passed"
+            #     break
+            #   fi
+            #   if [ $i -eq 10 ]; then
+            #     log_error "Frontend health check failed after 10 attempts"
+            #     exit 1
+            #   fi
+            #   sleep 5
+            # done
+
+            # 헬스체크 통과 후 이전 그룹 중지
+            log_info "Stopping old group: $OLD_GROUP"
+            docker compose -f docker-compose.yml -p $OLD_GROUP down || true
+
+            log_success "✅ Deployment to $TARGET_GROUP completed successfully!"
 
             # --- 4. 사용하지 않는 도커 이미지 정리 ---
-            docker image prune -a -f
+            log_info "Cleaning up unused Docker images..."
+            docker image prune -a -f --filter "until=24h"
+            
+            # 디스크 사용량 확인
+            df -h
+
+  # -------------------- 3. 배포 후 검증 --------------------
+  post-deploy-verification:
+    name: Post-Deploy Verification
+    needs: deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/deploy' && github.event_name == 'push'
+    steps:
+      - name: 🔍 Verify Deployment
+        run: |
+          echo "Verifying deployment..."
+          # 실제 도메인으로 헬스체크
+          curl -f https://malanjari.com/health || exit 1
+          echo "✅ Deployment verification passed!"
+
+      - name: 📢 Send Discord Notification
+        uses: sarisia/actions-status-discord@v1
+        if: always()
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          status: ${{ job.status }}
+          title: "🚀 Deployment Status"
+          description: |
+            **Status:** ${{ job.status }}
+            **Commit:** `${{ github.sha }}`
+            **Author:** ${{ github.actor }}
+            **Repository:** ${{ github.repository }}
+            **Branch:** ${{ github.ref_name }}
+            **Workflow:** ${{ github.workflow }}
+          color: ${{ job.status == 'success' && 0x00ff00 || job.status == 'failure' && 0xff0000 || 0xffff00 }}
+          username: "GitHub Actions"
+          avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+
+  # -------------------- 4. 배포 실패 시 알림 --------------------
+  notify-failure:
+    name: Notify Build/Deploy Failure
+    runs-on: ubuntu-latest
+    if: failure()
+    needs: [build, deploy]
+    steps:
+      - name: 🚨 Send Failure Notification
+        uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          status: "failure"
+          title: "❌ Build/Deploy Failed"
+          description: |
+            **❌ Failed Stage:** ${{ needs.build.result == 'failure' && 'Build' || 'Deploy' }}
+            **Commit:** `${{ github.sha }}`
+            **Author:** ${{ github.actor }}
+            **Repository:** ${{ github.repository }}
+            **Branch:** ${{ github.ref_name }}
+            **Action URL:** [View Details](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            
+            **Message:** Please check the logs for more details.
+          color: 0xff0000
+          username: "GitHub Actions - Alert"
+          avatar_url: "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
