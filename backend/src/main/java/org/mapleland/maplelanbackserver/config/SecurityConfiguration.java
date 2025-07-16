@@ -55,7 +55,7 @@ public class SecurityConfiguration {
                 .cors(Customizer -> Customizer.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/oauth2/**").permitAll() // ✅ 이 줄 추가!
+         
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
