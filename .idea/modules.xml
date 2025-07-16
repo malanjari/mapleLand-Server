@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MapleLan-BackServer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MapleLan-BackServer.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MapleLan-BackServer.test.iml" filepath="$PROJECT_DIR$/.idea/modules/MapleLan-BackServer.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/mapleLand-Server.iml" filepath="$PROJECT_DIR$/.idea/mapleLand-Server.iml" />
     </modules>
   </component>
