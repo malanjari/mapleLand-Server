@@ -78,7 +78,7 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 + "?accessToken="  + accessToken
                 + "&refreshToken=" + refreshToken;
 
-        response.sendRedirect(redirectUrl + "/oauth2/success");
+        response.sendRedirect(redirectUrl);
 
     }
 }
