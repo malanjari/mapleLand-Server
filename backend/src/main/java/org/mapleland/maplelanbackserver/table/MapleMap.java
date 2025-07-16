@@ -14,15 +14,15 @@ public class MapleMap {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer mapleLandMapListId;
-    private String mapName;
+    private Integer mapleLandMapListId; // MapleMap PK
+    private String mapName; // 맵 이름
     @Enumerated(EnumType.STRING)
     @Column(length = 20)
-    private Region region;
-    private String subRegion;
-    private String monsterImageUrl;
-    private String miniMapImageUrl;
-    private String miniMapImageLogoUrl;
+    private Region region; // 지역명 Leafre Elnath LudusLake Victoria 등
+    private String subRegion; //지역 세분화 엘나스 -> 폐광/오르비스 루디브리엄 -> 시계탑 최하층 / 루디브리엄 성
+    private String monsterImageUrl; // 몬스터 이미지 url
+    private String miniMapImageUrl; // 미니맵 url
+    private String miniMapImageLogoUrl; // 미니맵 이지미 로고 url
 
     public MapleMap() {
 

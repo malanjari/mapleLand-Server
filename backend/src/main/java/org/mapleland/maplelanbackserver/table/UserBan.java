@@ -11,10 +11,10 @@ public class UserBan {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int UserBanId;
+    private int UserBanId; //유저벤 PK
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user; //유저테이블
 
 
 }

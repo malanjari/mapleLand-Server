@@ -17,12 +17,12 @@ public class MonsterDropItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String mapName;
+    private String mapName; // 지역명
 
-    private String itemName;
+    private String itemName; // 드랍 아이템명
 
-    private String itemImageUrl; // optional
-    private double dropRate;
+    private String itemImageUrl; // 아이템 이미지
+    private double dropRate; // 드랍 확률
 
 
     public MonsterDropItem() {

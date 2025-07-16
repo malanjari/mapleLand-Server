@@ -31,6 +31,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                                     FilterChain chain)
             throws ServletException, IOException {
 
+        // ✅ OPTIONS 요청은 JWT 검사 생략하고 바로 통과시킴
+        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
+            log.debug("[JwtTokenFilter] Preflight OPTIONS request bypassed.");
+            chain.doFilter(request, response); // ✅ 이걸 반드시 호출해야 함!
+            return;
+        }
+
         String authHeader = request.getHeader("Authorization");
         String token = null;
 

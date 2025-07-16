@@ -2,12 +2,14 @@ package org.mapleland.maplelanbackserver.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.filters.CorsFilter;
 import org.mapleland.maplelanbackserver.filter.JwtTokenFilter;
 import org.mapleland.maplelanbackserver.jwtUtil.JwtUtil;
 import org.mapleland.maplelanbackserver.service.CustomerOauth2UserService;
 import org.mapleland.maplelanbackserver.handler.Oauth2FailHandler;
 import org.mapleland.maplelanbackserver.handler.Oauth2LoginSuccessHandler;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -50,15 +52,14 @@ public class SecurityConfiguration {
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .cors(Customizer-> Customizer.configurationSource(corsConfigurationSource()))
+                .cors(Customizer -> Customizer.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                        .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
-                        .requestMatchers("api/create/**","/api/alert/**").hasAnyRole("USER","MANAGER","ADMIN")
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
+                        .requestMatchers("/api/create/**", "/api/alert/**").hasAnyRole("USER", "MANAGER", "ADMIN")
                         .requestMatchers("/api/**").permitAll()
-                        .anyRequest().permitAll()
                 ).exceptionHandling(exception -> {
                     exception.authenticationEntryPoint((request, response, authException) -> {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -90,15 +91,16 @@ public class SecurityConfiguration {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of(redirectUrl)); // 여기 수정
+
+        // ✅ 프론트엔드 주소만 허용
+        config.addAllowedOriginPattern("*"); // 또는 정확하게 명시해도 됨
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
+        config.setAllowedHeaders(List.of("*")); // Authorization 포함해서 모든 헤더 허용
         config.setExposedHeaders(List.of("Authorization", "Set-Cookie"));
-        config.setAllowCredentials(true); // 중요: 쿠키/헤더 같이 주고받기 위함
+        config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
     }
-
 }
