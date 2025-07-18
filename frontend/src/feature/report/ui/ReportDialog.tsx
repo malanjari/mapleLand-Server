@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogHeader,
   DialogFooter,
-} from "@/shared/ui/dialog/dialog";
+} from "@/shared/ui/dialog/dialogg";
 import { Button } from "@/shared/ui/button/Button";
 import { Textarea } from "@/shared/ui/textarea/Textarea";
 import { predefinedReasons } from "./hooks/useReportDialog";
