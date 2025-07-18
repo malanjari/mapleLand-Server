@@ -18,7 +18,6 @@ export const useReportDialog = (
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const reasonToSend = selected === "기타" ? customReason : selected;
   const handleSubmit = () => {
     const reasonToSend = selected === "기타" ? customReason : selected;
     onSubmit(reasonToSend, imageFile);
@@ -62,7 +61,7 @@ export const useReportDialog = (
     imageFile,
     imagePreview,
     fileInputRef,
-    reasonToSend,
+
     handleSubmit,
     handleImageChange,
     handleRemoveImage,

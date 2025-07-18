@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogHeader,
   DialogFooter,
-} from "@/shared/ui/dialog/Dialog";
+} from "@/shared/ui/dialog/dialog";
 import { Button } from "@/shared/ui/button/Button";
 import { Textarea } from "@/shared/ui/textarea/Textarea";
 import { useState, useEffect } from "react";
@@ -15,7 +15,7 @@ const blockDurations = [
   { label: "3시간", value: 3 },
   { label: "12시간", value: 12 },
   { label: "24시간", value: 24 },
-  { label: "영구 차단", value: -1 },
+  { label: "영구 차단", value: 999 },
 ];
 
 interface Props {

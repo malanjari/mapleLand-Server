@@ -15,11 +15,14 @@ import { EditJariPopover } from "../../jari/ui/EditJariPopover";
 import { TradeBadges } from "./TradeBadges";
 import { TradeCardHeader } from "./TradeCardHeader";
 import { useTradeCard } from "../hooks/useTradeCard";
+import { submitReport } from "@/feature/report/ui/api/submitReport";
+import { toast } from "@/shared/hooks/use-toast";
 const TradeCard = ({ item, refetch, showEditButton }: Props) => {
   const user = useUser();
 
   const isOwner = user?.user?.userId === item.userId;
   const isAdmin = user?.user?.role === "ROLE_ADMIN";
+
   const {
     editPrice,
     setEditPrice,
@@ -35,7 +38,7 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
     showEditBox,
     setShowEditBox,
   } = useTradeCard(item, refetch);
-
+  console.log(item.userId);
   return (
     <div
       className={clsx(
@@ -85,16 +88,38 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
               negotiationOption={item.negotiationOption}
               comment={item.comment}
             />{" "}
-            {!isOwner && (
+            {!isOwner && user?.user && (
               <ReportDialog
                 trigger={
                   <button className="text-xs text-red-400 hover:text-red-300 px-2 py-0.5 rounded-sm border border-red-500 hover:border-red-400 transition">
                     신고
                   </button>
                 }
-                onSubmit={(reason: string) => {
-                  // 신고 처리 로직 (예: API 요청 또는 toast 표시)
-                  console.log("신고 사유:", reason);
+                onSubmit={async (reason, imageFile) => {
+                  try {
+                    if (!user?.user) return;
+
+                    await submitReport({
+                      reason,
+                      userId: user.user.userId,
+                      jariId: item.userMapId,
+                      reportImage: imageFile,
+                    });
+                    toast({
+                      title: "🚨 신고 완료",
+                      description: "신고가 정상적으로 접수되었습니다.",
+                      variant: "success",
+                    });
+                  } catch (err) {
+                    toast({
+                      title: "❌ 신고 실패",
+                      description:
+                        err instanceof Error
+                          ? err.message
+                          : "알 수 없는 오류가 발생했습니다.",
+                      variant: "destructive",
+                    });
+                  }
                 }}
               />
             )}
