@@ -17,7 +17,7 @@ export interface AlertDto {
   mapId: number;
   alertStatus: "ALERT_ON" | "ALERT_OFF";
 }
-// 프로필 API 응답용 (다른 유저든 내 정보든)
+// 다른유저
 export interface User {
   discordId: string;
   email: string;
@@ -26,4 +26,16 @@ export interface User {
   image?: string;
   mapTicket: boolean;
   createTime: string;
+  userId: number;
+}
+
+export interface AdminUsersInfo {
+  discordId: string;
+  image: string;
+  localDateTime: string;
+  role: string;
+  userId: number;
+  userName: string;
+  userReportCount: number;
+  globalName: string;
 }

@@ -1,13 +1,23 @@
+import { useNavigate } from "react-router-dom";
+
 interface Props {
   title: string;
-  value: number;
+  to: string;
 }
 
-export const SummaryCard = ({ title, value }: Props) => {
+export const SummaryCard = ({ title, to }: Props) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    if (to) {
+      navigate(to);
+    }
+  };
   return (
-    <div className="bg-neutral-800 rounded-xl p-5 shadow flex flex-col gap-2">
+    <div
+      onClick={handleClick}
+      className="bg-neutral-800 rounded-xl p-5 shadow flex flex-col gap-2 cursor-pointer hover:bg-neutral-900 transition-all "
+    >
       <p className="text-sm text-neutral-400">{title}</p>
-      <p className="text-3xl font-bold text-white">{value.toLocaleString()}</p>
     </div>
   );
 };

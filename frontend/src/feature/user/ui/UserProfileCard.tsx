@@ -6,6 +6,8 @@ import { useUser } from "@/entity/user/hooks/useUser";
 import { UserCardMenu } from "./UserCardMenu";
 import { useState } from "react";
 import { UserBlockDialog } from "./UserBlockDialog";
+import { userBan } from "@/entity/user/api/userBan";
+import { toast } from "@/shared/hooks/use-toast";
 
 interface Props {
   userInfo: User;
@@ -22,7 +24,7 @@ export const UserProfileCard = ({ userInfo, isMyProfile }: Props) => {
   const formattedDate = format(new Date(userInfo.createTime), "yyyy.MM.dd");
   const auth = useUser();
   const user = auth?.user;
-
+  console.log(userInfo);
   return (
     <div className="w-full flex flex-col gap-4">
       {/* 프로필 카드 */}
@@ -33,9 +35,30 @@ export const UserProfileCard = ({ userInfo, isMyProfile }: Props) => {
         <UserBlockDialog
           open={blockDialogOpen}
           onClose={() => setBlockDialogOpen(false)}
-          onConfirm={() => {
-            console.log("✅ 실제 차단 처리 로직 실행");
-            setBlockDialogOpen(false);
+          onConfirm={async (reason, duration) => {
+            try {
+              await userBan(userInfo.userId, reason, duration);
+              toast({
+                title: "✅ 차단 성공",
+                description: `${
+                  duration === 999 ? "영구적으로" : `${duration}시간`
+                } 차단되었습니다.`,
+                variant: "success",
+              });
+            } catch (error) {
+              const message =
+                error instanceof Error
+                  ? error.message
+                  : "알 수 없는 오류가 발생했습니다.";
+
+              toast({
+                title: "❌ 차단 실패",
+                description: message,
+                variant: "destructive",
+              });
+            } finally {
+              setBlockDialogOpen(false);
+            }
           }}
         />
 
