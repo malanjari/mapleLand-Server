@@ -55,4 +55,5 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     ORDER BY u.bannedHours DESC
 """) List<ResponseBannedUserDto> findBannedUsersDto();
 
+
 }
