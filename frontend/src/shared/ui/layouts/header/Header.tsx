@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import { SearchInputWithSuggestions } from "@/shared/ui/search/SearchInputWithSuggestions";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
+import { Button } from "../../button/Button";
 const Header = () => {
   const user = useUser();
   const { menuOpen, toggleMenu, closeMenu, dropdownRef, handleDiscordLogin } =
@@ -55,6 +56,11 @@ const Header = () => {
       <div className="flex gap-1">
         {user ? (
           <>
+            {user.user.role === "ROLE_ADMIN" && (
+              <Button onClick={() => navigate("/admin")} size="sm">
+                어드민
+              </Button>
+            )}
             <HeaderTradeButton />
             <div ref={dropdownRef} className="relative">
               <HeaderProfileButton onClick={toggleMenu} />

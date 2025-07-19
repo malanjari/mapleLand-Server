@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { getUserInfo } from "@/entity/user/api/user";
+import { getUserInfo } from "@/entity/user/api/getUseInfor";
 import { User } from "@/entity/user/model/type"; // 필요 시 import
 import { RegionMap } from "@/entity/jari/api/worldJari";
 export interface UserInfoResponse {

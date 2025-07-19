@@ -1,7 +1,9 @@
 import { API_BASE_URL } from "@/shared/config/api";
 import { AdminUsersInfo } from "../model/type";
 
-export const adminUsers = async (page: number): Promise<AdminUsersInfo[]> => {
+export const getAdminallUsers = async (
+  page: number
+): Promise<AdminUsersInfo[]> => {
   const token = localStorage.getItem("accessToken");
   try {
     const res = await fetch(`${API_BASE_URL}/api/admin/users?page=${page}`, {

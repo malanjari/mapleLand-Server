@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogHeader,
   DialogFooter,
-} from "@/shared/ui/dialog/dialogg";
+} from "@/shared/ui/dialog/dialog";
 import { Button } from "@/shared/ui/button/Button";
 import { Textarea } from "@/shared/ui/textarea/Textarea";
 import { useState, useEffect } from "react";

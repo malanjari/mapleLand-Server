@@ -8,13 +8,16 @@ import { useState } from "react";
 import { UserBlockDialog } from "./UserBlockDialog";
 import { userBan } from "@/entity/user/api/userBan";
 import { toast } from "@/shared/hooks/use-toast";
+import clsx from "clsx";
+import { userUnBan } from "@/entity/user/api/userUnBan";
 
 interface Props {
   userInfo: User;
   isMyProfile: boolean;
+  refetch: () => void;
 }
 
-export const UserProfileCard = ({ userInfo, isMyProfile }: Props) => {
+export const UserProfileCard = ({ userInfo, isMyProfile, refetch }: Props) => {
   const [blockDialogOpen, setBlockDialogOpen] = useState(false);
   const navigate = useNavigate();
   const avatarUrl = userInfo.image
@@ -24,13 +27,39 @@ export const UserProfileCard = ({ userInfo, isMyProfile }: Props) => {
   const formattedDate = format(new Date(userInfo.createTime), "yyyy.MM.dd");
   const auth = useUser();
   const user = auth?.user;
-  console.log(userInfo);
+  const handleUnban = async () => {
+    try {
+      await userUnBan(userInfo.userId); // userInfo는 이미 불러온 유저 정보라고 가정
+      toast({
+        title: "✅ 차단 해제 완료",
+        description: "해당 사용자의 차단이 해제되었습니다.",
+        variant: "success",
+      });
+      refetch();
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "알 수 없는 오류가 발생했습니다.";
+      toast({
+        title: "❌ 차단 해제 실패",
+        description: message,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <div className="w-full flex flex-col gap-4">
       {/* 프로필 카드 */}
       <div className="relative flex flex-col bg-neutral-800 w-full items-center gap-4 rounded-lg shadow p-6 px-4">
         {user?.role === "ROLE_ADMIN" && (
-          <UserCardMenu onBlock={() => setBlockDialogOpen(true)} />
+          <UserCardMenu
+            onBlock={() => setBlockDialogOpen(true)}
+            isActive={userInfo.isActive}
+            onUnban={handleUnban}
+            refetch={refetch}
+          />
         )}
         <UserBlockDialog
           open={blockDialogOpen}
@@ -45,6 +74,7 @@ export const UserProfileCard = ({ userInfo, isMyProfile }: Props) => {
                 } 차단되었습니다.`,
                 variant: "success",
               });
+              refetch();
             } catch (error) {
               const message =
                 error instanceof Error
@@ -65,10 +95,18 @@ export const UserProfileCard = ({ userInfo, isMyProfile }: Props) => {
         <img
           src={avatarUrl}
           alt="프로필 이미지"
-          className="w-32 h-32 rounded-full border-4 border-white shadow-md"
+          className={clsx(
+            "w-32 h-32 rounded-full border-4 border-white shadow-md transition",
+            !userInfo.isActive && "brightness-50 grayscale"
+          )}
         />
         <div className="text-center space-y-1">
-          <p className="text-xl font-semibold text-white">
+          <p
+            className={clsx(
+              "text-xl font-semibold text-white",
+              !userInfo.isActive && "line-through !text-red-500"
+            )}
+          >
             {userInfo.globalName}
           </p>
           <p className="text-sm text-gray-400">@{userInfo.userName}</p>
