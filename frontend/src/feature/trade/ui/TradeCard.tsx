@@ -38,7 +38,7 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
     showEditBox,
     setShowEditBox,
   } = useTradeCard(item, refetch);
-  console.log(item.userId);
+
   return (
     <div
       className={clsx(

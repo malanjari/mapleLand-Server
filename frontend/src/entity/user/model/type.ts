@@ -27,15 +27,32 @@ export interface User {
   mapTicket: boolean;
   createTime: string;
   userId: number;
+  isActive: boolean;
 }
 
 export interface AdminUsersInfo {
   discordId: string;
   image: string;
-  localDateTime: string;
+  createTime: string;
   role: string;
   userId: number;
   userName: string;
-  userReportCount: number;
+  reportedCount: number;
   globalName: string;
+}
+export interface BannedUserInfo {
+  userId: number;
+  userName: string;
+  discordId: string;
+  globalName: string;
+  role: string;
+  email: string;
+  mapTicket: boolean;
+  pianusTicket: number;
+  manonTicket: number;
+  banedReason: string;
+  image: string;
+  createTime: string; // ISO 8601
+  reportedCount: number;
+  bannedHours: string; // ISO 8601
 }
