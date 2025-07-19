@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.exc.InputCoercionException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.extern.slf4j.Slf4j;
+import org.mapleland.maplelanbackserver.exception.report.DuplicateReportException;
+import org.mapleland.maplelanbackserver.exception.report.ReportException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -102,7 +104,7 @@ public class GlobalValidationHandler {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
                 "status", "FAIL",
-                "errors", Map.of("user", message)
+                "error", Map.of("user", message)
         ));
     }
 
@@ -110,7 +112,7 @@ public class GlobalValidationHandler {
     public ResponseEntity<Map<String, Object>> handleNotFoundUser(NotFoundUserException ex) {
         return ResponseEntity.badRequest().body(Map.of(
                 "status", "FAIL",
-                "errors", Map.of("message", ex.getMessage())
+                "error", Map.of("message", ex.getMessage())
         ));
     }
     @ExceptionHandler(DuplicatedMapInterRestException.class)
@@ -130,8 +132,23 @@ public class GlobalValidationHandler {
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<Map<String, Object>> handleUnauthorized(UnauthorizedException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
-                "stauts" , "Fail",
+                "status" , "Fail",
                 "error" , Map.of("message", ex.getMessage())
+        ));
+    }
+    @ExceptionHandler(ReportException.class)
+    public ResponseEntity<Map<String, Object>> handleReport(DuplicateReportException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "status" , "Fail",
+                "error" , Map.of("message", ex.getMessage())
+        ));
+
+    }
+    @ExceptionHandler(NotFoundMapException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFoundMap(NotFoundMapException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of(
+                "status","Fail",
+                "error", Map.of("message", ex.getMessage())
         ));
     }
 

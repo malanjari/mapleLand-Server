@@ -58,6 +58,12 @@ public class AquariumMonsterDataInitializer {
                         .build(),
                 MonsterDropItem.builder()
                         .mapName("아쿠아로드: 난파선의 무덤")
+                        .itemName("딸기 귀걸이")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1032023/icon?resize=2")
+                        .dropRate(0.01)
+                        .build(),
+                MonsterDropItem.builder()
+                        .mapName("아쿠아로드: 난파선의 무덤")
                         .itemName("아츠")
                         .itemImageUrl("https://maplestory.io/api/gms/62/item/1302018/icon?resize=2")
                         .dropRate(0.01)

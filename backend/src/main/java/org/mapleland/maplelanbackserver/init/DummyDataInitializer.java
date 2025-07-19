@@ -7,11 +7,11 @@ import org.mapleland.maplelanbackserver.enumType.aquarium.Aquarium;
 import org.mapleland.maplelanbackserver.enumType.elnath.Elnath;
 import org.mapleland.maplelanbackserver.enumType.leafre.Leafre;
 import org.mapleland.maplelanbackserver.enumType.ludibrium.Ludibrium;
-import org.mapleland.maplelanbackserver.repository.userRepository;
+import org.mapleland.maplelanbackserver.repository.UserRepository;
 import org.mapleland.maplelanbackserver.repository.MapleMapRepository;
-import org.mapleland.maplelanbackserver.repository.jariRepository;
+import org.mapleland.maplelanbackserver.repository.JariRepository;
 import org.mapleland.maplelanbackserver.resolve.RegionResolver;
-import org.mapleland.maplelanbackserver.table.jari;
+import org.mapleland.maplelanbackserver.table.Jari;
 import org.mapleland.maplelanbackserver.table.User;
 import org.mapleland.maplelanbackserver.table.MapleMap;
 import org.springframework.boot.CommandLineRunner;
@@ -29,14 +29,14 @@ import java.util.stream.Stream;
 @org.springframework.core.annotation.Order(2) // ✅ 먼저 실행
 public class DummyDataInitializer {
 
-    private final userRepository userRepository;
-    private final jariRepository mapRegisterRepository;
+    private final UserRepository userRepository;
+    private final JariRepository mapRegisterRepository;
     private final MapleMapRepository mapListRepository;
 
     @Bean
     public CommandLineRunner initDummyUsersAndMaps() {
         return args -> {
-            if (userRepository.count() > 0) {
+            if (userRepository.count() > 3) {
                 System.out.println("⚠️ 더미 데이터가 이미 존재합니다. 생성을 건너뜁니다.");
                 return;
             }
@@ -53,7 +53,7 @@ public class DummyDataInitializer {
                             .mapTicket(true)
                             .pianusTicket(0)
                             .manonTicket(0)
-                            .userReportCount(0)
+                            .reportCount(0)
                             .isActive(true)
                             .image("")
                             .build())
@@ -72,7 +72,7 @@ public class DummyDataInitializer {
                     )
             ).collect(Collectors.toList());
 
-            List<jari> registrations = users.stream().map(user -> {
+            List<Jari> registrations = users.stream().map(user -> {
                 String mapName = mapNames.get(random.nextInt(mapNames.size()));
                 Region region = RegionResolver.getRegionEnumByMapName(mapName);
 
@@ -82,7 +82,7 @@ public class DummyDataInitializer {
                 MapleMap mapInfo = mapListRepository.findByMapNameExact(mapName)
                         .stream().findFirst().orElse(null);
 
-                return jari.builder()
+                return Jari.builder()
                         .user(user)
                         .mapName(mapName)
                         .area(region)

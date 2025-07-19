@@ -1,0 +1,80 @@
+package org.mapleland.maplelanbackserver.controller.admincontroller;
+
+import lombok.RequiredArgsConstructor;
+import org.mapleland.maplelanbackserver.dto.BanUserRequest;
+import org.mapleland.maplelanbackserver.dto.report.ReportedPostWithReasonsDto;
+import org.mapleland.maplelanbackserver.dto.response.*;
+import org.mapleland.maplelanbackserver.service.MapService;
+import org.mapleland.maplelanbackserver.service.ReportService;
+import org.mapleland.maplelanbackserver.service.UserService;
+import org.mapleland.maplelanbackserver.service.WebSocketService;
+import org.mapleland.maplelanbackserver.table.User;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequiredArgsConstructor
+public class AdminController {
+
+    private final ReportService reportService;
+    private final UserService userService;
+    private final MapService mapService;
+    private final WebSocketService webSocketService;
+    @GetMapping("/api/admin/users")
+    public ResponseEntity<List<UserListResponse>> findAllUsersOrderByReportCount(@RequestParam(defaultValue = "0") int page) {
+        List<UserListResponse> allUsersOrderByReportCount = reportService.findAllUsersOrderByReportCount(page);
+        return ResponseEntity.ok(allUsersOrderByReportCount);
+    }
+
+    @GetMapping("/admin/users/{userId}")
+    public ResponseEntity<ReportDetailsListResponse> findReportsByUserId(@PathVariable Integer userId) {
+        ReportDetailsListResponse response = reportService.findReportsByUserId(userId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/api/admin/userBan")
+    public ResponseEntity<Map<String,String>> banUser(@RequestBody BanUserRequest request) {
+
+        userService.userBan(request);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                "status","200",
+                "message", "유저가 정상적으로 차단 되었음"
+        ));
+    }
+
+    @PostMapping("/api/admin/userUnBan/{userId}")
+    public ResponseEntity<Map<String,String>> unBanUser(@PathVariable Integer userId) {
+        userService.userUnban(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                "status","200",
+                "message", "유저가 정상적으로 풀렸음"
+        ));
+    }
+    @GetMapping("/api/admin/users/count")
+    public ResponseEntity<?> countUsers() {
+        int userCount = userService.userAllCount();
+        return ResponseEntity.status(HttpStatus.OK).body(userCount);
+    }
+    @GetMapping("/api/admin/users/signup-count")
+    public ResponseEntity<List<ResponseAllUserDto>> getSignupCountPerDay(@RequestParam int year, @RequestParam int month) {
+        List<ResponseAllUserDto> signupCountPerDay = userService.getSignupCountPerDay(year, month);
+        return ResponseEntity.status(HttpStatus.OK).body(signupCountPerDay);
+    }
+    @GetMapping("/api/admin/users/banned")
+    public ResponseEntity<List<ResponseBannedUserDto>>  lockedUsers() {
+        List<ResponseBannedUserDto> responseBannedUserDtos = userService.callLockedUser();
+        return ResponseEntity.status(HttpStatus.OK).body(responseBannedUserDtos);
+    }
+    @GetMapping("/api/admin/reports/posts")
+    public ResponseEntity<Page<ReportedPostWithReasonsDto>> reportsPosts(@RequestParam(defaultValue = "0") int page) {
+        Page<ReportedPostWithReasonsDto> reportedPostWithReasonsDtos = userService.AllReportPosts(page);
+        return ResponseEntity.ok(reportedPostWithReasonsDtos);
+    }
+}

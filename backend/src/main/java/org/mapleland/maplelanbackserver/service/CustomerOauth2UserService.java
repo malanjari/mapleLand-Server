@@ -2,15 +2,17 @@ package org.mapleland.maplelanbackserver.service;
 
 import lombok.RequiredArgsConstructor;
 import org.mapleland.maplelanbackserver.filter.AdminCheckFilter;
-import org.mapleland.maplelanbackserver.repository.userRepository;
+import org.mapleland.maplelanbackserver.repository.UserRepository;
 import org.mapleland.maplelanbackserver.table.User;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -19,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomerOauth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-    private final userRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -52,7 +54,7 @@ public class CustomerOauth2UserService implements OAuth2UserService<OAuth2UserRe
                             .pianusTicket(5)
                             .mapTicket(true)
                             .role(role)
-                            .userReportCount(0)
+                            .reportCount(0)
                             .image(avatar)
                             .isActive(true)
                             .build();
@@ -61,6 +63,23 @@ public class CustomerOauth2UserService implements OAuth2UserService<OAuth2UserRe
 
         Optional<User> byDiscordId = userRepository.findByDiscordId(discordId);
         User user = byDiscordId.get();
+
+
+
+        if (user.getBannedHours() != null && user.getBannedHours().isAfter(LocalDateTime.now())) {
+            String reason = user.getBanedReason();
+            String description = "⛔ 정지된 계정입니다. 사유: " + (reason != null ? reason : "관리자 설정")
+                    + " / 정지 해제 시간: " + user.getBannedHours();
+            OAuth2Error error = new OAuth2Error("account_banned", description, null);
+            throw new OAuth2AuthenticationException(error);
+        }else {
+            user.setActive(true);
+            userRepository.save(user);
+        }
+
+
+
+
         boolean update = false;
 
         if(!Objects.equals(user.getGlobalName(),globalName)) {
@@ -76,6 +95,7 @@ public class CustomerOauth2UserService implements OAuth2UserService<OAuth2UserRe
         if(update) {
             userRepository.save(user);
         }
+
 
         return oAuth2User;
     }

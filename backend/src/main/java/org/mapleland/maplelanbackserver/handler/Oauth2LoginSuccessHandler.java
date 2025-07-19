@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapleland.maplelanbackserver.filter.AdminCheckFilter;
 import org.mapleland.maplelanbackserver.jwtUtil.JwtUtil;
-import org.mapleland.maplelanbackserver.repository.userRepository;
+import org.mapleland.maplelanbackserver.repository.UserRepository;
 import org.mapleland.maplelanbackserver.table.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -28,7 +28,7 @@ public class Oauth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Value("${frontend.redirect-url}")
     private String frontEndRedirectUrl;
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final userRepository userRepository;
+    private final UserRepository userRepository;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
