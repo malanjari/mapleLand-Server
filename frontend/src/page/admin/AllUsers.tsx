@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
 import BannedUserCard from "@/feature/user/ui/UserBannedCard";
 
-const AdminUserPage = () => {
+const AllUsersPage = () => {
   const [allUsers, setAllUsers] = useState<AdminUsersInfo[]>([]);
   const [bannedUsers, setBannedUsers] = useState<BannedUserInfo[]>([]);
   const [page, setPage] = useState(0);
@@ -107,4 +107,4 @@ const AdminUserPage = () => {
   );
 };
 
-export default AdminUserPage;
+export default AllUsersPage;

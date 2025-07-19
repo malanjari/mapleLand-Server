@@ -23,7 +23,7 @@ const WorldDetailPage = lazy(() => import("@/page/WorldDetail"));
 
 // 관리자 관련
 const AdminDashboardPage = lazy(() => import("@/page/admin/Dashboard"));
-const AdminUserPage = lazy(() => import("@/page/admin/AdminUser"));
+const AllUsersPage = lazy(() => import("@/page/admin/AllUsers"));
 const UserSignupPage = lazy(() => import("@/page/admin/AdminUserSignup"));
 const ReportPage = lazy(() => import("@/page/admin/Report"));
 const ReportDetailPage = lazy(() => import("@/page/admin/ReportDetail"));
@@ -87,7 +87,7 @@ const router = createBrowserRouter([
             path: "users",
             element: (
               <RequireAdmin>
-                <AdminUserPage />
+                <AllUsersPage />
               </RequireAdmin>
             ),
           },
