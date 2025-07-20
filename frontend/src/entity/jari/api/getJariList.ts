@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "@/shared/config/api";
 
-export const jariList = async (keyword: string) => {
+export const getJariList = async (keyword: string) => {
   try {
     const res = await fetch(
       `${API_BASE_URL}/api/maps?keyword=${encodeURIComponent(keyword)}`,

@@ -6,7 +6,7 @@ export interface PopularMap {
   monsterImageUrl: string;
 }
 
-export const fetchPopularMaps = async (): Promise<PopularMap[]> => {
+export const getPopularJari = async (): Promise<PopularMap[]> => {
   try {
     const res = await fetch(`${API_BASE_URL}/api/popular`, {
       method: "GET",

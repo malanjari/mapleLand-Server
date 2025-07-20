@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { fetchPopularMaps, PopularMap } from "@/entity/jari/api/popularJari";
+import { getPopularJari, PopularMap } from "@/entity/jari/api/getPopularJari";
 import { JariCard } from "@/feature/popularJari/ui/PopularJariCard";
 
 const PopularJariGrid = () => {
@@ -9,7 +9,7 @@ const PopularJariGrid = () => {
   useEffect(() => {
     const load = async () => {
       try {
-        const data = await fetchPopularMaps();
+        const data = await getPopularJari();
         setPopularMaps(data);
       } catch (err) {
         console.error("인기 맵 로딩 실패:", err);

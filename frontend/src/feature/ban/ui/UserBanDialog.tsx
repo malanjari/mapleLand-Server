@@ -24,7 +24,7 @@ interface Props {
   onConfirm: (reason: string, duration: number) => void;
 }
 
-export const UserBlockDialog = ({ open, onClose, onConfirm }: Props) => {
+export const UserBanDialog = ({ open, onClose, onConfirm }: Props) => {
   const [selectedDuration, setSelectedDuration] = useState<number | null>(null);
   const [reason, setReason] = useState("");
 

@@ -1,5 +1,8 @@
 import { API_BASE_URL } from "@/shared/config/api";
-export const markAsCompleted = async (mapId: number, isCompleted: boolean) => {
+export const updateCompletionStatus = async (
+  mapId: number,
+  isCompleted: boolean
+) => {
   try {
     const token = localStorage.getItem("accessToken");
 

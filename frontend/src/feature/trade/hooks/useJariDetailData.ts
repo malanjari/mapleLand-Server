@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import { fetchAutocomplete, MapItem } from "@/entity/jari/api/autocomplete";
-import { DropItem } from "@/entity/jari/api/monsterInfo";
+import { DropItem } from "@/entity/jari/api/getMonsterInfo";
 import { DailyPriceStat } from "@/feature/price/model/type";
 import { API_BASE_URL } from "@/shared/config/api";
 

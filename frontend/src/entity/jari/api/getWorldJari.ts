@@ -18,7 +18,7 @@ export interface RegionMap {
   userMapId: number;
   isCompleted: boolean;
 }
-export const getRegionMaps = async (keyword: string): Promise<RegionMap[]> => {
+export const getWorldJari = async (keyword: string): Promise<RegionMap[]> => {
   try {
     const res = await fetch(`${API_BASE_URL}/api/region?keyword=${keyword}`, {
       method: "GET",

@@ -32,7 +32,7 @@ export const JariCard = ({ spot, rank }: JariCardProps) => {
   return (
     <Link
       to={`/jari/${encodeURIComponent(spot.mapName)}`}
-      onMouseEnter={() => import("@/page/WorldDetail")}
+      onMouseEnter={() => import("@/page/jari/WorldDetail")}
       className="block"
     >
       <Card className="relative bg-neutral-600 hover:bg-neutral-500 text-white transition duration-300 rounded-xl overflow-hidden shadow-md hover:shadow-lg group">

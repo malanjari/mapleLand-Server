@@ -8,7 +8,7 @@ export interface MapItem {
   miniMapImageUrl: string;
 }
 
-export const fetchAllMaps = async (): Promise<MapItem[]> => {
+export const getAllMaps = async (): Promise<MapItem[]> => {
   try {
     const res = await fetch(`${API_BASE_URL}/api/maps/all`, {
       method: "GET",

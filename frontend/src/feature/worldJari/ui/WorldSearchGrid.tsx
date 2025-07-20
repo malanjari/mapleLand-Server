@@ -46,7 +46,7 @@ export const WorldSearchGrid = () => {
             to={`/jari/world/${world.keyword}`}
             key={world.name}
             className="group relative rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-transform"
-            onMouseEnter={() => import("@/page/WorldDetail")}
+            onMouseEnter={() => import("@/page/jari/WorldDetail")}
           >
             <img
               src={world.image}

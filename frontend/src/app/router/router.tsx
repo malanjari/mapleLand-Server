@@ -9,22 +9,22 @@ import { Spinner } from "@/shared/ui/spinner/Spinner";
 // Lazy imports
 const Home = lazy(() => import("@/page/Home"));
 const NotFound = lazy(() => import("@/page/NotFound"));
-const OAuthSuccessPage = lazy(() => import("@/page/OAuthSuccess"));
-const OAuthBannedPage = lazy(() => import("@/page/OAuthBanned"));
+const OAuthSuccessPage = lazy(() => import("@/page/oauth/OAuthSuccess"));
+const OAuthBannedPage = lazy(() => import("@/page/oauth/OAuthBanned"));
 const ProfilePage = lazy(() => import("@/page/Profile"));
-const NotificationGuide = lazy(() => import("@/page/NotificationGuide"));
-const Notice = lazy(() => import("@/page/Notice"));
+const NotificationGuide = lazy(() => import("@/page/notice/NotificationGuide"));
+const Notice = lazy(() => import("@/page/notice/Notice"));
 
 // 자리 관련
-const JariDetail = lazy(() => import("@/page/JariDetail"));
-const JariRegisterPage = lazy(() => import("@/page/JariRegister"));
-const JariRegisterDetailPage = lazy(() => import("@/page/JariRegisterDetail"));
-const WorldDetailPage = lazy(() => import("@/page/WorldDetail"));
+const JariDetail = lazy(() => import("@/page/jari/Detail"));
+const JariRegisterPage = lazy(() => import("@/page/jari/Register"));
+const JariRegisterDetailPage = lazy(() => import("@/page/jari/RegisterDetail"));
+const WorldDetailPage = lazy(() => import("@/page/jari/WorldDetail"));
 
 // 관리자 관련
 const AdminDashboardPage = lazy(() => import("@/page/admin/Dashboard"));
 const AllUsersPage = lazy(() => import("@/page/admin/AllUsers"));
-const UserSignupPage = lazy(() => import("@/page/admin/AdminUserSignup"));
+const UserStatsPage = lazy(() => import("@/page/admin/UserStatsPage"));
 const ReportPage = lazy(() => import("@/page/admin/Report"));
 const ReportDetailPage = lazy(() => import("@/page/admin/ReportDetail"));
 
@@ -95,7 +95,7 @@ const router = createBrowserRouter([
             path: "signupcount",
             element: (
               <RequireAdmin>
-                <UserSignupPage />
+                <UserStatsPage />
               </RequireAdmin>
             ),
           },

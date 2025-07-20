@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { SignupChart } from "@/feature/user/ui/UserSignupChart";
+import { SignupChart } from "@/feature/user/ui/UserStatsChart";
 
-const AdminUserSignupPage = () => {
+const UserStatsPage = () => {
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState(today);
 
@@ -32,4 +32,4 @@ const AdminUserSignupPage = () => {
     </div>
   );
 };
-export default AdminUserSignupPage;
+export default UserStatsPage;

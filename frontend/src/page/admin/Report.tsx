@@ -1,32 +1,10 @@
-import { useEffect, useState } from "react";
-import { getReportedPosts } from "@/feature/report/ui/api/getReportedPosts";
-import { ReportedPost } from "@/feature/report/ui/model/type";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
+import { useReportedPosts } from "@/feature/report/hooks/useReportedPosts";
 
 const ReportPage = () => {
-  const [reports, setReports] = useState<ReportedPost[]>([]);
-  const [page, setPage] = useState(0);
-  const [lastPage, setLastPage] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const { reports, page, setPage, lastPage, loading } = useReportedPosts();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        const res = await getReportedPosts(page);
-        setReports(res.content);
-        console.log(res.content);
-        setLastPage(res.last);
-      } catch (e) {
-        console.error("신고 목록 불러오기 실패:", e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, [page]);
 
   return (
     <div>

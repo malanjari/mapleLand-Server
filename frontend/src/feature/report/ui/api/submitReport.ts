@@ -42,7 +42,7 @@ export async function submitReport(payload: ReportPayload) {
     });
 
     const data = await res.json();
-    console.log(data);
+
     if (!res.ok) {
       throw new Error(data?.error.message || "신고에 실패했습니다.");
     }
