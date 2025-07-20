@@ -15,11 +15,13 @@ public record JariResponse(
         Boolean negotiationOption,
         Region area,
         LocalDateTime createTime,
+        LocalDateTime bumpedTime,
         String comment,
         String monsterImageUrl,
         String globalName,
         String userImage,
         int userId,
         String discordId,
-        boolean isCompleted
+        boolean isCompleted,
+        boolean isBumped
 ) {}
