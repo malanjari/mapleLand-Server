@@ -127,7 +127,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
-          timeout: 10m
+          timeout: 30m
           script: |
             set -e  # Exit on any error
             
@@ -187,11 +187,17 @@ jobs:
             # --- 2. Docker Hub에서 최신 이미지 받아오기 ---
             log_info "Pulling latest Docker images..."
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+  
+            START=$(date +%s)
             
             # 병렬로 이미지 풀링
             docker pull ${{ secrets.DOCKER_USERNAME }}/maple-backend:${{ github.sha }} &
             docker pull ${{ secrets.DOCKER_USERNAME }}/maple-frontend:${{ github.sha }} &
             wait
+            
+            END=$(date +%s)
+            
+            log_info "Docker images pulled in $((END - START)) seconds"
             
             # 태그 업데이트
             docker tag ${{ secrets.DOCKER_USERNAME }}/maple-backend:${{ github.sha }} ${{ secrets.DOCKER_USERNAME }}/maple-backend:latest
