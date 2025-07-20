@@ -245,7 +245,7 @@ jobs:
         run: |
           echo "Verifying deployment..."
           # 실제 도메인으로 헬스체크
-          curl -f https://malanjari.com/ || exit 1
+          curl -f https://mashop.kr/ || exit 1
           echo "✅ Deployment verification passed!"
 
       - name: 📢 Send Discord Notification
