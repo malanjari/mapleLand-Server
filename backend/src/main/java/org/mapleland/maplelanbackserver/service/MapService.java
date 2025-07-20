@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.*;
 import java.time.LocalDateTime;
 
@@ -212,15 +213,13 @@ public class MapService {
                             e.getNegotiationOption(),
                             e.getArea(),
                             e.getCreateTime(),
-                            e.getBumpedTime(),
                             e.getComment(),
                             e.getMonsterImageUrl(),
                             user.getGlobalName(),
                             user.getImage(),
                             user.getUserId(),
                             user.getDiscordId(),
-                            e.getIsCompleted(),
-                            e.getIsBumped()
+                            e.getIsCompleted()
                     );
                 })
                 .toList();
@@ -265,15 +264,13 @@ public class MapService {
                             e.getNegotiationOption(),
                             e.getArea(),
                             e.getCreateTime(),
-                            e.getBumpedTime(),
                             e.getComment(),
                             e.getMonsterImageUrl(),
                             user.getGlobalName(),
                             user.getImage(),
                             user.getUserId(),
                             user.getDiscordId(),
-                            e.getIsCompleted(),
-                            e.getIsBumped()
+                            e.getIsCompleted()
                     );
                 })
                 .toList();
@@ -416,10 +413,13 @@ public class MapService {
             throw new RuntimeException("해당 거래글의 작성자가 아닙니다.");
         }
 
-        if (jari.getIsBumped()) {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime createTime = jari.getCreateTime();
+
+        if (Duration.between(createTime, now).toMinutes() < 60) {
             throw new RuntimeException("끌올은 한 번만 가능합니다.");
         }
 
-        jari.bump();
+        jari.bump(now);
     }
 }

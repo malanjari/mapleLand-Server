@@ -47,18 +47,12 @@ public class Jari {
     @Column(updatable = false, columnDefinition = "DATETIME(0)")
     private LocalDateTime createTime; // 만든 날짜
 
-    @CreationTimestamp
-    @Column(columnDefinition = "DATETIME(0)")
-    private LocalDateTime bumpedTime; // 끌올 된 날짜
-
     @Column(length = 60)
     private String comment; // 유저 코멘트
 
     private String monsterImageUrl; // 몬스터 이미지
 
     private Boolean isCompleted; // 거래 완료 여부
-
-    private Boolean isBumped; // 끌올 여부
 
     @OneToMany(mappedBy = "jari", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Report> reports;
@@ -67,9 +61,8 @@ public class Jari {
 
     }
 
-    public void bump() {
-        this.bumpedTime = LocalDateTime.now();
-        this.isBumped = true;
+    public void bump(LocalDateTime now) {
+        this.createTime = now;
     }
 
     public boolean validateOwner(Integer userId) {
