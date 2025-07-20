@@ -8,7 +8,9 @@ import org.mapleland.maplelanbackserver.dto.response.ReportDetailsListResponse;
 import org.mapleland.maplelanbackserver.dto.response.UserListResponse;
 import org.mapleland.maplelanbackserver.exception.NotFoundMapException;
 import org.mapleland.maplelanbackserver.exception.NotFoundUserException;
+import org.mapleland.maplelanbackserver.exception.jari.JariNotFoundException;
 import org.mapleland.maplelanbackserver.exception.report.DuplicateReportException;
+import org.mapleland.maplelanbackserver.exception.user.UserNotFoundException;
 import org.mapleland.maplelanbackserver.repository.ReportRepository;
 import org.mapleland.maplelanbackserver.repository.JariRepository;
 import org.mapleland.maplelanbackserver.repository.UserRepository;
@@ -47,10 +49,9 @@ public class ReportService {
 
 
         if (reportRepository.existsByReporterUserIdAndJariUserMapId(reporterId, request.getJariId())) {
-            throw new DuplicateReportException("중복 신고를 할 수 없습니다."); // DuplicatedReportException
-        }
-        Jari jari = jariRepository.OPTIONALFindByUserMapId(request.getJariId())
-                .orElseThrow(() -> new NotFoundMapException("등록된 게시글을 찾을 수 없습니다."));
+            throw new DuplicateReportException("중복 신고를 할 수 없습니다.");
+        };
+        Jari jari = jariRepository.OPTIONALFindByUserMapId(request.getJariId()).orElseThrow(JariNotFoundException::new);
 
         String s3ImageUrl = null;
 
@@ -62,13 +63,12 @@ public class ReportService {
 
         // 신고자
         User reporterUser = userRepository.findByUserId(reporterId).
-                orElseThrow(() -> new UsernameNotFoundException("신고 유저를 찾을 수 없습니다."));
+                orElseThrow(() -> new UserNotFoundException("신고 유저를 찾을 수 없습니다."));
 
         //신고된 유저
-        Jari reportedjari = jariRepository.OPTIONALFindByUserMapId(jari.getUserMapId()).orElseThrow(()
-                -> new NotFoundMapException("게시글을 찾을 수 없습니다."));
+        Jari reportedjari = jariRepository.OPTIONALFindByUserMapId(jari.getUserMapId()).orElseThrow(JariNotFoundException::new);
 
-        User reportedUser = userRepository.findByUserId(reportedjari.getUser().getUserId()).orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
+        User reportedUser = userRepository.findByUserId(reportedjari.getUser().getUserId()).orElseThrow(UserNotFoundException::new);
 
 
         Report report = Report.builder()
