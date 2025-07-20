@@ -1,42 +1,20 @@
-import { useEffect, useState } from "react";
-import { getAdminallUsers } from "@/entity/user/api/getAllUsers";
-import { getBannedUsers } from "@/entity/user/api/getBannedUsers";
-import { AdminUsersInfo, BannedUserInfo } from "@/entity/user/model/type";
+import { BannedUserInfo } from "@/entity/user/model/type";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
-import BannedUserCard from "@/feature/user/ui/UserBannedCard";
+import BannedUserCard from "@/feature/ban/ui/UserBannedCard";
+import { useAdminUsers } from "@/feature/admin/ui/hooks/useAdminUsers";
 
-const AllUsersPage = () => {
-  const [allUsers, setAllUsers] = useState<AdminUsersInfo[]>([]);
-  const [bannedUsers, setBannedUsers] = useState<BannedUserInfo[]>([]);
-  const [page, setPage] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [showBannedOnly, setShowBannedOnly] = useState(false);
+const AdminUserPage = () => {
+  const {
+    usersToRender,
+    showBannedOnly,
+    toggleBannedFilter,
+    page,
+    setPage,
+    loading,
+  } = useAdminUsers();
+
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const loadUsers = async () => {
-      try {
-        setLoading(true);
-        const [allUsersData, bannedData] = await Promise.all([
-          getAdminallUsers(page),
-          getBannedUsers(),
-        ]);
-        setAllUsers(allUsersData);
-        setBannedUsers(bannedData);
-        console.log(bannedData);
-      } catch (error) {
-        console.error("유저 목록 불러오기 실패:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadUsers();
-  }, [page]);
-
-  // 보여줄 유저 리스트
-  const usersToRender = showBannedOnly ? bannedUsers : allUsers;
 
   return (
     <div>
@@ -48,7 +26,7 @@ const AllUsersPage = () => {
 
       <Button
         className="mb-4 bg-red-600 hover:bg-red-700 text-white text-sm px-3 py-1 rounded"
-        onClick={() => setShowBannedOnly((prev) => !prev)}
+        onClick={toggleBannedFilter}
       >
         {showBannedOnly ? "전체 사용자 보기" : "밴된 사용자만 보기"}
       </Button>
@@ -107,4 +85,4 @@ const AllUsersPage = () => {
   );
 };
 
-export default AllUsersPage;
+export default AdminUserPage;

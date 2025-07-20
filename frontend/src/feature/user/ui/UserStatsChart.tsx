@@ -44,7 +44,7 @@ export const SignupChart = ({ year, month }: SignupChartProps) => {
           date: v.createTime,
           count: v.count,
         }));
-        console.log(transformed);
+
         setData(transformed);
       } catch (error) {
         console.error("데이터 로딩 실패:", error);

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "@/shared/hooks/use-toast";
-import { jariEdit } from "@/entity/jari/api/jariEdit";
-import { jariDelete } from "@/entity/jari/api/jariDelete";
-import { markAsCompleted } from "@/entity/jari/api/markAsCompleted";
+import { editJari } from "@/entity/jari/api/editJari";
+import { deleteJari } from "@/feature/delete/api/deleteJari";
+import { updateCompletionStatus } from "@/entity/jari/api/updateCompletionStatus";
 import { JariItem } from "@/entity/jari/model/type";
 import { ServerColor } from "../ui/TradeCard";
 
@@ -39,7 +39,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
     const confirmed = window.confirm("정말로 수정 하시겠습니까?");
     if (!confirmed) return;
     try {
-      await jariEdit({
+      await editJari({
         mapId: item.userMapId,
         price: Number(editPrice),
         serverColor: editServerColor,
@@ -70,7 +70,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
     const confirmed = window.confirm("정말로 삭제하시겠습니까?");
     if (!confirmed) return;
     try {
-      await jariDelete(item.userMapId);
+      await deleteJari(item.userMapId);
       toast({
         variant: "success",
         title: "삭제 완료",
@@ -93,7 +93,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
     const confirmed = window.confirm("정말로 거래완료 처리 하시겠습니까?");
     if (!confirmed) return;
     try {
-      await markAsCompleted(item.userMapId, true);
+      await updateCompletionStatus(item.userMapId, true);
       toast({
         variant: "success",
         title: "거래 완료 처리가 성공적으로 되었습니다.",

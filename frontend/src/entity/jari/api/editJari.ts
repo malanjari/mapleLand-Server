@@ -8,7 +8,7 @@ interface jariEditPayload {
   negotiationOption?: boolean;
 }
 
-export async function jariEdit(payload: jariEditPayload) {
+export async function editJari(payload: jariEditPayload) {
   try {
     const res = await fetch(`${API_BASE_URL}/api/maps/update/filed`, {
       method: "POST",

@@ -1,34 +1,18 @@
-import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getReportedPosts } from "@/feature/report/ui/api/getReportedPosts";
-import { ReportedPost } from "@/feature/report/ui/model/type";
+import { useNavigate } from "react-router-dom";
+
 import { Button } from "@/shared/ui/button/Button";
 import { format } from "date-fns";
 
+import { useReportedPostDetail } from "@/feature/report/hooks/useReportedPostDetail";
+import { useJariDeleteHandler } from "@/feature/delete/hooks/useJariDeleteHandler";
+
 const ReportDetailPage = () => {
-  const { userMapId } = useParams();
   const navigate = useNavigate();
-  const [post, setPost] = useState<ReportedPost | null>(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        const res = await getReportedPosts(0); // 임시로 전체 조회
-        const found = res.content.find(
-          (item) => item.userMapId === Number(userMapId)
-        );
-        setPost(found || null);
-      } catch (e) {
-        console.error("신고 상세 불러오기 실패:", e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, [userMapId]);
-
+  const { post, loading, userMapId } = useReportedPostDetail();
+  const { handleDelete } = useJariDeleteHandler({
+    onSuccessNavigateTo: "/admin/reports",
+  });
   if (loading) return <p className="text-white">로딩 중...</p>;
   if (!post)
     return <p className="text-white">해당 신고 게시글을 찾을 수 없습니다.</p>;
@@ -85,6 +69,12 @@ const ReportDetailPage = () => {
             onClick={() => navigate(`/profile/${post.userId}`)}
           >
             🔍 프로필 보기
+          </Button>
+          <Button
+            className="bg-red-600 hover:bg-red-700"
+            onClick={() => handleDelete(Number(userMapId))}
+          >
+            ❌ 글 삭제
           </Button>
         </div>
       </div>

@@ -5,7 +5,7 @@ import {
   DropdownMenuTrigger,
 } from "@/shared/ui/dropdownMenu/DrodownMenu";
 import { MoreVertical } from "lucide-react";
-import { jariDelete } from "@/entity/jari/api/jariDelete";
+import { deleteJari } from "@/feature/delete/api/deleteJari";
 import { toast } from "@/shared/hooks/use-toast";
 
 interface AdminKebabProps {
@@ -20,7 +20,7 @@ const AdminKebabMenu = ({ isAdmin, mapId, onDeleted }: AdminKebabProps) => {
     if (!confirmed) return;
 
     try {
-      await jariDelete(mapId);
+      await deleteJari(mapId);
       toast({
         title: "삭제 완료",
         variant: "success",

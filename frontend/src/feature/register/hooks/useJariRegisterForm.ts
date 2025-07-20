@@ -26,7 +26,7 @@ export const useJariRegisterForm = () => {
   const navigate = useNavigate();
   const [mapData, setMapData] = useState<MapItem | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
-  console.log(mapData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState<FormState>({
     tradeType: null,
     mapName: name,
@@ -82,6 +82,8 @@ export const useJariRegisterForm = () => {
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     const payload: JariRegisterPayload = {
       ...form,
       mapName: form.mapName!,
