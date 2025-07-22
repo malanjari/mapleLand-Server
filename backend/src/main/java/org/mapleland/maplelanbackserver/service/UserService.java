@@ -237,5 +237,13 @@ public class UserService {
         return new PageImpl<>(content, pageable, total);
     }
 
-
+    public List<UserResponse> findUsersByGlobalName(String globalName) {
+        List<User> users;
+        if (globalName == null || globalName.isEmpty()) {
+            users = userRepository.findAll();
+        } else {
+            users = userRepository.findByGlobalNameContaining(globalName); // 부분 일치
+        }
+        return users.stream().map(UserResponse::from).toList();
+    }
 }
