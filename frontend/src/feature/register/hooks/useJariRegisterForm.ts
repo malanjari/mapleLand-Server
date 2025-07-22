@@ -26,7 +26,7 @@ export const useJariRegisterForm = () => {
   const navigate = useNavigate();
   const [mapData, setMapData] = useState<MapItem | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
-  console.log(mapData);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState<FormState>({
     tradeType: null,
     mapName: name,
@@ -82,6 +82,8 @@ export const useJariRegisterForm = () => {
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
     const payload: JariRegisterPayload = {
       ...form,
       mapName: form.mapName!,
@@ -110,24 +112,8 @@ export const useJariRegisterForm = () => {
       }));
     } catch (err: unknown) {
       let message = "알 수 없는 오류가 발생했습니다.";
-
-      if (typeof err === "object" && err !== null) {
-        const e = err as {
-          errors?: Record<string, string>;
-          error?: string;
-          message?: string;
-        };
-
-        if (e.errors) {
-          const firstKey = Object.keys(e.errors)[0];
-          if (firstKey) {
-            message = e.errors[firstKey];
-          }
-        } else if (e.error) {
-          message = e.error;
-        } else if (e.message) {
-          message = e.message;
-        }
+      if (typeof err === "string") {
+        message = err;
       }
 
       toast({
@@ -135,9 +121,10 @@ export const useJariRegisterForm = () => {
         title: "자리 등록 실패",
         description: message,
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
-
   return {
     form,
     setForm,

@@ -1,6 +1,6 @@
 // shared/hooks/useSearchSuggestions.ts
 import { useEffect, useRef, useState } from "react";
-import { MapItem } from "@/entity/map/api/allMaps";
+import { MapItem } from "@/entity/map/api/getAllMaps";
 import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
 
 export const useSearchSuggestions = () => {

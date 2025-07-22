@@ -8,7 +8,7 @@ import { lazy, Suspense } from "react";
 import { UserProfileCard } from "@/feature/user/ui/UserProfileCard";
 import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
 
-import { AlertMapSection } from "@/feature/alarm/ui/AlertMapSection";
+import { AlertMapSection } from "@/feature/alert/ui/AlertMapSection";
 const TradeSection = lazy(() => import("@/feature/trade/ui/TradeSection"));
 const ProfilePage = () => {
   const { userId } = useParams();
@@ -49,9 +49,12 @@ const ProfilePage = () => {
     <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-full">
       {/* 왼쪽: 프로필 정보 */}
       <div className="col-span-5 lg:col-span-1 lg:sticky top-24 self-start">
-        <UserProfileCard userInfo={userInfo} isMyProfile={isMyProfile} />
+        <UserProfileCard
+          userInfo={userInfo}
+          isMyProfile={isMyProfile}
+          refetch={refetch}
+        />
       </div>
-
       <div className="col-span-5 lg:col-span-4 gap-6">
         {isMyProfile && (
           <AlertMapSection isMyProfile={isMyProfile} alertMaps={alertMaps} />

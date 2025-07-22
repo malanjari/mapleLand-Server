@@ -15,6 +15,6 @@ export interface JariItem {
   discordId: string;
   globalName: string;
   miniMapImageLogo: string;
-  userId: string | number;
+  userId: number;
   isCompleted: boolean;
 }

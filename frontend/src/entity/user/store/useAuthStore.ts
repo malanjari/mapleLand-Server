@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { getCurrentUser } from "@/entity/user/api/currentUser";
+import { getCurrentUser } from "@/entity/user/api/getCurrentUser";
 import { AuthResponse } from "@/entity/user/model/type";
 
 interface AuthStore {

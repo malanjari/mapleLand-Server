@@ -4,16 +4,20 @@ import { User } from "@/entity/user/model/type";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "@/entity/user/hooks/useUser";
 import { UserCardMenu } from "./UserCardMenu";
-import { useState } from "react";
-import { UserBlockDialog } from "./UserBlockDialog";
+
+import { UserBanDialog } from "../../ban/ui/UserBanDialog";
+
+import clsx from "clsx";
+
+import { useUserBanControl } from "../hooks/useUserBanControl";
 
 interface Props {
   userInfo: User;
   isMyProfile: boolean;
+  refetch: () => void;
 }
 
-export const UserProfileCard = ({ userInfo, isMyProfile }: Props) => {
-  const [blockDialogOpen, setBlockDialogOpen] = useState(false);
+export const UserProfileCard = ({ userInfo, isMyProfile, refetch }: Props) => {
   const navigate = useNavigate();
   const avatarUrl = userInfo.image
     ? `https://cdn.discordapp.com/avatars/${userInfo.discordId}/${userInfo.image}.png`
@@ -22,30 +26,42 @@ export const UserProfileCard = ({ userInfo, isMyProfile }: Props) => {
   const formattedDate = format(new Date(userInfo.createTime), "yyyy.MM.dd");
   const auth = useUser();
   const user = auth?.user;
+  const { banDialogOpen, setBanDialogOpen, handleBan, handleUnban } =
+    useUserBanControl(userInfo.userId, refetch);
 
   return (
     <div className="w-full flex flex-col gap-4">
       {/* 프로필 카드 */}
       <div className="relative flex flex-col bg-neutral-800 w-full items-center gap-4 rounded-lg shadow p-6 px-4">
         {user?.role === "ROLE_ADMIN" && (
-          <UserCardMenu onBlock={() => setBlockDialogOpen(true)} />
+          <UserCardMenu
+            onBlock={() => setBanDialogOpen(true)}
+            isActive={userInfo.isActive}
+            onUnban={handleUnban}
+            refetch={refetch}
+          />
         )}
-        <UserBlockDialog
-          open={blockDialogOpen}
-          onClose={() => setBlockDialogOpen(false)}
-          onConfirm={() => {
-            console.log("✅ 실제 차단 처리 로직 실행");
-            setBlockDialogOpen(false);
-          }}
+        <UserBanDialog
+          open={banDialogOpen}
+          onClose={() => setBanDialogOpen(false)}
+          onConfirm={handleBan}
         />
 
         <img
           src={avatarUrl}
           alt="프로필 이미지"
-          className="w-32 h-32 rounded-full border-4 border-white shadow-md"
+          className={clsx(
+            "w-32 h-32 rounded-full border-4 border-white shadow-md transition",
+            !userInfo.isActive && "brightness-50 grayscale"
+          )}
         />
         <div className="text-center space-y-1">
-          <p className="text-xl font-semibold text-white">
+          <p
+            className={clsx(
+              "text-xl font-semibold text-white",
+              !userInfo.isActive && "line-through !text-red-500"
+            )}
+          >
             {userInfo.globalName}
           </p>
           <p className="text-sm text-gray-400">@{userInfo.userName}</p>

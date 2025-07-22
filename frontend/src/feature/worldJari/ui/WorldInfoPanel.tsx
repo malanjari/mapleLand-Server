@@ -1,20 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
-import {
-  victoria,
-  elnath,
-  ludusLake,
-  minarForest,
-  aquaRoad,
-} from "@/shared/assets/world";
-
-const WORLDS = [
-  { name: "빅토리아", keyword: "Victoria", image: victoria },
-  { name: "엘나스", keyword: "Elnath", image: elnath },
-  { name: "루더스 호수", keyword: "LudusLake", image: ludusLake },
-  { name: "미나르 숲", keyword: "MinarForest", image: minarForest },
-  { name: "아쿠아 로드", keyword: "AquaRoad", image: aquaRoad },
-];
+import { WORLDS } from "@/shared/config/worlds";
 
 interface Props {
   worldKey?: string;

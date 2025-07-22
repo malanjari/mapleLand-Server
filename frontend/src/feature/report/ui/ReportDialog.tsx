@@ -5,12 +5,12 @@ import {
   DialogTitle,
   DialogHeader,
   DialogFooter,
-} from "@/shared/ui/dialog/Dialog";
+} from "@/shared/ui/dialog/dialog";
 import { Button } from "@/shared/ui/button/Button";
 import { Textarea } from "@/shared/ui/textarea/Textarea";
-import { predefinedReasons } from "./hooks/useReportDialog";
+import { predefinedReasons } from "../hooks/useReportDialog";
 import clsx from "clsx";
-import { useReportDialog } from "./hooks/useReportDialog";
+import { useReportDialog } from "../hooks/useReportDialog";
 
 interface Props {
   trigger: React.ReactNode;

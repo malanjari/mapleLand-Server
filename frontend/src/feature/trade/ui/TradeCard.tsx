@@ -1,6 +1,10 @@
 import { JariItem } from "@/entity/jari/model/type";
 import { useUser } from "@/entity/user/hooks/useUser";
-import { ReportDialog } from "@/feature/report/ui/ReportDialog";
+import { EditJariPopover } from "../../jari/ui/EditJariPopover";
+import { TradeBadges } from "./TradeBadges";
+import { TradeCardHeader } from "./TradeCardHeader";
+import { useTradeCard } from "../hooks/useTradeCard";
+import { ReportButton } from "../../report/ui/ReportButton";
 import clsx from "clsx";
 
 interface Props {
@@ -10,16 +14,12 @@ interface Props {
 }
 
 export type ServerColor = "Red" | "Yellow" | "Green";
-
-import { EditJariPopover } from "../../jari/ui/EditJariPopover";
-import { TradeBadges } from "./TradeBadges";
-import { TradeCardHeader } from "./TradeCardHeader";
-import { useTradeCard } from "../hooks/useTradeCard";
 const TradeCard = ({ item, refetch, showEditButton }: Props) => {
   const user = useUser();
 
   const isOwner = user?.user?.userId === item.userId;
   const isAdmin = user?.user?.role === "ROLE_ADMIN";
+
   const {
     editPrice,
     setEditPrice,
@@ -34,8 +34,9 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
     handleMarkAsCompleted,
     showEditBox,
     setShowEditBox,
+    handleBump,
   } = useTradeCard(item, refetch);
-  console.log(item.userMapId);
+
   return (
     <div
       className={clsx(
@@ -77,6 +78,7 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
               handleMarkAsCompleted={handleMarkAsCompleted}
               handleDelete={handleDelete}
               handleUpdate={handleUpdate}
+              handleBump={handleBump}
             />
           )}
           <div className="flex-1 flex justify-between items-center">
@@ -85,18 +87,8 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
               negotiationOption={item.negotiationOption}
               comment={item.comment}
             />{" "}
-            {!isOwner && (
-              <ReportDialog
-                trigger={
-                  <button className="text-xs text-red-400 hover:text-red-300 px-2 py-0.5 rounded-sm border border-red-500 hover:border-red-400 transition">
-                    신고
-                  </button>
-                }
-                onSubmit={(reason: string) => {
-                  // 신고 처리 로직 (예: API 요청 또는 toast 표시)
-                  console.log("신고 사유:", reason);
-                }}
-              />
+            {!isOwner && user?.user && (
+              <ReportButton user={user.user} jariId={item.userMapId} />
             )}
           </div>
         </div>

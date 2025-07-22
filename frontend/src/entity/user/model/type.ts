@@ -17,7 +17,7 @@ export interface AlertDto {
   mapId: number;
   alertStatus: "ALERT_ON" | "ALERT_OFF";
 }
-// 프로필 API 응답용 (다른 유저든 내 정보든)
+// 다른유저
 export interface User {
   discordId: string;
   email: string;
@@ -26,4 +26,33 @@ export interface User {
   image?: string;
   mapTicket: boolean;
   createTime: string;
+  userId: number;
+  isActive: boolean;
+}
+
+export interface AdminUsersInfo {
+  discordId: string;
+  image: string;
+  createTime: string;
+  role: string;
+  userId: number;
+  userName: string;
+  reportedCount: number;
+  globalName: string;
+}
+export interface BannedUserInfo {
+  userId: number;
+  userName: string;
+  discordId: string;
+  globalName: string;
+  role: string;
+  email: string;
+  mapTicket: boolean;
+  pianusTicket: number;
+  manonTicket: number;
+  banedReason: string;
+  image: string;
+  createTime: string; // ISO 8601
+  reportedCount: number;
+  bannedHours: string; // ISO 8601
 }

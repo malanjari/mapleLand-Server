@@ -56,7 +56,12 @@ public class SecurityConfiguration {
                 .cors(Customizer -> Customizer.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+
+         
+                   
+
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
                         .requestMatchers("/api/create/**", "/api/alert/**","/api/reports/**").hasAnyRole("USER", "MANAGER", "ADMIN")

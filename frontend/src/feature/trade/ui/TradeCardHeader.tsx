@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import mesoIcon from "@/shared/assets/icon/mesoIcon.webp";
-import AdminKebabMenu from "@/feature/delete/ui/AdminKebabMenu";
+import AdminKebabMenu from "@/feature/delete/ui/DeleteKebabMenu";
 
 interface Props {
   mapName: string;

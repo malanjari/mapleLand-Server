@@ -46,7 +46,7 @@ export const WorldSearchGrid = () => {
             to={`/jari/world/${world.keyword}`}
             key={world.name}
             className="group relative rounded-xl overflow-hidden shadow-lg hover:scale-105 transition-transform"
-            onMouseEnter={() => import("@/page/WorldDetail")}
+            onMouseEnter={() => import("@/page/jari/WorldDetail")}
           >
             <img
               src={world.image}
@@ -54,7 +54,7 @@ export const WorldSearchGrid = () => {
               fetchPriority="high"
               className="object-cover w-full "
             />
-            <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
               <p className="text-white font-bold text-lg">#{world.name}</p>
             </div>
           </Link>

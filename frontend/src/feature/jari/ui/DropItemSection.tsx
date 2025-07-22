@@ -1,6 +1,6 @@
 // src/feature/jari/ui/DropItemSection.tsx
 
-import { DropItem } from "@/entity/jari/api/monsterInfo";
+import { DropItem } from "@/entity/jari/api/getMonsterInfo";
 import { Card, CardContent } from "@/shared/ui/card/card";
 
 interface Props {

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getRegionMaps, RegionMap } from "../../../entity/jari/api/worldJari";
+import { getWorldJari, RegionMap } from "../../../entity/jari/api/getWorldJari";
 
 export const useWorldDetail = (worldKey?: string) => {
   const [jari, setJari] = useState<RegionMap[]>([]);
@@ -12,7 +12,7 @@ export const useWorldDetail = (worldKey?: string) => {
     const load = async () => {
       try {
         setLoading(true);
-        const data = await getRegionMaps(worldKey);
+        const data = await getWorldJari(worldKey);
         setJari(data);
       } catch (err) {
         setError("데이터 로딩 실패");

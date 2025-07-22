@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { MapItem } from "@/entity/map/api/allMaps";
+import { MapItem } from "@/entity/map/api/getAllMaps";
 
 interface MapStore {
   allMaps: MapItem[] | null;

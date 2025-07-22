@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "@/shared/hooks/use-toast";
-import { jariEdit } from "@/entity/jari/api/jariEdit";
-import { jariDelete } from "@/entity/jari/api/jariDelete";
-import { markAsCompleted } from "@/entity/jari/api/markAsCompleted";
+import { editJari } from "@/entity/jari/api/editJari";
+import { deleteJari } from "@/feature/delete/api/deleteJari";
+import { updateCompletionStatus } from "@/entity/jari/api/updateCompletionStatus";
 import { JariItem } from "@/entity/jari/model/type";
 import { ServerColor } from "../ui/TradeCard";
+import { bumpJari } from "@/entity/jari/api/bumpJari";
 
 export const useTradeCard = (item: JariItem, refetch: () => void) => {
   const editBoxRef = useRef<HTMLFormElement>(null);
@@ -39,7 +40,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
     const confirmed = window.confirm("정말로 수정 하시겠습니까?");
     if (!confirmed) return;
     try {
-      await jariEdit({
+      await editJari({
         mapId: item.userMapId,
         price: Number(editPrice),
         serverColor: editServerColor,
@@ -54,13 +55,13 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
       });
       setShowEditBox(false);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error
-          ? err.message
-          : "자리 수정 중 문제가 발생했습니다.";
+      let message = "자리 수정 중 문제가 발생했습니다.";
+      if (typeof err === "string") {
+        message = err;
+      }
       toast({
         title: "❌ 수정 실패",
-        description: errorMessage,
+        description: message,
         variant: "destructive",
       });
     }
@@ -70,7 +71,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
     const confirmed = window.confirm("정말로 삭제하시겠습니까?");
     if (!confirmed) return;
     try {
-      await jariDelete(item.userMapId);
+      await deleteJari(item.userMapId);
       toast({
         variant: "success",
         title: "삭제 완료",
@@ -79,11 +80,13 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
       setShowEditBox(false);
       refetch();
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "삭제 중 문제가 발생했습니다.";
+      let message = "삭제 중 문제가 발생했습니다.";
+      if (typeof err === "string") {
+        message = err;
+      }
       toast({
         title: "❌ 삭제 실패",
-        description: errorMessage,
+        description: message,
         variant: "destructive",
       });
     }
@@ -93,7 +96,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
     const confirmed = window.confirm("정말로 거래완료 처리 하시겠습니까?");
     if (!confirmed) return;
     try {
-      await markAsCompleted(item.userMapId, true);
+      await updateCompletionStatus(item.userMapId, true);
       toast({
         variant: "success",
         title: "거래 완료 처리가 성공적으로 되었습니다.",
@@ -101,12 +104,38 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
       refetch();
       setShowEditBox(false);
     } catch (err) {
+      let message = "거래 완료 처리 중 문제가 발생했습니다.";
+      if (typeof err === "string") {
+        message = err;
+      }
       toast({
         title: "❌ 거래 완료 처리 실패",
-        description:
-          err instanceof Error
-            ? err.message
-            : "알 수 없는 오류가 발생했습니다.",
+        description: message,
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleBump = async () => {
+    const confirmed = window.confirm("정말로 끌어올리기 하시겠습니까?");
+    if (!confirmed) return;
+    try {
+      await bumpJari(item.userMapId);
+      toast({
+        variant: "success",
+        title: "끌어올리기 완료",
+        description: "게시글이 성공적으로 끌어올려졌습니다.",
+      });
+      refetch();
+      setShowEditBox(false);
+    } catch (err) {
+      let message = "끌어올리기 중 문제가 발생했습니다.";
+      if (typeof err === "string") {
+        message = err;
+      }
+      toast({
+        title: "❌ 끌어올리기 실패",
+        description: message,
         variant: "destructive",
       });
     }
@@ -127,5 +156,6 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
     handleUpdate,
     handleDelete,
     handleMarkAsCompleted,
+    handleBump,
   };
 };
