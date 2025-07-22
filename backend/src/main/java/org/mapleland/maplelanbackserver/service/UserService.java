@@ -7,8 +7,8 @@ import org.mapleland.maplelanbackserver.dto.report.ReportReasonDto;
 import org.mapleland.maplelanbackserver.dto.report.ReportedPostWithReasonsDto;
 import org.mapleland.maplelanbackserver.dto.response.ResponseAllUserDto;
 import org.mapleland.maplelanbackserver.dto.response.ResponseBannedUserDto;
-import org.mapleland.maplelanbackserver.exception.NotFoundMapException;
-import org.mapleland.maplelanbackserver.exception.NotFoundUserException;
+import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapException;
+import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundUserException;
 import org.mapleland.maplelanbackserver.dto.response.AlterDto;
 import org.mapleland.maplelanbackserver.dto.user.*;
 import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
@@ -78,7 +78,7 @@ public class UserService {
     public ResponseUserDetailDto getUserDetailServiceMethod(Integer userId) {
         // 사용자 정보 조회
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다.")); //404
 
 
         // 사용자 정보 DTO 생성
@@ -237,5 +237,13 @@ public class UserService {
         return new PageImpl<>(content, pageable, total);
     }
 
-
+    public List<UserResponse> findUsersByGlobalName(String globalName) {
+        List<User> users;
+        if (globalName == null || globalName.isEmpty()) {
+            users = userRepository.findAll();
+        } else {
+            users = userRepository.findByGlobalNameContaining(globalName); // 부분 일치
+        }
+        return users.stream().map(UserResponse::from).toList();
+    }
 }

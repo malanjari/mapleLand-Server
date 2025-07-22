@@ -12,9 +12,11 @@ import org.mapleland.maplelanbackserver.dto.update.PriceUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.update.ServerColorRequest;
 import org.mapleland.maplelanbackserver.enumType.Region;
 import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
-import org.mapleland.maplelanbackserver.exception.NotFoundMapException;
-import org.mapleland.maplelanbackserver.exception.NotFoundMapTicketException;
-import org.mapleland.maplelanbackserver.exception.NotFoundUserException;
+import org.mapleland.maplelanbackserver.exception.coflict.CoolDownConflictException;
+import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapException;
+import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapTicketException;
+import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundUserException;
+import org.mapleland.maplelanbackserver.exception.unauthorization.UserMismatchException;
 import org.mapleland.maplelanbackserver.filter.AdminCheckFilter;
 import org.mapleland.maplelanbackserver.jwtUtil.JwtUtil;
 import org.mapleland.maplelanbackserver.repository.*;
@@ -28,6 +30,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.*;
 import java.time.LocalDateTime;
 
@@ -61,7 +64,7 @@ public class MapService {
 
         //사용자 검색 -> 사용자 값 꺼내옴
         User user = userRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundUserException("유저를 찾을 수 없습니다."));
 
 
 
@@ -74,7 +77,7 @@ public class MapService {
 
         // 등록 티켓 확인
         if (!user.getMapTicket()) {
-            throw new NotFoundMapTicketException("등록 티켓이 없습니다.");
+            throw new NotFoundMapTicketException("등록 티켓이 없습니다. \n 등록한 자리를 거래 완료 처리를 해야 합니다");
         }
 
         String role = AdminCheckFilter.adminCheckFilter(discordId);
@@ -170,15 +173,15 @@ public class MapService {
                 dmService.sendToUser(discordId, selfMessage);
             }
         }
-
     }
+
     public AlertStatus MapInterRestServiceMethod(AlertRequest dto, String token) {
 
         return utilMethod.updateAlertInterest(dto,token);
     }
 
     public MapResponse searchMapsListKeyword(String keyword){
-//        List<MapDto> mapDtos = searchMapsByKeyword(keyword);
+
 
 
         List<DropItemResponse> dropItemResponses = monsterInfo(keyword);
@@ -194,10 +197,6 @@ public class MapService {
     public List<JariResponse> searchMapsByKeyword(String keyword) {
         PageRequest pageRequest = PageRequest.of(0, 100); // 첫 페이지, 100개
         List<Jari> results = jariRepository.findTop100ByMapNameWithUser(keyword,pageRequest);
-        System.out.println("🔍 검색된 결과 수: " + results.size());
-
-
-
 
 
         return results.stream()
@@ -334,13 +333,19 @@ public class MapService {
         return filtered.stream().mapToInt(i -> i).average().orElse(0);
     }
 
-    public void mapUpdateAll(JariUpdateRequest jariUpdateRequest){
-        log.info("mapUpdateDto.mapId() = {}", jariUpdateRequest.mapId());
+    public void mapUpdateAll(JariUpdateRequest jariUpdateRequest,String token){
+
+        //jwt 유저 토큰 아이디
+        int userId = JwtUtil.getUserId(token);
+
         Jari byUserMapId = registerRepository.findByUserMapId(jariUpdateRequest.mapId());
         if (byUserMapId == null) {
-            log.error("❌ 해당 mapId로 MapRegistrationEntity 를 찾을 수 없습니다: {}", jariUpdateRequest.mapId());
-            throw new RuntimeException("존재하지 않는 mapId입니다: " + jariUpdateRequest.mapId());
+            throw new NotFoundMapException("존재하지 않는 mapId입니다: " + jariUpdateRequest.mapId());
         }
+        Jari jariId = jariRepository.findByUserMapId(jariUpdateRequest.mapId());
+
+
+        if(userId != jariId.getUserMapId()) throw new UserMismatchException("사용자가 다릅니다.");
 
         byUserMapId.setServerColor(jariUpdateRequest.serverColor());
         byUserMapId.setPrice(jariUpdateRequest.price());
@@ -369,25 +374,35 @@ public class MapService {
 
 
         Jari byUserId = registerRepository.findByUserMapId(mapId);
-        int userId = JwtUtil.getUserId(String.valueOf(byUserId.getUser().getUserId()));
+        int userId = JwtUtil.getUserId(token);
 
         if(byUserId.getUser().getUserId() == userId || JwtUtil.getRole(token).equals("ROLE_ADMIN")) {
             registerRepository.delete(byUserId);
         }
-        else throw new NotFoundUserException("등록된 게시글과 다른 사용자 입니다.");
+        else throw new UserMismatchException("등록된 게시글과 다른 사용자 입니다.");
 
 
 
     }
 
     public void updateIsCompleted(JariIsCompletedRequest dto , String token) {
-        Jari byUserMapId = registerRepository.findByUserMapId(dto.mapId());
+        int userId = JwtUtil.getUserId(token);
+        Jari jari = registerRepository.findByUserMapId(dto.mapId());
+        if(jari == null) throw new NotFoundMapException("게시글을 찾을 수 없습니다.");
 
-        if(byUserMapId == null) throw new NotFoundMapException("게시글을 찾을 수 없습니다.");
 
-        byUserMapId.setIsCompleted(true);
+        if(jari.getUser().getUserId() != userId) throw new UserMismatchException("사용자가 다릅니다.");
 
-        registerRepository.save(byUserMapId);
+        User user = userRepository.findByUserId(userId).
+                orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
+
+        jari.setIsCompleted(true);
+        user.setMapTicket(true);
+
+
+
+        registerRepository.save(jari);
+        userRepository.save(user);
 
     }
 
@@ -405,4 +420,29 @@ public class MapService {
         return new MapNameListResponse(MapNameList);
     }
 
+    public void bumpJari(UserInformationService userInformationService, Integer jariId) {
+
+        Jari jari = jariRepository.findById(jariId).orElseThrow(RuntimeException::new);
+
+
+        if (!jari.validateOwner(userInformationService.getUserId())) {
+            throw new UserMismatchException("사용자가 아닙니다."); // 401
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime createTime = jari.getCreateTime();
+        long minutesElapsed = Duration.between(createTime, now).toMinutes();
+        long remainingMinutes = 60 - minutesElapsed;
+        long remainingSeconds = Duration.between(createTime, now).getSeconds() % 60;
+
+
+        if (Duration.between(createTime, now).toMinutes() < 60) {
+            String message = String.format
+                    ("끌올은 한 시간에 한 번만 가능합니다. \n(%d분 %d초 후 다시 시도해주세요)", remainingMinutes, 60 - remainingSeconds);
+            throw new CoolDownConflictException(message); // 404
+        }
+
+        jari.bump(now);
+
+    }
 }

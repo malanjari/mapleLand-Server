@@ -23,7 +23,7 @@ public class User {
     private String globalName; // 글로벌이름 예)미르
     private String role; // 권한
     private String email;//이메일
-    private Boolean mapTicket;// 등록 여부 -> FALSE 등록불가 TRUE 등록가능
+    private Boolean mapTicket = true;// 등록 여부 -> FALSE 등록불가 TRUE 등록가능
     private int pianusTicket;  // 사용 X
     private int manonTicket; // 사용 X
     private boolean isActive; // 계정 잠김 여부

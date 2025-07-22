@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @Schema(description = "사용자 검색시 자동검색 해주는 api",example = "망가진 : -> 미나르 숲 : 망가진 용의 둥지 호출")
+@Deprecated
 public class MapAutoCompleteController {
 
     private final AutoCompleteService searchService;

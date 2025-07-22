@@ -61,7 +61,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 // 🔐 계정 잠금 여부 검사
                 if (!userDetails.isAccountNonLocked()) {
                     log.warn("[JwtTokenFilter] User account is locked: {}", user.getDiscordId());
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "⛔ 계정이 정지된 상태입니다.");
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("계정이 정지된 상태입니다.");
                     return;
                 }
 
