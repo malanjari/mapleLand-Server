@@ -182,6 +182,10 @@ jobs:
             DISCORD_REDIRECT_URI=${{ secrets.DISCORD_REDIRECT_URI }}
             FRONTEND_REDIRECT_URL=${{ secrets.FRONTEND_REDIRECT_URL }}
             DISCORD_BOT_TOKEN=${{ secrets.DISCORD_BOT_TOKEN }}
+            AWS_CREDENTIALS_ACCESS_KEY: ${{ secrets.AWS_CREDENTIALS_ACCESS_KEY }}
+            AWS_CREDENTIALS_SECRET_KEY: ${{ secrets.AWS_CREDENTIALS_SECRET_KEY }}
+            AWS_REGION_STATIC: ${{ secrets.AWS_REGION_STATIC }}
+            AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
             EOL
 
             # --- 2. Docker Hub에서 최신 이미지 받아오기 ---
