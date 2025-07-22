@@ -15,9 +15,11 @@ import org.mapleland.maplelanbackserver.dto.update.PriceUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.update.ServerColorRequest;
 import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
 import org.mapleland.maplelanbackserver.service.MapService;
+import org.mapleland.maplelanbackserver.service.UserInformationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -60,7 +62,6 @@ public class MapController {
         List<JariResponse> results = mapService.searchMapsByKeyword(keyword);
         return ResponseEntity.ok(results);
     }
-
 
     @Operation(summary = "목록 리스트 불러오는 api",
             description = "IQR 평균 리스트 , MapList, 몬스터 Drop테이블 총 2개 묶어서 불러옴")
@@ -159,6 +160,13 @@ public class MapController {
                 "success", alertStatus,
                 "message", "알람이 제거 되었습니다."
         ));
+    }
+
+    @Operation(summary = "끌올 API")
+    @PostMapping("/api/maps/{jariId}/bump")
+    public ResponseEntity<Void> bumpJari(@AuthenticationPrincipal UserInformationService userInformationService, @PathVariable int jariId) {
+        mapService.bumpJari(userInformationService, jariId);
+        return ResponseEntity.ok().build();
     }
 
         // ------------현재 사용 안함 -------------------

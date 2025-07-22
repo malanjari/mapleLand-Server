@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.*;
 import java.time.LocalDateTime;
 
@@ -170,8 +171,8 @@ public class MapService {
                 dmService.sendToUser(discordId, selfMessage);
             }
         }
-
     }
+
     public AlertStatus MapInterRestServiceMethod(AlertRequest dto, String token) {
 
         return utilMethod.updateAlertInterest(dto,token);
@@ -405,4 +406,20 @@ public class MapService {
         return new MapNameListResponse(MapNameList);
     }
 
+    public void bumpJari(UserInformationService userInformationService, Integer jariId) {
+        Jari jari = jariRepository.findById(jariId).orElseThrow(RuntimeException::new);
+
+        if (!jari.validateOwner(userInformationService.getUserId())) {
+            throw new RuntimeException("해당 거래글의 작성자가 아닙니다.");
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime createTime = jari.getCreateTime();
+
+        if (Duration.between(createTime, now).toMinutes() < 60) {
+            throw new RuntimeException("끌올은 한 번만 가능합니다.");
+        }
+
+        jari.bump(now);
+    }
 }
