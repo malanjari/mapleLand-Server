@@ -1,6 +1,6 @@
 // feature/admin/hooks/useAdminUserSum.ts
 import { useEffect, useState } from "react";
-import { getAdminUsersSum } from "@/entity/user/api/getAdminUsersSum";
+import { getUsersSum } from "@/entity/user/api/getUsersSum";
 
 export const useAdminUserSum = () => {
   const [sumUsers, setSumUsers] = useState<number | undefined>();
@@ -8,7 +8,7 @@ export const useAdminUserSum = () => {
   useEffect(() => {
     const loadUserSum = async () => {
       try {
-        const data = await getAdminUsersSum();
+        const data = await getUsersSum();
         setSumUsers(data);
       } catch (error) {
         console.error("유저 숫자 불러오기 실패:", error);

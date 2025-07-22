@@ -6,7 +6,7 @@ export const updateCompletionStatus = async (
   try {
     const token = localStorage.getItem("accessToken");
 
-    const res = await fetch(`${API_BASE_URL}/api/maps/update/isCompleted`, {
+    const res = await fetch(`${API_BASE_URL}/api/jari/isCompleted`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -18,13 +18,12 @@ export const updateCompletionStatus = async (
       }),
     });
 
-    if (!res.ok) throw new Error("거래 완료 상태 변경 실패");
-
-    const data = await res.json();
-    console.log("거래 완료 처리 성공:", data);
-    return data;
+    if (!res.ok) {
+      const errorJson = await res.text();
+      throw errorJson;
+    }
   } catch (err) {
-    console.error(err);
+    console.error("updateCompletionStatus 요청 중 에러 발생:", err);
     throw err;
   }
 };

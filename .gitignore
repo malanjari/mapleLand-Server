@@ -243,3 +243,5 @@ gradle-app.setting
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,macos,intellij+all,gradle,java
 mapleland-backServer/src/main/resources/application.properties
+
+backend/src/main/resources/application.properties

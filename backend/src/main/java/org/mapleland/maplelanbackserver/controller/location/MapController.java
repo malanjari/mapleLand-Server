@@ -15,9 +15,11 @@ import org.mapleland.maplelanbackserver.dto.update.PriceUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.update.ServerColorRequest;
 import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
 import org.mapleland.maplelanbackserver.service.MapService;
+import org.mapleland.maplelanbackserver.service.UserInformationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.Serializable;
@@ -35,8 +37,9 @@ public class MapController {
     private final MapService mapService;
     private final MapPriceStatCacheService service;
 
+    //수정됨 POST /api/create/mapRegister -> POST /api/jari
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
-    @PostMapping("/api/create/mapRegister")
+    @PostMapping("/api/jari")
     @Operation(summary = "맵 등록 api" , description = "사용자 맵 등록 api")
     @SecurityRequirement(name = "bearerAuth")
     public ResponseEntity<Map<String, String>>
@@ -60,7 +63,6 @@ public class MapController {
         List<JariResponse> results = mapService.searchMapsByKeyword(keyword);
         return ResponseEntity.ok(results);
     }
-
 
     @Operation(summary = "목록 리스트 불러오는 api",
             description = "IQR 평균 리스트 , MapList, 몬스터 Drop테이블 총 2개 묶어서 불러옴")
@@ -92,7 +94,6 @@ public class MapController {
     @Operation(summary = "-6시간 IQR을 통해 평균 거래가 가져오는 API",
     description = "미나르 숲 : 마뇽의 숲 검색시 IsCompleted(체결 된) 평균 거래가 -6시간 까지 가져옴")
     public ResponseEntity<List<PriceStatDto>> priceStat(@RequestParam String keyword) {
-        System.out.println("📌 요청된 맵: " + keyword);
 
         // 1. 캐시 먼저 확인
         List<PriceStatDto> cached = service.getStat(keyword);
@@ -109,35 +110,43 @@ public class MapController {
     }
 
     // -----------Update -----------------------------------------
-
+    //수정됨 2025-07-22 토큰필요 Post-> Put으로 변경 (통과)
+    // 수정됨 POST /api/maps/update/filed -> PUT /api/jari
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
-    @PostMapping("/api/maps/update/filed")
+    @PutMapping("/api/jari")
     @Operation(summary = "사용자가 수정을 누를때 수정하는 api",
     description = "색상 = 초채 , 가격 : 5000만원 , 사용자 코멘트 : 수정완료")
-    public ResponseEntity<?> updateFiled(@RequestBody JariUpdateRequest updateDto) {
-        mapService.mapUpdateAll(updateDto);
+    public ResponseEntity<?> updateFiled(@RequestBody @Valid JariUpdateRequest updateDto,
+                                         @RequestHeader("Authorization")String token) {
+        mapService.mapUpdateAll(updateDto,token);
         return ResponseEntity.ok(Map.of("message", "게시글이 수정 되었습니다."));
     }
 
-    @PostMapping("/api/maps/update/isCompleted")
+    //토큰 필수 (통과)
+    //수정됨 POST /api/maps/update/isCompleted -> POST /api/jari/isCompleted
+    @PostMapping("/api/jari/isCompleted")
     @Operation(summary = "사용자가 자리 거래 완료 누르는 api",
             description = "isCompleted = false 자리 판매중 -> true 자리 판매 완료")
-    public ResponseEntity<?> updateIsCompleted(@RequestBody JariIsCompletedRequest dto) {
-        mapService.updateIsCompleted(dto);
+    public ResponseEntity<?> updateIsCompleted(@RequestBody JariIsCompletedRequest dto,
+                                               @RequestHeader("Authorization")String token) {
+        mapService.updateIsCompleted(dto,token);
 
         return ResponseEntity.ok(Map.of("message","거래가 완료 되었습니다."));
     }
 
+    //토큰 필수
     @DeleteMapping("/api/maps/{mapId}/delete")
-    public ResponseEntity<?> updateServerColor(@PathVariable int mapId) {
-        mapService.mapDelete(mapId);
+    public ResponseEntity<?> updateServerColor(@PathVariable int mapId,@RequestHeader("Authorization")String token) {
+        mapService.mapDelete(mapId,token);
         return ResponseEntity.ok(Map.of("message", "게시글이 삭제 되었습니다."));
     }
 
+
+    //토큰 필요 2025-07-22 수정
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     @PostMapping("/api/alert/interest")
     public ResponseEntity<Map<String,Serializable>>
-    createInterRest(@RequestBody AlertRequest dto, @RequestHeader("Authorization")String token) {
+    createInterRest(@RequestBody @Valid AlertRequest dto, @RequestHeader("Authorization")String token) {
         AlertStatus alertStatus = mapService.MapInterRestServiceMethod(dto,token);
 
         if(alertStatus == AlertStatus.ALERT_ON) {
@@ -159,6 +168,16 @@ public class MapController {
         ));
     }
 
+    @Operation(summary = "끌올 API")
+    @PostMapping("/api/maps/{jariId}/bump")
+    public ResponseEntity<?> bumpJari(@AuthenticationPrincipal UserInformationService userInformationService, @PathVariable int jariId) {
+        mapService.bumpJari(userInformationService, jariId);
+        return ResponseEntity.ok().body(Map.of(
+                "success", "200",
+                "message", "끌올이 완료 되었습니다."
+        ));
+    }
+
         // ------------현재 사용 안함 -------------------
 
     @PostMapping("/api/maps/update/price")
@@ -171,6 +190,7 @@ public class MapController {
     // ------------현재 사용 안함 -------------------
 
     @PostMapping("/api/maps/update/server-color")
+    @Deprecated
     public ResponseEntity<?> updateServerColor(@RequestBody ServerColorRequest dto) {
         mapService.mapUpdateServerColor(dto);
         return ResponseEntity.status(HttpStatus.OK).body("서버 색깔이 수정 되었습니다.");
@@ -179,6 +199,7 @@ public class MapController {
 
     @Operation(summary = "모든 맵 이름을 조회하는 API")
     @GetMapping("/api/maps/all")
+    @Deprecated
     public ResponseEntity<?> findAllMaps() {
         MapNameListResponse response = mapService.findAllMaps();
 

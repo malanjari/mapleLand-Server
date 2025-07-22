@@ -9,24 +9,24 @@ interface jariEditPayload {
 }
 
 export async function editJari(payload: jariEditPayload) {
+  const token = localStorage.getItem("accessToken");
   try {
-    const res = await fetch(`${API_BASE_URL}/api/maps/update/filed`, {
-      method: "POST",
+    const res = await fetch(`${API_BASE_URL}/api/jari`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+        "ngrok-skip-browser-warning": "true",
       },
       body: JSON.stringify(payload),
     });
 
-    const data = await res.json();
-
     if (!res.ok) {
-      throw new Error(data?.message || "자리 정보 수정에 실패했습니다.");
+      const errorJson = await res.text();
+      throw errorJson;
     }
-
-    return data;
-  } catch (error) {
-    console.error("postEdit 요청 실패:", error);
-    throw error;
+  } catch (err) {
+    console.error("editJari 요청 중 에러 발생:", err);
+    throw err;
   }
 }

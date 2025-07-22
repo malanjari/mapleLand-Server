@@ -7,23 +7,23 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.mapleland.maplelanbackserver.repository.userRepository;
+import org.mapleland.maplelanbackserver.repository.UserRepository;
+import org.mapleland.maplelanbackserver.service.UserInformationService;
 import org.mapleland.maplelanbackserver.table.User;
 import org.mapleland.maplelanbackserver.jwtUtil.JwtUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 @Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final userRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -56,19 +56,23 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 User user = userRepository.findByDiscordId(discordId)
                         .orElseThrow();
 
+                UserInformationService userDetails = new UserInformationService(user);
 
-                String role = user.getRole();
-
-                // 이미 ROLE_이 붙어있지 않으면 붙여줌
-                if (!role.startsWith("ROLE_")) {
-                    role = "ROLE_" + role;
+                // 🔐 계정 잠금 여부 검사
+                if (!userDetails.isAccountNonLocked()) {
+                    log.warn("[JwtTokenFilter] User account is locked: {}", user.getDiscordId());
+                    response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                    response.setContentType("application/json;charset=UTF-8");
+                    response.getWriter().write("계정이 정지된 상태입니다.");
+                    return;
                 }
 
                 var auth = new UsernamePasswordAuthenticationToken(
-                        user,
+                        userDetails,
                         null,
-                        List.of(new SimpleGrantedAuthority(role))
+                        userDetails.getAuthorities()
                 );
+
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
             } catch (Exception e) {

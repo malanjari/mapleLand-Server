@@ -34,6 +34,7 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
     handleMarkAsCompleted,
     showEditBox,
     setShowEditBox,
+    handleBump,
   } = useTradeCard(item, refetch);
 
   return (
@@ -77,6 +78,7 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
               handleMarkAsCompleted={handleMarkAsCompleted}
               handleDelete={handleDelete}
               handleUpdate={handleUpdate}
+              handleBump={handleBump}
             />
           )}
           <div className="flex-1 flex justify-between items-center">

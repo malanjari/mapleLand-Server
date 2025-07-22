@@ -17,7 +17,7 @@ export const registerJari = async (
   try {
     const token = localStorage.getItem("accessToken");
 
-    const res = await fetch(`${API_BASE_URL}/api/create/mapRegister`, {
+    const res = await fetch(`${API_BASE_URL}/api/jari`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const registerJari = async (
     });
 
     if (!res.ok) {
-      const errorJson = await res.json();
+      const errorJson = await res.text();
       throw errorJson;
     }
   } catch (err) {

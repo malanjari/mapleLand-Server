@@ -2,6 +2,9 @@ package org.mapleland.maplelanbackserver.table;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -13,11 +16,30 @@ public class Report {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer reportId; // 신고 테이블 pk
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user; // 유저 테이블
-    private int reportCount; // 신고 횟수(당한 횟수)
+    private Long reportId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reporter_id", referencedColumnName = "user_id")
+    private User reporter;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reported_id", referencedColumnName = "user_id")
+    private User reported;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "jari_id", referencedColumnName = "userMapId")
+    private Jari jari;
+
+    private int reportCount;
+
     @Column(length = 60)
-    private String comment; // 사유
+    private String reason;
+
+    private String imageUrl;
+
+    private String videoUrl;
+
+    @CreationTimestamp
+    @Column(updatable = false , columnDefinition = "DATETIME(0)")
+    private LocalDateTime createTime;
 }

@@ -9,7 +9,7 @@ import { PriceChart } from "@/feature/price/ui/PriceChart";
 import { TradeSections } from "@/feature/trade/ui/TradeSections";
 import { useJariDetailData } from "@/feature/trade/hooks/useJariDetailData";
 
-import { useAlertStatus } from "@/feature/alarm/hooks/useAlertState";
+import { useAlertStatus } from "@/feature/alert/hooks/useAlertState";
 
 const DropItemSection = lazy(() => import("@/feature/jari/ui/DropItemSection"));
 

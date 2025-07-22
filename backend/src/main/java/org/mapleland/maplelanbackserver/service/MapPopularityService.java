@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapleland.maplelanbackserver.dto.Map.MapPopularityResponse;
 import org.mapleland.maplelanbackserver.enumType.Region;
-import org.mapleland.maplelanbackserver.repository.jariRepository;
-import org.mapleland.maplelanbackserver.table.jari;
+import org.mapleland.maplelanbackserver.repository.JariRepository;
+import org.mapleland.maplelanbackserver.table.Jari;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -21,7 +21,7 @@ public class MapPopularityService {
 
     private List<MapPopularityResponse> cachedPopularMaps = List.of();
 
-    private final jariRepository mapRegisterRepository;
+    private final JariRepository mapRegisterRepository;
 
 
     private static final Map<Region, List<String>> regionPrefixes = Map.of(
@@ -39,17 +39,17 @@ public class MapPopularityService {
     }
     public void refreshPopularMaps() {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
-        List<jari> entities = mapRegisterRepository.findAllWithinOneWeek(oneWeekAgo);
+        List<Jari> entities = mapRegisterRepository.findAllWithinOneWeek(oneWeekAgo);
 
         System.out.println("🕒 [인기맵 갱신] 최근 일주일 등록 수: " + entities.size());
 
-        Map<String, List<jari>> grouped = entities.stream()
-                .collect(Collectors.groupingBy(jari::getMapName));
+        Map<String, List<Jari>> grouped = entities.stream()
+                .collect(Collectors.groupingBy(Jari::getMapName));
 
         this.cachedPopularMaps = grouped.entrySet().stream()
                 .map(entry -> {
                     String mapName = entry.getKey();
-                    List<jari> maps = entry.getValue();
+                    List<Jari> maps = entry.getValue();
 
                     int registerCount = maps.size();
                     String area = maps.get(0).getArea().name();
