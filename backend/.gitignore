@@ -164,6 +164,9 @@ replay_pid*
 # Icon must end with two \r
 Icon
 
+# Spring Boot 설정 파일
+application.properties
+application.yml
 
 # Thumbnails
 ._*

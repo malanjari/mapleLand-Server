@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 public class UserResponse {
+    int userId;
+
     String discordId;
 
     String image;
@@ -29,6 +31,7 @@ public class UserResponse {
 
     public static UserResponse from(User user) {
         return new UserResponse(
+                user.getUserId(),
                 user.getDiscordId(),
                 user.getImage(),
                 user.getCreateTime(),
@@ -36,7 +39,7 @@ public class UserResponse {
                 user.getMapTicket(),
                 user.getUserName(),
                 user.getEmail(),
-                user.getUserId()
+                user.getReportCount()
         );
     }
 }

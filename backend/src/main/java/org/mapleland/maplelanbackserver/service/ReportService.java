@@ -6,9 +6,10 @@ import org.mapleland.maplelanbackserver.dto.request.ReportRequest;
 import org.mapleland.maplelanbackserver.dto.response.ReportDetailResponse;
 import org.mapleland.maplelanbackserver.dto.response.ReportDetailsListResponse;
 import org.mapleland.maplelanbackserver.dto.response.UserListResponse;
-import org.mapleland.maplelanbackserver.exception.NotFoundMapException;
-import org.mapleland.maplelanbackserver.exception.NotFoundUserException;
-import org.mapleland.maplelanbackserver.exception.report.DuplicateReportException;
+import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundUserException;
+import org.mapleland.maplelanbackserver.exception.notfound.jari.JariNotFoundException;
+import org.mapleland.maplelanbackserver.exception.coflict.DuplicateReportException;
+import org.mapleland.maplelanbackserver.exception.notfound.user.UserNotFoundException;
 import org.mapleland.maplelanbackserver.repository.ReportRepository;
 import org.mapleland.maplelanbackserver.repository.JariRepository;
 import org.mapleland.maplelanbackserver.repository.UserRepository;
@@ -17,7 +18,6 @@ import org.mapleland.maplelanbackserver.table.User;
 import org.mapleland.maplelanbackserver.table.Jari;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,17 +40,15 @@ public class ReportService {
 
         int reporterId = user.getUserId(); // 신고자
 
-        log.info("컨텍스트 값 = {}",user.getUserId());
-        log.info("유저 값 = {}",request.getUserId());
 
-        if(request.getUserId() != user.getUserId()) throw new NotFoundUserException("사용자가 아닙니다.");
+
+        if(request.getUserId() != user.getUserId()) throw new NotFoundUserException("사용자가 아닙니다."); // 401
 
 
         if (reportRepository.existsByReporterUserIdAndJariUserMapId(reporterId, request.getJariId())) {
-            throw new DuplicateReportException("중복 신고를 할 수 없습니다."); // DuplicatedReportException
-        }
-        Jari jari = jariRepository.OPTIONALFindByUserMapId(request.getJariId())
-                .orElseThrow(() -> new NotFoundMapException("등록된 게시글을 찾을 수 없습니다."));
+            throw new DuplicateReportException("중복 신고를 할 수 없습니다."); // 409
+        };
+        Jari jari = jariRepository.OPTIONALFindByUserMapId(request.getJariId()).orElseThrow(JariNotFoundException::new);
 
         String s3ImageUrl = null;
 
@@ -62,13 +60,14 @@ public class ReportService {
 
         // 신고자
         User reporterUser = userRepository.findByUserId(reporterId).
-                orElseThrow(() -> new UsernameNotFoundException("신고 유저를 찾을 수 없습니다."));
+                orElseThrow(() -> new UserNotFoundException("신고 유저를 찾을 수 없습니다.")); // 404
 
         //신고된 유저
-        Jari reportedjari = jariRepository.OPTIONALFindByUserMapId(jari.getUserMapId()).orElseThrow(()
-                -> new NotFoundMapException("게시글을 찾을 수 없습니다."));
+        Jari reportedjari = jariRepository.OPTIONALFindByUserMapId(jari.getUserMapId()).
+                orElseThrow(JariNotFoundException::new); // 404
 
-        User reportedUser = userRepository.findByUserId(reportedjari.getUser().getUserId()).orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
+        User reportedUser = userRepository.findByUserId(reportedjari.getUser().getUserId()).
+                orElseThrow(UserNotFoundException::new); // 404
 
 
         Report report = Report.builder()

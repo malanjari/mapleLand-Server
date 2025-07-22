@@ -1,7 +1,7 @@
 package org.mapleland.maplelanbackserver.resolve;
 
 import lombok.extern.slf4j.Slf4j;
-import org.mapleland.maplelanbackserver.exception.MapNameMismatchException;
+import org.mapleland.maplelanbackserver.exception.badrequest.MapNameMismatchException;
 import org.mapleland.maplelanbackserver.enumType.aquarium.Aquarium;
 import org.mapleland.maplelanbackserver.enumType.elnath.Elnath;
 import org.mapleland.maplelanbackserver.enumType.Region;
