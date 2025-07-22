@@ -42,6 +42,7 @@ public class SecurityConfiguration {
     private final CustomerOauth2UserService customerOauth2UserService;
     private final Oauth2LoginSuccessHandler oauth2LoginSuccessHandler;
     private final Oauth2FailHandler oauth2FailHandler;
+    private final Oauth2FailHandler failHandler;
     private final JwtTokenFilter jwtFilter;
 
     @Bean
@@ -55,12 +56,16 @@ public class SecurityConfiguration {
                 .cors(Customizer -> Customizer.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+
          
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                   
+
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")
-                        .requestMatchers("/api/create/**", "/api/alert/**").hasAnyRole("USER", "MANAGER", "ADMIN")
-                        .requestMatchers("/api/**").permitAll()
+                        .requestMatchers("/api/create/**", "/api/alert/**","/api/reports/**").hasAnyRole("USER", "MANAGER", "ADMIN")
+                        .requestMatchers("/api/**","/ws/**").permitAll()
                 ).exceptionHandling(exception -> {
                     exception.authenticationEntryPoint((request, response, authException) -> {
                         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -73,7 +78,7 @@ public class SecurityConfiguration {
                         oauth2
                                 .userInfoEndpoint(userInfo -> userInfo.userService(customerOauth2UserService))
                                 .successHandler(oauth2LoginSuccessHandler)
-                                .failureHandler((req, res, exc) -> res.sendRedirect("/oauth2/failure"))
+                                .failureHandler(failHandler)
                 );
 
         return http.build();

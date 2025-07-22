@@ -16,6 +16,7 @@ interface Props {
   handleUpdate: () => void;
   showEditBox: boolean;
   setShowEditBox: (open: boolean) => void;
+  handleBump: () => void;
 }
 
 export const EditJariPopover = ({
@@ -32,6 +33,7 @@ export const EditJariPopover = ({
   handleUpdate,
   showEditBox,
   setShowEditBox,
+  handleBump,
 }: Props) => {
   return (
     <div className="relative flex items-center">
@@ -122,6 +124,14 @@ export const EditJariPopover = ({
             </div>
 
             {/* 거래 완료, 삭제 버튼 */}
+            <Button
+              variant="outline"
+              type="button"
+              className="px-3 py-1 text-xs text-blue-600 border border-blue-400 bg-white rounded-sm hover:bg-blue-50 transition h-auto"
+              onClick={handleBump}
+            >
+              끌어 올리기
+            </Button>
             <Button
               variant="blue"
               type="button"

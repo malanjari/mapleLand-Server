@@ -1,5 +1,5 @@
 import { ReportDialog } from "@/feature/report/ui/ReportDialog";
-import { submitReport } from "@/feature/report/ui/api/submitReport";
+import { submitReport } from "@/feature/report/api/submitReport";
 import { toast } from "@/shared/hooks/use-toast";
 import { Me } from "@/entity/user/model/type";
 
@@ -24,12 +24,13 @@ export const ReportButton = ({ user, jariId }: ReportButtonProps) => {
         variant: "success",
       });
     } catch (err) {
+      let message = "알 수 없는 오류가 발생했습니다.";
+      if (typeof err === "string") {
+        message = err;
+      }
       toast({
         title: "❌ 신고 실패",
-        description:
-          err instanceof Error
-            ? err.message
-            : "알 수 없는 오류가 발생했습니다.",
+        description: message,
         variant: "destructive",
       });
     }

@@ -1,7 +1,7 @@
 // feature/report/hooks/useReportedPosts.ts
 import { useEffect, useState } from "react";
-import { getReportedPosts } from "@/feature/report/ui/api/getReportedPosts";
-import { ReportedPost } from "@/feature/report/ui/model/type";
+import { getReportedPosts } from "@/feature/report/api/getReportedPosts";
+import { ReportedPost } from "@/feature/report/model/type";
 
 export const useReportedPosts = () => {
   const [reports, setReports] = useState<ReportedPost[]>([]);

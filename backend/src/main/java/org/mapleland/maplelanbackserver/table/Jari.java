@@ -11,13 +11,14 @@ import org.mapleland.maplelanbackserver.enumType.Region;
 import org.mapleland.maplelanbackserver.enumType.TradeType;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
 @Builder
 @Setter
 @AllArgsConstructor
-public class jari {
+public class Jari {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,8 +43,10 @@ public class jari {
     private String comment; // 유저 코멘트
     private String monsterImageUrl; // 몬스터 이미지
     private Boolean isCompleted; // 거래 완료 여부
+    @OneToMany(mappedBy = "jari", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Report> reports;
 
-    public jari() {
+    public Jari() {
 
     }
 }

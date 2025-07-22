@@ -16,7 +16,7 @@ const NotificationGuide = lazy(() => import("@/page/notice/NotificationGuide"));
 const Notice = lazy(() => import("@/page/notice/Notice"));
 
 // 자리 관련
-const JariDetail = lazy(() => import("@/page/jari/Detail"));
+const JariDetailPage = lazy(() => import("@/page/jari/Detail"));
 const JariRegisterPage = lazy(() => import("@/page/jari/Register"));
 const JariRegisterDetailPage = lazy(() => import("@/page/jari/RegisterDetail"));
 const WorldDetailPage = lazy(() => import("@/page/jari/WorldDetail"));
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       {
         path: "jari",
         children: [
-          { path: ":name", element: <JariDetail /> },
+          { path: ":name", element: <JariDetailPage /> },
           { path: "world/:world", element: <WorldDetailPage /> },
           {
             path: "register",

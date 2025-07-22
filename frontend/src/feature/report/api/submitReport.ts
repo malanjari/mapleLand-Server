@@ -44,7 +44,8 @@ export async function submitReport(payload: ReportPayload) {
     const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data?.error.message || "신고에 실패했습니다.");
+      const errorJson = await res.text();
+      throw errorJson;
     }
 
     return data;

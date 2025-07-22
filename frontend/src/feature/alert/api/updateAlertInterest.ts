@@ -33,10 +33,7 @@ export const updateAlertInterest = async ({
   });
 
   if (!res.ok) {
-    const data = await res.json().catch(() => null);
-    const message = data?.error?.message || "알림 설정 실패";
-    throw new Error(message);
+    const errorJson = await res.text();
+    throw errorJson;
   }
-
-  return await res.json();
 };

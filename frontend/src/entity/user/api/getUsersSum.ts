@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "@/shared/config/api";
 
-export const getAdminUsersSum = async () => {
+export const getUsersSum = async () => {
   const token = localStorage.getItem("accessToken");
   try {
     const res = await fetch(`${API_BASE_URL}/api/admin/users/count`, {

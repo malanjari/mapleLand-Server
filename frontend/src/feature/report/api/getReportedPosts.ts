@@ -22,7 +22,8 @@ export const getReportedPosts = async (
     );
 
     if (!res.ok) {
-      throw new Error("신고된 게시글 목록 조회 실패");
+      const errorJson = await res.text();
+      throw errorJson;
     }
 
     const data = await res.json();

@@ -388,9 +388,9 @@ public class LudibriumMonsterDataInitializer {
 
                     MonsterDropItem.builder()
                             .mapName("시계탑최하층:뒤틀린 시간의 길<3>")
-                            .itemName("블루 배틀로드")
-                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1050082/icon?resize=2")
-                            .dropRate(0.006)
+                            .itemName("파이어 살리트")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1462011/icon?resize=2")
+                            .dropRate(0.007)
                             .build()
 
             ));

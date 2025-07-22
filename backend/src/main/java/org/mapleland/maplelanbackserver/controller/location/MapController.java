@@ -122,17 +122,19 @@ public class MapController {
     @PostMapping("/api/maps/update/isCompleted")
     @Operation(summary = "사용자가 자리 거래 완료 누르는 api",
             description = "isCompleted = false 자리 판매중 -> true 자리 판매 완료")
-    public ResponseEntity<?> updateIsCompleted(@RequestBody JariIsCompletedRequest dto) {
-        mapService.updateIsCompleted(dto);
+    public ResponseEntity<?> updateIsCompleted(@RequestBody JariIsCompletedRequest dto,
+                                               @RequestHeader("Authorization")String token) {
+        mapService.updateIsCompleted(dto,token);
 
         return ResponseEntity.ok(Map.of("message","거래가 완료 되었습니다."));
     }
 
     @DeleteMapping("/api/maps/{mapId}/delete")
-    public ResponseEntity<?> updateServerColor(@PathVariable int mapId) {
-        mapService.mapDelete(mapId);
+    public ResponseEntity<?> updateServerColor(@PathVariable int mapId,@RequestHeader("Authorization")String token) {
+        mapService.mapDelete(mapId,token);
         return ResponseEntity.ok(Map.of("message", "게시글이 삭제 되었습니다."));
     }
+
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
     @PostMapping("/api/alert/interest")
@@ -171,6 +173,7 @@ public class MapController {
     // ------------현재 사용 안함 -------------------
 
     @PostMapping("/api/maps/update/server-color")
+    @Deprecated
     public ResponseEntity<?> updateServerColor(@RequestBody ServerColorRequest dto) {
         mapService.mapUpdateServerColor(dto);
         return ResponseEntity.status(HttpStatus.OK).body("서버 색깔이 수정 되었습니다.");
@@ -179,6 +182,7 @@ public class MapController {
 
     @Operation(summary = "모든 맵 이름을 조회하는 API")
     @GetMapping("/api/maps/all")
+    @Deprecated
     public ResponseEntity<?> findAllMaps() {
         MapNameListResponse response = mapService.findAllMaps();
 

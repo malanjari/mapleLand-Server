@@ -8,7 +8,7 @@ import { lazy, Suspense } from "react";
 import { UserProfileCard } from "@/feature/user/ui/UserProfileCard";
 import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
 
-import { AlertMapSection } from "@/feature/alarm/ui/AlertMapSection";
+import { AlertMapSection } from "@/feature/alert/ui/AlertMapSection";
 const TradeSection = lazy(() => import("@/feature/trade/ui/TradeSection"));
 const ProfilePage = () => {
   const { userId } = useParams();

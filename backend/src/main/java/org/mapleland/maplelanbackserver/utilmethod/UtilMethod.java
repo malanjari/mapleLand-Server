@@ -20,7 +20,7 @@ import java.util.Optional;
 @Slf4j
 public class UtilMethod {
 
-    private final userRepository userRepository;
+    private final UserRepository userRepository;
     private final MapleMapRepository mapleMapRepository;
     private final MapInterRestRepository interestRepository;
 

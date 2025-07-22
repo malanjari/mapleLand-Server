@@ -10,12 +10,10 @@ export const getUserInfo = async (userId: string) => {
       },
     });
     if (!res.ok) {
-      const { message } = await res.json();
-      throw new Error(message || "유저 정보를 불러오는 데 실패했습니다.");
+      const errorJson = await res.text();
+      throw errorJson;
     }
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   } catch (error) {
     console.error("getUserInfo error:", error);
     throw error;

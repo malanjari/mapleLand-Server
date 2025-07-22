@@ -1,8 +1,8 @@
 // feature/report/hooks/useReportedPostDetail.ts
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getReportedPosts } from "@/feature/report/ui/api/getReportedPosts";
-import { ReportedPost } from "@/feature/report/ui/model/type";
+import { getReportedPosts } from "@/feature/report/api/getReportedPosts";
+import { ReportedPost } from "@/feature/report/model/type";
 
 export const useReportedPostDetail = () => {
   const { userMapId } = useParams();

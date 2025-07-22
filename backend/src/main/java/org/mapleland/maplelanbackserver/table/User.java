@@ -26,11 +26,16 @@ public class User {
     private Boolean mapTicket;// 등록 여부 -> FALSE 등록불가 TRUE 등록가능
     private int pianusTicket;  // 사용 X
     private int manonTicket; // 사용 X
-    private int userReportCount; // 신고 횟수(당한횟수)
     private boolean isActive; // 계정 잠김 여부
     private String banedReason = ""; // 벤 사유
     private String image; // 유저 프로필 IMAGE
     @CreationTimestamp
     @Column(updatable = false , columnDefinition = "DATETIME(0)")
     private LocalDateTime createTime; // 만든날짜
+    private int reportCount = 0;
+    private LocalDateTime bannedHours;
+
+    public void increaseReportCount() {
+        this.reportCount++;
+    }
 }
