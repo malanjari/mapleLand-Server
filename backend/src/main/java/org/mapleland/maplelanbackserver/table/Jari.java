@@ -68,4 +68,11 @@ public class Jari {
     public boolean validateOwner(Integer userId) {
         return this.user.getUserId().equals(userId);
     }
+
+    public void update(String serverColor, int price, Boolean negotiationOption, String comment) {
+        this.serverColor = serverColor;
+        this.price = price;
+        this.negotiationOption = negotiationOption;
+        this.comment = comment;
+    }
 }
