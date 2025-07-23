@@ -23,8 +23,6 @@ public class AdminController {
 
     private final ReportService reportService;
     private final UserService userService;
-    private final MapService mapService;
-    private final WebSocketService webSocketService;
 
     @GetMapping("/api/admin/users")
     public ResponseEntity<List<UserListResponse>> findAllUsersOrderByReportCount(@RequestParam(defaultValue = "0") int page) {

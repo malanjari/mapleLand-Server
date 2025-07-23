@@ -88,7 +88,6 @@ public class UserService {
                 user.getImage(),
                 user.getCreateTime(),
                 user.getGlobalName(),
-                user.getMapTicket(),
                 user.getUserName(),
                 user.getEmail(),
                 user.isActive());

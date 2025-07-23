@@ -11,8 +11,11 @@ import org.mapleland.maplelanbackserver.dto.response.PriceStatDto;
 import org.mapleland.maplelanbackserver.dto.update.PriceUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.update.ServerColorRequest;
 import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.TradeType;
 import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
+import org.mapleland.maplelanbackserver.exception.coflict.ConflictException;
 import org.mapleland.maplelanbackserver.exception.coflict.CoolDownConflictException;
+import org.mapleland.maplelanbackserver.exception.notfound.NotFoundException;
 import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapException;
 import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapTicketException;
 import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundUserException;
@@ -41,7 +44,6 @@ import java.time.LocalDateTime;
 public class MapService {
 
     ModelMapper modelMapper = new ModelMapper();
-    private final JariRepository registerRepository;
     private final UserRepository userRepository;
     private final MapleMapRepository mapleMapRepository;
     private final JariRepository jariRepository;
@@ -59,48 +61,66 @@ public class MapService {
     public void mapRegisterServiceMethod(JariCreatedRequest dto, String token) {
 
         int userId = JwtUtil.getUserId(token);
-        String discordId = JwtUtil.getDiscordId(token);
-
-
         //사용자 검색 -> 사용자 값 꺼내옴
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundUserException("유저를 찾을 수 없습니다."));
 
 
-
         // 지역 정보 추출
         Region region = RegionResolver.getRegionEnumByMapName(dto.getMapName());
 
-
         // 매칭 맵 정보 추출
-        MapleMap mapInfo = getFirstMatchedMap(dto.getMapName());
+        MapleMap mapleMap = getFirstMatchedMap(dto.getMapId()).
+                orElseThrow(() -> new NotFoundMapException("해당 맵을 찾을 수 없습니다,"));
 
-        // 등록 티켓 확인
-        if (!user.getMapTicket()) {
-            throw new NotFoundMapTicketException("등록 티켓이 없습니다. \n 등록한 자리를 거래 완료 처리를 해야 합니다");
+        jariRepository.findByUser_UserIdAndMapNameAndIsCompletedFalse(userId,dto.getMapName())
+                .ifPresent(j->{
+                    throw new
+                            ConflictException
+                            ("같은 맵에 삽니다/팝니다를 동시에 등록할 수 없습니다. \n 해당 맵에 거래 완료 버튼을 눌러주세요");
+                });
+
+
+        if (user.getRole().equals("ROLE_USER")) {
+
+            TradeType tradeType = dto.getTradeType();
+
+            switch (tradeType) {
+                case BUY -> {
+                    if (!user.isBuyTicket()) throw new
+                            NotFoundMapTicketException("구매 티켓이 없습니다. \n 삽니다 게시글 거래 완료 버튼을 눌러주세요.");
+                }
+                case SELL -> {
+                    if (!user.isSellTicket()) throw new
+                            NotFoundMapException("판매 티켓이 없습니다. \n 팝니다 게시글 거래 완료 버튼을 눌러주세요.");
+                }
+            }
         }
-
-        String role = AdminCheckFilter.adminCheckFilter(discordId);
-
-        if(role.equals("ROLE_ADMIN")) user.setMapTicket(true);
-
-
-        else user.setMapTicket(false);
-
         // Entity 변환 및 등록
         Jari entity = modelMapper.map(dto, Jari.class);
         entity.setUserMapId(null);
         entity.setArea(region);
         entity.setIsCompleted(false);
-        entity.setMonsterImageUrl(mapInfo.getMonsterImageUrl());
+        entity.setMonsterImageUrl(mapleMap.getMonsterImageUrl());
         entity.setUser(user);
 
-        interRestUser(dto,userId);
-        registerRepository.save(entity);
+        if (user.getRole().equals("ROLE_USER")) {
+            switch (dto.getTradeType()) {
+                case BUY -> user.setBuyTicket(false);
+                case SELL -> user.setSellTicket(false);
+            }
+        } else {
+            user.setBuyTicket(true);
+            user.setSellTicket(true);
+        }
+
+        interRestUser(dto, userId);
+        jariRepository.save(entity);
+        userRepository.save(user);
         webSocketService.sendLatestPosts(userId);
-
-
     }
+
+
 
 
     public String buildMapUrl(String mapName) {
@@ -223,12 +243,8 @@ public class MapService {
                 .toList();
     }
 
-    public MapleMap getFirstMatchedMap(String keyword) {
-        return mapleMapRepository
-                .findByMapNameExact(keyword)
-                .stream()
-                .findFirst()
-                .orElseThrow(()-> new NotFoundUserException("맵을 찾을 수 없습니다."));
+    public Optional<MapleMap> getFirstMatchedMap(int mapId) {
+        return mapleMapRepository.findById(mapId);
     }
 
 
@@ -280,9 +296,16 @@ public class MapService {
         LocalDateTime startTime = now.minusHours(6);
         LocalDateTime endTime = now;
 
+        log.info("키워드 = {}",keyword);
+
+
         // 2. 최근 6시간 거래 조회 (isCompleted = true)
         List<Jari> completed =
                 jariRepository.findCompletedByMapNameIgnoreSpaceAndDate(keyword, startTime, endTime);
+
+        for(Jari j : completed) {
+            log.info("키 값 = {}",j.getMapName());
+        }
 
         // 3. 시간 슬롯 생성 (6개)
         List<LocalDateTime> hourlySlots = new ArrayList<>();
@@ -354,26 +377,38 @@ public class MapService {
     }
 
     public void mapUpdatePrice(PriceUpdateRequest priceDto) {
-        Jari byUserId = registerRepository.findByUserMapId(priceDto.mapId());
+        Jari byUserId = jariRepository.findByUserMapId(priceDto.mapId());
         byUserId.setPrice(priceDto.price());
-        registerRepository.save(byUserId);
+        jariRepository.save(byUserId);
 
     }
 
     public void mapUpdateServerColor(ServerColorRequest dto) {
-        Jari byUserId = registerRepository.findByUserMapId(dto.mapId());
+        Jari byUserId = jariRepository.findByUserMapId(dto.mapId());
         byUserId.setServerColor(dto.color());
-        registerRepository.save(byUserId);
+        jariRepository.save(byUserId);
     }
 
     public void mapDelete(int mapId,String token) {
 
 
-        Jari byUserId = registerRepository.findByUserMapId(mapId);
+        Jari byUserId = jariRepository.findByUserMapId(mapId);
         int userId = JwtUtil.getUserId(token);
 
         if(byUserId.getUser().getUserId() == userId || JwtUtil.getRole(token).equals("ROLE_ADMIN")) {
-            registerRepository.delete(byUserId);
+            User user = userRepository.findByUserId(userId).orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없음"));
+
+            Jari jari = jariRepository.findByUser_UserIdAndUserMapId(userId, mapId).
+                    orElseThrow(() -> new NotFoundException("알 수 없는 에러가 발생 하였습니다."));
+
+            TradeType tradeType = jari.getTradeType();
+
+            switch (tradeType) {
+                case BUY -> user.setBuyTicket(true);
+                case SELL -> user.setSellTicket(true);
+            }
+            userRepository.save(user);
+            jariRepository.delete(byUserId);
         }
         else throw new UserMismatchException("등록된 게시글과 다른 사용자 입니다.");
 
@@ -383,7 +418,7 @@ public class MapService {
 
     public void updateIsCompleted(JariIsCompletedRequest dto , String token) {
         int userId = JwtUtil.getUserId(token);
-        Jari jari = registerRepository.findByUserMapId(dto.mapId());
+        Jari jari = jariRepository.findByUserMapId(dto.mapId());
         if(jari == null) throw new NotFoundMapException("게시글을 찾을 수 없습니다.");
 
 
@@ -392,12 +427,19 @@ public class MapService {
         User user = userRepository.findByUserId(userId).
                 orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
 
+        Jari userJari = jariRepository.findByUser_UserIdAndUserMapId(userId, dto.mapId())
+                .orElseThrow(() -> new NotFoundException("알 수 없는 에러가 발생 하였습니다."));
+
+        TradeType tradeType = userJari.getTradeType();
+
+        switch (tradeType) {
+            case BUY -> user.setBuyTicket(true);
+            case SELL -> user.setSellTicket(true);
+        }
+
         jari.setIsCompleted(true);
-        user.setMapTicket(true);
 
-
-
-        registerRepository.save(jari);
+        jariRepository.save(jari);
         userRepository.save(user);
 
     }

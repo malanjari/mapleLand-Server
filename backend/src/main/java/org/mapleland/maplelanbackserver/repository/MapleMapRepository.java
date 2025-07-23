@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface MapleMapRepository extends JpaRepository<MapleMap, Integer> {
 
@@ -21,7 +23,6 @@ public interface MapleMapRepository extends JpaRepository<MapleMap, Integer> {
 
     List<MapleMap> findByRegion(Region region);
 
-
-
-
+    @Override
+    Optional<MapleMap> findById(Integer integer);
 }

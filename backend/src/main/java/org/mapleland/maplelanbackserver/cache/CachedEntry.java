@@ -17,6 +17,7 @@ public class CachedEntry {
         this.createdAt = LocalDateTime.now();
     }
 
+    //캐쉬 판단 여부
     public boolean isExpired() {
         return createdAt.plusHours(1).isBefore(LocalDateTime.now());
     }

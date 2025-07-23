@@ -43,7 +43,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
         u.globalName,
         u.role,
         u.email,
-        u.mapTicket,
         u.banedReason,
         u.image,
         u.createTime,

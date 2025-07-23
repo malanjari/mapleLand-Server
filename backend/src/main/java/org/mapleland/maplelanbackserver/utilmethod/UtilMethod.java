@@ -2,6 +2,10 @@ package org.mapleland.maplelanbackserver.utilmethod;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.mapleland.maplelanbackserver.dto.Map.JariCreatedRequest;
+import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.TradeType;
+import org.mapleland.maplelanbackserver.exception.coflict.ConflictException;
 import org.mapleland.maplelanbackserver.exception.coflict.DuplicatedMapInterRestException;
 import org.mapleland.maplelanbackserver.exception.badrequest.MaxMapInterestLimitException;
 import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapException;
@@ -11,9 +15,14 @@ import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
 import org.mapleland.maplelanbackserver.exception.unauthorization.UserMismatchException;
 import org.mapleland.maplelanbackserver.jwtUtil.JwtUtil;
 import org.mapleland.maplelanbackserver.repository.*;
+import org.mapleland.maplelanbackserver.service.DiscordDmService;
+import org.mapleland.maplelanbackserver.service.MapService;
+import org.mapleland.maplelanbackserver.service.WebSocketService;
+import org.mapleland.maplelanbackserver.table.Jari;
 import org.mapleland.maplelanbackserver.table.MapInterRest;
 import org.mapleland.maplelanbackserver.table.User;
 import org.mapleland.maplelanbackserver.table.MapleMap;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -22,9 +31,12 @@ import java.util.Optional;
 @Slf4j
 public class UtilMethod {
 
+    ModelMapper modelMapper = new ModelMapper();
     private final UserRepository userRepository;
     private final MapleMapRepository mapleMapRepository;
     private final MapInterRestRepository interestRepository;
+
+
 
 
     public AlertStatus updateAlertInterest(AlertRequest dto, String token) {

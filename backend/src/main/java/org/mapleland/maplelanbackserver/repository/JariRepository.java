@@ -1,7 +1,9 @@
 package org.mapleland.maplelanbackserver.repository;
 
+import org.apache.tomcat.Jar;
 import org.mapleland.maplelanbackserver.dto.response.ResponseWebSocketPostDto;
 import org.mapleland.maplelanbackserver.enumType.Region;
+import org.mapleland.maplelanbackserver.enumType.TradeType;
 import org.mapleland.maplelanbackserver.table.Jari;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -68,7 +70,7 @@ public interface JariRepository extends JpaRepository<Jari, Integer> {
 
     @Query("""
     SELECT m FROM Jari m
-    WHERE REPLACE(m.mapName, ' ', '') = REPLACE(:mapName, ' ', '')
+    WHERE m.mapName = :mapName
     AND m.isCompleted = true
     AND m.createTime BETWEEN :start AND :end
 """)
@@ -109,4 +111,15 @@ SELECT new org.mapleland.maplelanbackserver.dto.response.ResponseWebSocketPostDt
 FROM Jari j ORDER BY j.createTime desc
 """)
     List<ResponseWebSocketPostDto> findLatestPost(Pageable pageable);
+
+    Optional<Jari> findByMapNameAndUserMapId(String mapName, Integer userMapId);
+
+    Optional<Jari> findByUser_UserIdAndMapNameAndIsCompletedFalse(Integer userId, String mapName);
+
+    Optional<Jari> findByUser_UserIdAndTradeTypeAndUserMapId(Integer userUserId, TradeType tradeType, Integer userMapId);
+
+    Optional<Jari> findByUser_UserIdAndUserMapId(Integer userId, Integer mapId);
+
+
+
 }

@@ -2,6 +2,7 @@ package org.mapleland.maplelanbackserver.init.monster;
 
 import lombok.RequiredArgsConstructor;
 import org.mapleland.maplelanbackserver.repository.MonsterDropItemRepository;
+import org.mapleland.maplelanbackserver.service.MapService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ public class MonsterDataInitializer implements CommandLineRunner {
     private final ElnathMonsterDataInitializer elnathMonsterDataInitializer;
     private final AquariumMonsterDataInitializer aquariumMonsterDataInitializer;
     private final LeafreMonsterDataInitializer leafreMonsterDataInitializer;
+    private final MapService mapService;
 
     @Override
     public void run(String... args) {
@@ -39,6 +41,8 @@ public class MonsterDataInitializer implements CommandLineRunner {
                 aquariumMonsterDataInitializer.initAquariumMonsterData();
 
                 leafreMonsterDataInitializer.initAquariumMonsterData();
+
+                System.out.println("캐쉬 클리어 ");
 
             } catch (Exception e) {
                 System.out.println("❌ 초기화 중단됨: " + e.getMessage());
