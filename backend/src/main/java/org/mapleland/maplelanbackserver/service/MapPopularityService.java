@@ -37,6 +37,7 @@ public class MapPopularityService {
     public List<MapPopularityResponse> getTopPopularMaps(int limit) {
         return cachedPopularMaps.stream().limit(limit).toList();
     }
+
     public void refreshPopularMaps() {
         LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
         List<Jari> entities = mapRegisterRepository.findAllWithinOneWeek(oneWeekAgo);
@@ -63,6 +64,8 @@ public class MapPopularityService {
 
         System.out.println("✅ [인기맵 갱신 완료] 캐시된 인기맵 수: " + this.cachedPopularMaps.size());
     }
+
+
     public String removedPrefixByRegion(String input,Region region) {
         List<String> strings = regionPrefixes.get(region);
 

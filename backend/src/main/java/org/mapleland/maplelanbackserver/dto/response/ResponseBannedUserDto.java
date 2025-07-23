@@ -9,7 +9,6 @@ public record ResponseBannedUserDto(
         String globalName,
         String role,
         String email,
-        Boolean mapTicket,
         String banedReason,
         String image,
         LocalDateTime createTime,

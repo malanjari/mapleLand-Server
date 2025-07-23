@@ -8,7 +8,6 @@ public record UserInfoDto(
         String image,
         LocalDateTime createTime,
         String globalName,
-        Boolean mapTicket,
         String userName,
         String email,
         boolean isActive) { }

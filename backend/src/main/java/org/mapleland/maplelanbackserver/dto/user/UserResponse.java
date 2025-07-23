@@ -21,7 +21,6 @@ public class UserResponse {
 
     String globalName;
 
-    Boolean mapTicket;
 
     String userName;
 
@@ -36,7 +35,6 @@ public class UserResponse {
                 user.getImage(),
                 user.getCreateTime(),
                 user.getGlobalName(),
-                user.getMapTicket(),
                 user.getUserName(),
                 user.getEmail(),
                 user.getReportCount()
