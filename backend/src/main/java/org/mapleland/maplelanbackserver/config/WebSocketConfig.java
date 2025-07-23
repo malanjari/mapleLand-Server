@@ -22,7 +22,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(webSocketAuthInterceptor); // 여기서 등록
+//        registration.interceptors(webSocketAuthInterceptor); // 여기서 등록
     }
 
     @Override

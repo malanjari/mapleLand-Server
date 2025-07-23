@@ -7,6 +7,7 @@ import {
   registerJari,
 } from "@/entity/jari/api/registerJari";
 import { toast } from "@/shared/hooks/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 type TradeType = "SELL" | "BUY";
 type ServerColor = "Red" | "Yellow" | "Green";
@@ -22,6 +23,8 @@ interface FormState {
 
 export const useJariRegisterForm = () => {
   const { name } = useParams();
+  const queryClient = useQueryClient();
+
   const user = useUser();
   const navigate = useNavigate();
   const [mapData, setMapData] = useState<MapItem | null>(null);
@@ -96,12 +99,14 @@ export const useJariRegisterForm = () => {
 
     try {
       await registerJari(payload);
+
       toast({
         title: "자리 등록 완료",
         variant: "success",
         description: "성공적으로 등록되었습니다.",
       });
       navigate(`/jari/${form.mapName}`);
+      queryClient.invalidateQueries({ queryKey: ["jariList"] });
       setForm((prev) => ({
         ...prev,
         tradeType: null,
