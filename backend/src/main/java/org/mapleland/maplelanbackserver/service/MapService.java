@@ -338,24 +338,20 @@ public class MapService {
         //jwt 유저 토큰 아이디
         int userId = JwtUtil.getUserId(token);
 
-        Jari byUserMapId = registerRepository.findByUserMapId(jariUpdateRequest.mapId());
-        if (byUserMapId == null) {
+        Jari jari = jariRepository.findByUserMapId(jariUpdateRequest.mapId());
+        if (jari == null) {
             throw new NotFoundMapException("존재하지 않는 mapId입니다: " + jariUpdateRequest.mapId());
         }
-        Jari jariId = jariRepository.findByUserMapId(jariUpdateRequest.mapId());
 
+        jari.validateOwner(userId);
 
-        if(userId != jariId.getUserMapId()) throw new UserMismatchException("사용자가 다릅니다.");
-
-        byUserMapId.setServerColor(jariUpdateRequest.serverColor());
-        byUserMapId.setPrice(jariUpdateRequest.price());
-        byUserMapId.setNegotiationOption(jariUpdateRequest.negotiationOption());
-        byUserMapId.setComment(jariUpdateRequest.comment());
-
-        registerRepository.save(byUserMapId);
-
+        jari.update(
+                jariUpdateRequest.serverColor(),
+                jariUpdateRequest.price(),
+                jariUpdateRequest.negotiationOption(),
+                jariUpdateRequest.comment()
+        );
     }
-
 
     public void mapUpdatePrice(PriceUpdateRequest priceDto) {
         Jari byUserId = registerRepository.findByUserMapId(priceDto.mapId());
