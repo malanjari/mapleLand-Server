@@ -41,6 +41,17 @@ export const useReportDialog = (
       const maxSizeMB = 10;
       const maxSizeBytes = maxSizeMB * 1024 * 1024;
 
+      // 1. 이미지 파일인지 확인
+      if (!file.type.startsWith("image/")) {
+        toast({
+          title: "❌ 업로드 실패",
+          description: "이미지 파일만 업로드할 수 있습니다.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      // 2. 용량 제한 확인
       if (file.size > maxSizeBytes) {
         toast({
           title: "❌ 업로드 실패",
