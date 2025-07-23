@@ -38,6 +38,18 @@ export const useReportDialog = (
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      const maxSizeMB = 10;
+      const maxSizeBytes = maxSizeMB * 1024 * 1024;
+
+      if (file.size > maxSizeBytes) {
+        toast({
+          title: "❌ 업로드 실패",
+          description: `이미지 크기는 ${maxSizeMB}MB 이하만 가능합니다.`,
+          variant: "destructive",
+        });
+        return;
+      }
+
       setImageFile(file);
       setImagePreview(URL.createObjectURL(file));
     }
