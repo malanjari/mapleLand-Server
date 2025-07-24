@@ -8,6 +8,7 @@ import org.mapleland.maplelanbackserver.exception.notfound.NotFoundException;
 import org.mapleland.maplelanbackserver.exception.unauthorization.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -120,7 +121,7 @@ public class GlobalExceptionHandler {
 
         if (bindingResult.hasErrors() && !bindingResult.getFieldErrors().isEmpty()) {
             FieldError firstError = bindingResult.getFieldErrors().get(0);
-            errorMessage = String.format("[%s](은)는 %s 입력된 값: [%s]",
+            errorMessage = String.format("%s: %s (입력된 값: %s)",
                     firstError.getField(),
                     firstError.getDefaultMessage(),
                     firstError.getRejectedValue());
@@ -144,5 +145,11 @@ public class GlobalExceptionHandler {
         List<String> errorMessages = List.of(e.getMessage());
 
         return ResponseEntity.status(status).body(errorMessages);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Object> handleParseException(HttpMessageNotReadableException e) {
+        String errorMessage = "잘못된 요청 데이터입니다.";
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessage);
     }
 }
