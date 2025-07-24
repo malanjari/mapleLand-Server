@@ -10,14 +10,14 @@ interface Props {
 const TradeList = ({ items, refetch, showEditButton = true }: Props) => {
   if (items.length === 0) {
     return (
-      <div className="flex-1 flex flex-col h-[134px] items-center justify-center text-sm text-gray-400 bg-neutral-800 rounded-md py-10 gap-3">
+      <div className="flex-1 flex flex-col h-[139px] items-center justify-center text-sm text-gray-400 bg-neutral-800 rounded-md py-10 gap-3">
         <p>등록된 자리가 없습니다.</p>
       </div>
     );
   }
 
   return (
-    <div className="max-h-[600px] flex flex-col gap-3 overflow-y-auto snap-y snap-mandatory">
+    <div className="max-h-[600px] rounded-sm flex flex-col gap-3 overflow-y-auto snap-y snap-mandatory">
       {items.map((item) => (
         <TradeCard
           key={`${item.discordId}-${item.createTime}`}
