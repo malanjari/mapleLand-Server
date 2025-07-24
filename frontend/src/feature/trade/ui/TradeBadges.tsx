@@ -27,7 +27,7 @@ export const TradeBadges = ({
     serverColor === "Red" ? "빨채" : serverColor === "Yellow" ? "노채" : "초채";
 
   return (
-    <div className="flex gap-1 ">
+    <div className="flex gap-1 pb-1">
       {/* 서버 색상 뱃지 */}
       <span
         className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-sm text-xs font-medium ${bgClass}`}
