@@ -4,7 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import mesoIcon from "@/shared/assets/icon/mesoIcon.webp";
 import AdminKebabMenu from "@/feature/delete/ui/DeleteKebabMenu";
-
+import { toZonedTime } from "date-fns-tz";
 interface Props {
   mapName: string;
   price: number;
@@ -32,9 +32,7 @@ export const TradeCardHeader = ({
   refetch,
   mapId,
 }: Props) => {
-  const koreaTime = new Date(
-    new Date(createTime).getTime() + 9 * 60 * 60 * 1000
-  );
+  const koreaTime = toZonedTime(createTime, "Asia/Seoul");
 
   return (
     <div className="flex items-center justify-center gap-3 w-full">
