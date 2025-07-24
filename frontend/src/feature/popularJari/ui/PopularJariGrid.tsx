@@ -10,7 +10,7 @@ const PopularJariGrid = () => {
     const load = async () => {
       try {
         const data = await getPopularJari();
-        console.log(data);
+
         setPopularMaps(data);
       } catch (err) {
         console.error("인기 맵 로딩 실패:", err);
