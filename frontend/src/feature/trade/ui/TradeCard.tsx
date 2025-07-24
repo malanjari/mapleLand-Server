@@ -62,7 +62,7 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
 
       {/* 협의 옵션 및 코멘트 */}
       <div className="w-full flex border-b pb-1 border-neutral-700 justify-between">
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-2 w-full pb-1">
           {isOwner && showEditButton && !item.isCompleted && (
             <EditJariPopover
               showEditBox={showEditBox}
