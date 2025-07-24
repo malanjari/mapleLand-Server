@@ -2,7 +2,7 @@ import { API_BASE_URL } from "@/shared/config/api";
 
 export async function deleteJari(mapId: number) {
   const token = localStorage.getItem("accessToken");
-  console.log(token);
+
   if (!token) {
     throw new Error("로그인이 필요합니다.");
   }
