@@ -30,7 +30,7 @@ import org.mapleland.maplelanbackserver.enumType.TradeType;
       @Positive(message = "가격은 양수여야 합니다.")
       @Max(value = 2000000000, message = "가격은 최대 20억까지 입력 가능합니다.")
       @Schema(description = "등록 가격 (단위: 메소)", example = "50000000")
-      private Integer price;
+      private Long price;
 
       @NotNull(message = "흥정 옵션을 선택하세요.")
       @Schema(description = "흥정 가능 여부", example = "false")
