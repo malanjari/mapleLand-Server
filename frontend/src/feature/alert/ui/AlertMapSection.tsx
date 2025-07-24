@@ -19,7 +19,7 @@ export const AlertMapSection = ({ isMyProfile, alertMaps }: Props) => {
       {/* 타이틀 */}
       <div
         className={clsx(
-          "text-white text-sm font-semibold px-4 py-4 mb-4 rounded-xl shadow-lg transition",
+          "text-white text-sm font-semibold px-4 py-4 mb-4 rounded-md shadow-lg transition",
           "flex flex-col gap-3",
           "bg-gradient-to-r from-yellow-600 to-yellow-500"
         )}
