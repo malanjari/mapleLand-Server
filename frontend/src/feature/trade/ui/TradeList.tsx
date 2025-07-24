@@ -10,7 +10,7 @@ interface Props {
 const TradeList = ({ items, refetch, showEditButton = true }: Props) => {
   if (items.length === 0) {
     return (
-      <div className="flex-1 flex flex-col h-[139px] items-center justify-center text-sm text-gray-400 bg-neutral-800 rounded-md py-10 gap-3">
+      <div className="flex-1 flex flex-col h-[139px] items-center justify-center text-sm text-gray-400 bg-neutral-800 rounded-sm py-10 gap-3">
         <p>등록된 자리가 없습니다.</p>
       </div>
     );
