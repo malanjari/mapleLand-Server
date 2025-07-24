@@ -32,7 +32,8 @@ export const TradeCardHeader = ({
   refetch,
   mapId,
 }: Props) => {
-  const koreaTime = toZonedTime(createTime, "Asia/Seoul");
+  const utcDate = new Date(createTime);
+  const koreaTime = toZonedTime(utcDate, "Asia/Seoul");
 
   return (
     <div className="flex items-center justify-center gap-3 w-full">
