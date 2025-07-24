@@ -27,13 +27,15 @@ interface Props {
 }
 
 export const PriceChart = ({ data }: Props) => {
-  const labels = data.map((d) =>
-    new Date(d.dateTime).toLocaleTimeString("ko-KR", {
+  const labels = data.map((d) => {
+    const utc = new Date(d.dateTime);
+    const kst = new Date(utc.getTime() + 9 * 60 * 60 * 1000); // +9시간
+    return kst.toLocaleTimeString("ko-KR", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
-    })
-  );
+    });
+  });
 
   const prices = data.map((d) => d.price);
 
