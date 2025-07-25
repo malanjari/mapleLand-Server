@@ -324,7 +324,7 @@ public class MapService {
             LocalDateTime slotEnd = slotStart.plusHours(1);
 
             List<Integer> prices = completed.stream()
-                    .filter(e -> !e.getCreateTime().isBefore(slotStart) && e.getCreateTime().isBefore(slotEnd))
+                    .filter(e -> !e.getUpdateTime().isBefore(slotStart) && e.getUpdateTime().isBefore(slotEnd))
                     .map(Jari::getPrice)
                     .toList();
 
