@@ -9,7 +9,7 @@ import clsx from "clsx";
 
 interface Props {
   item: JariItem;
-  refetch: () => void;
+  refetch?: () => void;
   showEditButton: boolean;
 }
 
