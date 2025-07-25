@@ -5,6 +5,6 @@ export const usePopularJari = () => {
   return useQuery({
     queryKey: ["popularJari"],
     queryFn: getPopularJari,
-    staleTime: 1000 * 60 * 9, // 9분 (백엔드와 오차 보정)
+    refetchInterval: 1000 * 60 * 9,
   });
 };
