@@ -71,7 +71,7 @@ export const TradeCardHeader = ({
             <AdminKebabMenu
               isAdmin={isAdmin}
               mapId={mapId}
-              onDeleted={refetch}
+              onDeleted={refetch || undefined}
             />
           )}
         </div>
