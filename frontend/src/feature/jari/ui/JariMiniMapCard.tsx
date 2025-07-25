@@ -48,14 +48,15 @@ export const JariMiniMapCard = ({
 
       {/* 버튼들 */}
       <div className="flex flex-col gap-2">
-        <Link to={`/jari/register/${name}`} className="w-full">
-          <Button
-            variant="register"
-            className="text-white px-4 py-2 rounded-md font-semibold transition w-full"
-          >
+        <Button
+          asChild
+          variant="register"
+          className="text-white px-4 py-2 rounded-md font-semibold transition w-full"
+        >
+          <Link to={`/jari/register/${name}`} className="w-full">
             + 자리 등록하기
-          </Button>
-        </Link>
+          </Link>
+        </Button>
         {loggedIn && <AlertButton isAlarmOn={isAlarmOn} onToggle={onToggle} />}
       </div>
     </div>
