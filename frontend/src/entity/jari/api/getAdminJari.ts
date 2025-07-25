@@ -2,10 +2,13 @@ import { API_BASE_URL } from "@/shared/config/api";
 
 export const getAdminJari = async () => {
   try {
+    const token = localStorage.getItem("accessToken");
+
     const res = await fetch(`${API_BASE_URL}/api/admin/jari`, {
       method: "GET",
       headers: {
         "ngrok-skip-browser-warning": "true",
+        Authorization: `Bearer ${token}`,
       },
     });
 
