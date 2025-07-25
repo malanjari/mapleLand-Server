@@ -19,7 +19,8 @@ export const getAdminJari = async () => {
 
     const data = await res.json();
 
-    return data;
+    // API 응답에서 jariList 배열만 반환
+    return data.jariList || [];
   } catch (err) {
     console.error("adminJari 에러:", err);
     throw err;
