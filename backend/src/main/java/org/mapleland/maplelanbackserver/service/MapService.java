@@ -7,6 +7,7 @@ import org.mapleland.maplelanbackserver.dto.Map.*;
 import org.mapleland.maplelanbackserver.dto.response.DropItemResponse;
 import org.mapleland.maplelanbackserver.dto.request.JariUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.request.JariIsCompletedRequest;
+import org.mapleland.maplelanbackserver.dto.response.JariListResponse;
 import org.mapleland.maplelanbackserver.dto.response.PriceStatDto;
 import org.mapleland.maplelanbackserver.dto.update.PriceUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.update.ServerColorRequest;
@@ -20,7 +21,6 @@ import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapExcep
 import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapTicketException;
 import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundUserException;
 import org.mapleland.maplelanbackserver.exception.unauthorization.UserMismatchException;
-import org.mapleland.maplelanbackserver.filter.AdminCheckFilter;
 import org.mapleland.maplelanbackserver.jwtUtil.JwtUtil;
 import org.mapleland.maplelanbackserver.repository.*;
 import org.mapleland.maplelanbackserver.resolve.RegionResolver;
@@ -28,7 +28,9 @@ import org.mapleland.maplelanbackserver.table.*;
 import org.mapleland.maplelanbackserver.utilmethod.UtilMethod;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
@@ -482,5 +484,10 @@ public class MapService {
 
         jari.bump(now);
 
+    }
+
+    public JariListResponse findAllJari(Pageable pageable) {
+        Page<JariResponse> jariResponsePage = jariRepository.findAll(pageable).map(JariResponse::from);
+        return JariListResponse.from(jariResponsePage);
     }
 }
