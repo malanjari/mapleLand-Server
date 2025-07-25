@@ -15,7 +15,7 @@ interface Props {
   createTime: string;
   discordId: string;
   isAdmin: boolean;
-  refetch: () => void;
+  refetch?: () => void;
   mapId: number;
 }
 
