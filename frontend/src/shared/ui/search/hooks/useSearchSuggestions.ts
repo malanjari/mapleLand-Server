@@ -2,8 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import { MapItem } from "@/entity/map/api/getAllMaps";
 import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
-import { getInitials } from "@/shared/lib/getInitials";
-import { isSubsequence } from "@/shared/lib/isSubsequence";
 
 export const useSearchSuggestions = () => {
   const [keyword, setKeyword] = useState("");
@@ -20,15 +18,11 @@ export const useSearchSuggestions = () => {
 
     const delay = setTimeout(() => {
       const input = keyword.trim();
-      const inputInitials = getInitials(input);
+      const inputChars = Array.from(input);
 
       const filtered = allMaps.filter((map) => {
         const name = map.mapName;
-        const nameInitials = getInitials(name);
-
-        return (
-          name.includes(input) || isSubsequence(inputInitials, nameInitials)
-        );
+        return inputChars.every((char) => name.includes(char));
       });
 
       setSuggestions(filtered);
@@ -36,6 +30,7 @@ export const useSearchSuggestions = () => {
 
     return () => clearTimeout(delay);
   }, [keyword, allMaps]);
+
   // 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
