@@ -6,6 +6,6 @@ export const useAllMaps = () => {
   return useQuery({
     queryKey: ["allMaps"],
     queryFn: getAllMaps,
-    staleTime: 1000 * 60 * 60,
+    staleTime: Infinity,
   });
 };
