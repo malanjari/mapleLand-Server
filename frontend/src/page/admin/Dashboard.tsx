@@ -25,9 +25,11 @@ const DashboardPage = () => {
     try {
       setLoading(true);
       const data = await getAdminJari();
+
       setJariList(data);
     } catch (error) {
       console.error("자리 목록 로딩 실패:", error);
+      setJariList([]);
     } finally {
       setLoading(false);
     }
