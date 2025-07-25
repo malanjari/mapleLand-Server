@@ -1,30 +1,13 @@
-import { useEffect, useState } from "react";
-import { getPopularJari, PopularMap } from "@/entity/jari/api/getPopularJari";
 import { JariCard } from "@/feature/popularJari/ui/PopularJariCard";
+import { usePopularJari } from "@/entity/jari/hooks/usePopularJari";
 
 const PopularJariGrid = () => {
-  const [popularMaps, setPopularMaps] = useState<PopularMap[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        const data = await getPopularJari();
-
-        setPopularMaps(data);
-      } catch (err) {
-        console.error("인기 맵 로딩 실패:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, []);
+  const { data: popularMaps = [], isLoading } = usePopularJari();
 
   return (
     <div className=" p-4 mb:p-8 rounded-lg bg-neutral-700">
       <h2 className="text-xl font-bold mb-5">🔥 인기 자리</h2>
-      {loading ? (
+      {isLoading ? (
         <p className="text-white text-center">로딩 중...</p>
       ) : (
         <div className="grid grid-cols-1 mb:grid-cols-2 sm:grid-cols-3 gap-3 lg:gap-5 px-1  ">
