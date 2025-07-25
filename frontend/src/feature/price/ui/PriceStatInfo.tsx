@@ -2,7 +2,7 @@
 
 export const PriceStatInfo = () => {
   return (
-    <div className="mt-0 px-4 py-3 rounded-lg bg-gradient-to-r from-[#1f2937] to-[#111827] border border-blue-500 text-sm text-blue-200 leading-relaxed shadow-md">
+    <div className="mt-0 px-4 py-3 rounded-sm bg-gradient-to-r from-[#1f2937] to-[#111827] border border-blue-500 text-sm text-blue-200 leading-relaxed shadow-md">
       💡 <span className="font-semibold text-white">가격 그래프 안내</span>
       <br />
       이 그래프는 최근 자리 등록 가격 중 <br />
