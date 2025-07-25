@@ -1,8 +1,12 @@
 import { SummaryCard } from "@/feature/admin/ui/SummaryCard";
-import { ActivityLog } from "@/feature/admin/ui/ActivityLog";
+
+import TradeList from "@/feature/trade/ui/TradeList";
 
 import { useAdminUserSum } from "@/feature/admin/ui/hooks/useAdminUserSum";
-import { useActivityLogSocket } from "@/feature/admin/ui/hooks/useActivityLogSocket";
+
+import { getAdminJari } from "@/entity/jari/api/getAdminJari";
+import { JariItem } from "@/entity/jari/model/type";
+import { useEffect, useState } from "react";
 
 export interface ActivityLogItem {
   globalName: string;
@@ -13,7 +17,25 @@ export interface ActivityLogItem {
 
 const DashboardPage = () => {
   const { sumUsers } = useAdminUserSum();
-  const { activityLogs, socketConnected } = useActivityLogSocket();
+
+  const [jariList, setJariList] = useState<JariItem[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchJariList = async () => {
+    try {
+      setLoading(true);
+      const data = await getAdminJari();
+      setJariList(data);
+    } catch (error) {
+      console.error("자리 목록 로딩 실패:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchJariList();
+  }, []);
 
   return (
     <div className="p-6 space-y-8">
@@ -26,8 +48,19 @@ const DashboardPage = () => {
         <SummaryCard title="신고된 게시글" to="/admin/reports" />
       </div>
 
-      {/* 최근 활동 */}
-      <ActivityLog logs={activityLogs} isConnected={socketConnected} />
+      {/* 자리 목록 */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold text-white">
+          📋 등록된 자리 목록
+        </h2>
+        {loading ? (
+          <div className="flex justify-center items-center h-32">
+            <div className="text-white">로딩 중...</div>
+          </div>
+        ) : (
+          <TradeList items={jariList} showEditButton={false} />
+        )}
+      </div>
     </div>
   );
 };

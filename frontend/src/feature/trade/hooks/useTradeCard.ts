@@ -7,7 +7,7 @@ import { JariItem } from "@/entity/jari/model/type";
 import { ServerColor } from "../ui/TradeCard";
 import { bumpJari } from "@/entity/jari/api/bumpJari";
 
-export const useTradeCard = (item: JariItem, refetch: () => void) => {
+export const useTradeCard = (item: JariItem, refetch?: () => void) => {
   const editBoxRef = useRef<HTMLFormElement>(null);
   const [showEditBox, setShowEditBox] = useState(false);
   const [editPrice, setEditPrice] = useState(item.price);
@@ -47,7 +47,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
         comment: editComment,
         negotiationOption: editNegotiationOption,
       });
-      refetch();
+      refetch?.();
       toast({
         variant: "success",
         title: "수정 완료",
@@ -78,7 +78,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
         description: "자리 정보가 성공적으로 삭제되었습니다.",
       });
       setShowEditBox(false);
-      refetch();
+      refetch?.();
     } catch (err) {
       let message = "삭제 중 문제가 발생했습니다.";
       if (typeof err === "string") {
@@ -101,7 +101,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
         variant: "success",
         title: "거래 완료 처리가 성공적으로 되었습니다.",
       });
-      refetch();
+      refetch?.();
       setShowEditBox(false);
     } catch (err) {
       let message = "거래 완료 처리 중 문제가 발생했습니다.";
@@ -126,7 +126,7 @@ export const useTradeCard = (item: JariItem, refetch: () => void) => {
         title: "끌어올리기 완료",
         description: "게시글이 성공적으로 끌어올려졌습니다.",
       });
-      refetch();
+      refetch?.();
       setShowEditBox(false);
     } catch (err) {
       let message = "끌어올리기 중 문제가 발생했습니다.";
