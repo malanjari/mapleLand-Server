@@ -2,6 +2,8 @@
 import { useEffect, useRef, useState } from "react";
 import { MapItem } from "@/entity/map/api/getAllMaps";
 import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
+import { getInitials } from "@/shared/lib/getInitials";
+import { isSubsequence } from "@/shared/lib/isSubsequence";
 
 export const useSearchSuggestions = () => {
   const [keyword, setKeyword] = useState("");
@@ -12,19 +14,28 @@ export const useSearchSuggestions = () => {
 
   useEffect(() => {
     if (!keyword.trim()) {
+      setSuggestions([]);
       return;
     }
 
     const delay = setTimeout(() => {
-      const filtered = allMaps.filter((map) =>
-        map.mapName.includes(keyword.trim())
-      );
+      const input = keyword.trim();
+      const inputInitials = getInitials(input);
+
+      const filtered = allMaps.filter((map) => {
+        const name = map.mapName;
+        const nameInitials = getInitials(name);
+
+        return (
+          name.includes(input) || isSubsequence(inputInitials, nameInitials)
+        );
+      });
+
       setSuggestions(filtered);
-    }, 100); // debounce
+    }, 100);
 
     return () => clearTimeout(delay);
   }, [keyword, allMaps]);
-
   // 외부 클릭 감지
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
