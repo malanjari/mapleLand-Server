@@ -2,7 +2,7 @@
 
 import { Link } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
-import { MapItem } from "@/entity/jari/api/autocomplete";
+import { MapItem } from "@/entity/map/api/getAllMaps";
 import { AlertButton } from "@/feature/alert/ui/AlertButton";
 import { useUser } from "@/entity/user/hooks/useUser";
 

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useUser } from "@/entity/user/hooks/useUser";
-import { fetchAutocomplete, MapItem } from "@/entity/jari/api/autocomplete";
+import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
+import { MapItem } from "@/entity/map/api/getAllMaps";
 import {
   JariRegisterPayload,
   registerJari,
@@ -27,6 +28,7 @@ export const useJariRegisterForm = () => {
 
   const user = useUser();
   const navigate = useNavigate();
+  const { data: allMaps } = useAllMaps();
   const [mapData, setMapData] = useState<MapItem | null>(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,29 +42,28 @@ export const useJariRegisterForm = () => {
   });
 
   useEffect(() => {
-    const fetchMap = async () => {
-      if (!name) return;
-      try {
-        const res = await fetchAutocomplete(name);
-        const matched = res.find((m) => m.mapName === decodeURIComponent(name));
+    if (!name || !allMaps) return;
 
-        if (matched) {
-          setMapData(matched);
-          setForm((prev) => ({ ...prev, mapName: matched.mapName }));
-        } else {
-          setErrorMessage("존재하지 않는 맵입니다.");
-        }
-      } catch (e) {
-        if (e instanceof Error) {
-          setErrorMessage(e.message);
-        } else {
-          setErrorMessage("맵 정보를 불러오는 중 오류가 발생했습니다.");
-        }
+    try {
+      const matched = allMaps.find(
+        (m) => m.mapName === decodeURIComponent(name)
+      );
+
+      if (matched) {
+        setMapData(matched);
+        setForm((prev) => ({ ...prev, mapName: matched.mapName }));
+        setErrorMessage("");
+      } else {
+        setErrorMessage("존재하지 않는 맵입니다.");
       }
-    };
-
-    fetchMap();
-  }, [name]);
+    } catch (e) {
+      if (e instanceof Error) {
+        setErrorMessage(e.message);
+      } else {
+        setErrorMessage("맵 정보를 불러오는 중 오류가 발생했습니다.");
+      }
+    }
+  }, [name, allMaps]);
 
   const formatToWonStyle = (value: number | string): string => {
     let num = Number(value);
@@ -94,7 +95,7 @@ export const useJariRegisterForm = () => {
       serverColor: form.serverColor!,
       price: Number(form.price),
       tradeType: form.tradeType!,
-      mapId: mapData!.mapleLandMapListId,
+      mapId: mapData!.mapId,
     };
 
     try {
