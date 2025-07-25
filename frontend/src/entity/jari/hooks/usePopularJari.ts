@@ -6,5 +6,7 @@ export const usePopularJari = () => {
     queryKey: ["popularJari"],
     queryFn: getPopularJari,
     refetchInterval: 1000 * 60 * 9,
+    staleTime: 1000 * 60 * 9,
+    refetchOnWindowFocus: false,
   });
 };
