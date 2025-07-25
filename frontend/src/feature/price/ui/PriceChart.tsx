@@ -101,7 +101,7 @@ export const PriceChart = ({ data }: Props) => {
   };
 
   return (
-    <div className="w-full bg-neutral-800 p-6 rounded-xl shadow-md">
+    <div className="w-full bg-neutral-800 p-6 rounded-sm shadow-md">
       <h3 className="text-base font-semibold text-white mb-4">
         ⏱️ 시간별 평균 가격
       </h3>
