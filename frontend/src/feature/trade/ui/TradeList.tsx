@@ -3,7 +3,7 @@ import TradeCard from "./TradeCard";
 
 interface Props {
   items: JariItem[];
-  refetch: () => void;
+  refetch?: () => void;
   showEditButton?: boolean;
 }
 
