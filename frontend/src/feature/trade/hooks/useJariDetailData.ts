@@ -1,10 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
-import { fetchAutocomplete, MapItem } from "@/entity/jari/api/autocomplete";
+import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
+import { MapItem } from "@/entity/map/api/getAllMaps";
 import { DropItem } from "@/entity/jari/api/getMonsterInfo";
 import { DailyPriceStat } from "@/feature/price/model/type";
 import { API_BASE_URL } from "@/shared/config/api";
 
 export const useJariDetailData = (name: string | undefined) => {
+  const { data: allMaps } = useAllMaps();
   const [mapMeta, setMapMeta] = useState<MapItem | null>(null);
   const [dropItems, setDropItems] = useState<DropItem[]>([]);
   const [priceStats, setPriceStats] = useState<DailyPriceStat[]>([]);
@@ -41,7 +43,7 @@ export const useJariDetailData = (name: string | undefined) => {
   }, [name]);
 
   useEffect(() => {
-    if (!name) return;
+    if (!name || !allMaps) return;
 
     const fetchMapData = async () => {
       setLoadingMeta(true);
@@ -49,9 +51,8 @@ export const useJariDetailData = (name: string | undefined) => {
       setLoadingPriceStat(true);
 
       try {
-        const metaDataList = await fetchAutocomplete(name);
         const decodedName = decodeURIComponent(name).replace(/\s/g, "");
-        const matched = metaDataList.find(
+        const matched = allMaps.find(
           (m) => m.mapName.replace(/\s/g, "") === decodedName
         );
 
@@ -75,7 +76,7 @@ export const useJariDetailData = (name: string | undefined) => {
     };
 
     fetchMapData();
-  }, [name, loadLazyData]);
+  }, [name, allMaps, loadLazyData]);
 
   return {
     mapMeta,
