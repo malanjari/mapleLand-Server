@@ -12,7 +12,9 @@ export const useSearchSuggestions = () => {
 
   useEffect(() => {
     if (!keyword.trim()) {
-      setSuggestions([]);
+      if (suggestions.length > 0) {
+        setSuggestions([]);
+      }
       return;
     }
 

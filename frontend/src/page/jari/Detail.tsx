@@ -16,7 +16,6 @@ const DropItemSection = lazy(() => import("@/feature/jari/ui/DropItemSection"));
 const JariDetailPage = () => {
   const { name } = useParams();
 
-  // 커스텀 훅들 사용
   const {
     mapMeta,
     dropItems,
@@ -27,7 +26,7 @@ const JariDetailPage = () => {
   } = useJariDetailData(name);
 
   const { data: jari, refetch } = useJariList(name ?? "");
-
+  console.log(jari);
   const mapId = mapMeta?.mapId;
   const mapName = mapMeta?.mapName.split(":")[1] ?? "";
 
