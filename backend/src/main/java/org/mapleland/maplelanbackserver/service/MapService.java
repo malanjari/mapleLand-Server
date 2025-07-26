@@ -204,18 +204,12 @@ public class MapService {
     }
 
     public MapResponse searchMapsListKeyword(String keyword){
+//        List<DropItemResponse> dropItemResponses = monsterInfo(keyword);
 
-
-
-        List<DropItemResponse> dropItemResponses = monsterInfo(keyword);
         List<PriceStatDto> priceStatDtos = iqrPriceAvgLast6Hours(keyword);
 
-
-
-        return new MapResponse(dropItemResponses, priceStatDtos);
+        return new MapResponse(priceStatDtos);
     }
-
-
 
     public List<JariResponse> searchMapsByKeyword(String keyword) {
         PageRequest pageRequest = PageRequest.of(0, 100); // 첫 페이지, 100개
