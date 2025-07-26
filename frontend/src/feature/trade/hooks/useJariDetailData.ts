@@ -18,8 +18,11 @@ export const useJariDetailData = (name: string | undefined) => {
     if (!name) return;
 
     try {
+      // 가격 통계만 별도 API 호출
       const res = await fetch(
-        `${API_BASE_URL}/api/mapList?keyword=${encodeURIComponent(name)}`,
+        `${API_BASE_URL}/api/maps/price-stat?keyword=${encodeURIComponent(
+          name
+        )}`,
         {
           headers: {
             "ngrok-skip-browser-warning": "true",
@@ -27,16 +30,14 @@ export const useJariDetailData = (name: string | undefined) => {
         }
       );
 
-      if (!res.ok) throw new Error("맵 상세 데이터 요청 실패");
+      if (!res.ok) throw new Error("프라이스 통계 데이터 요청 실패");
 
       const data = await res.json();
 
-      const { dropItemResponse, priceStatDtoList } = data;
-
-      setDropItems(dropItemResponse ?? []);
-      setPriceStats(priceStatDtoList ?? []);
+      // API 응답이 배열로 직접 오므로 바로 사용
+      setPriceStats(data ?? []);
     } catch (error) {
-      console.error("레이지 데이터 로딩 실패:", error);
+      console.error("프라이스 통계 데이터 로딩 실패:", error);
     } finally {
       setLoadingPriceStat(false);
     }
@@ -62,7 +63,10 @@ export const useJariDetailData = (name: string | undefined) => {
         }
 
         setMapMeta(matched);
-        // 메타데이터 로드 완료 후 레이지 데이터 로드
+        // 드롭아이템은 allMaps에서 가져오기
+
+        setDropItems(matched.dropItems ?? []);
+        // 가격 통계만 lazy 로드
         await loadLazyData();
       } catch (error) {
         if (error instanceof Error) {
