@@ -14,6 +14,7 @@ import org.mapleland.maplelanbackserver.dto.request.JariIsCompletedRequest;
 import org.mapleland.maplelanbackserver.dto.update.PriceUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.update.ServerColorRequest;
 import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
+import org.mapleland.maplelanbackserver.service.MapCacheService;
 import org.mapleland.maplelanbackserver.service.MapService;
 import org.mapleland.maplelanbackserver.service.UserInformationService;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ public class MapController {
 
     private final MapService mapService;
     private final MapPriceStatCacheService service;
+    private final MapCacheService mapCacheService;
 
     //수정됨 POST /api/create/mapRegister -> POST /api/jari
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'USER')")
@@ -197,12 +199,18 @@ public class MapController {
     }
 
 
-    @Operation(summary = "모든 맵 이름을 조회하는 API")
+    @Operation(summary = "아이템 드랍 테이블 포함 모든 맵 정보를 조회하는 API")
     @GetMapping("/api/maps/all")
-    @Deprecated
     public ResponseEntity<?> findAllMaps() {
-        MapNameListResponse response = mapService.findAllMaps();
-
+        MapInfoListResponse response = mapCacheService.findAllMapsCache();
         return ResponseEntity.ok(response);
     }
+
+//    @Operation(summary = "모든 맵 이름을 조회하는 API")
+//    @GetMapping("/api/maps/all")
+//    @Deprecated
+//    public ResponseEntity<?> findAllMaps() {
+//        MapInfoListResponse response = mapService.findAllMaps();
+//        return ResponseEntity.ok(response);
+//    }
 }
