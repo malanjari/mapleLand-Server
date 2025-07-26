@@ -43,7 +43,7 @@ export const TradeBadges = ({
 
       {/* 코멘트 뱃지 */}
       <div className="flex relative group">
-        <span className="max-w-[70px] truncate bg-gray-300 text-xs text-black italic px-2 py-0.5 rounded-sm border border-zinc-500 shadow-sm">
+        <span className="max-w-[100px] truncate bg-gray-300 text-xs text-black italic px-2 py-0.5 rounded-sm border border-zinc-500 shadow-sm">
           {comment}
         </span>
 
