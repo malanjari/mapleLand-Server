@@ -23,7 +23,11 @@ export const UserProfileCard = ({ userInfo, isMyProfile, refetch }: Props) => {
     ? `https://cdn.discordapp.com/avatars/${userInfo.discordId}/${userInfo.image}.png`
     : "https://cdn.discordapp.com/embed/avatars/0.png";
 
-  const formattedDate = format(new Date(userInfo.createTime), "yyyy.MM.dd");
+  const koreaTime = new Date(
+    new Date(userInfo.createTime).getTime() +
+      (8 * 60 * 60 + 59 * 60 + 50) * 1000
+  );
+  const formattedDate = format(koreaTime, "yyyy.MM.dd");
   const auth = useUser();
   const user = auth?.user;
   const { banDialogOpen, setBanDialogOpen, handleBan, handleUnban } =
