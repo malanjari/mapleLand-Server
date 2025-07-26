@@ -46,16 +46,16 @@ const ProfilePage = () => {
   );
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 h-full">
+    <div className="grid grid-cols-1 lg:grid-cols-8 gap-4 h-full">
       {/* 왼쪽: 프로필 정보 */}
-      <div className="col-span-5 lg:col-span-1 lg:sticky top-24 self-start">
+      <div className="col-span-8 lg:col-span-2 lg:sticky top-24 self-start">
         <UserProfileCard
           userInfo={userInfo}
           isMyProfile={isMyProfile}
           refetch={refetch}
         />
       </div>
-      <div className="col-span-5 lg:col-span-4 gap-6">
+      <div className="col-span-8 lg:col-span-6">
         {isMyProfile && (
           <AlertMapSection isMyProfile={isMyProfile} alertMaps={alertMaps} />
         )}{" "}

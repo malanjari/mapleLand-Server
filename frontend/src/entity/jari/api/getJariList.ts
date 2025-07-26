@@ -17,9 +17,9 @@ export const getJariList = async (keyword: string) => {
       throw new Error(message || "자리 리스트 로딩 실패");
     }
 
-    const json = await res.json();
+    const data = await res.json();
 
-    return json;
+    return data;
   } catch (err) {
     console.error("jariList 에러:", err);
     throw err;

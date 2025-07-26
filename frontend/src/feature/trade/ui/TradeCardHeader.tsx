@@ -15,7 +15,7 @@ interface Props {
   createTime: string;
   discordId: string;
   isAdmin: boolean;
-  refetch: () => void;
+  refetch?: () => void;
   mapId: number;
 }
 
@@ -33,9 +33,8 @@ export const TradeCardHeader = ({
   mapId,
 }: Props) => {
   const koreaTime = new Date(
-    new Date(createTime).getTime() + 9 * 60 * 60 * 1000
+    new Date(createTime).getTime() + (8 * 60 * 60 + 59 * 60 + 50) * 1000
   );
-
   return (
     <div className="flex items-center justify-center gap-3 w-full">
       {/* 몬스터 이미지 */}

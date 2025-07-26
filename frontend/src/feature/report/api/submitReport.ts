@@ -14,7 +14,6 @@ export async function submitReport(payload: ReportPayload) {
       throw new Error("인증 토큰이 없습니다.");
     }
 
-    // JSON 데이터를 하나의 Blob으로 감싸 request라는 key로 FormData에 추가
     const requestPayload = {
       reason: payload.reason,
       userId: payload.userId,
@@ -41,14 +40,10 @@ export async function submitReport(payload: ReportPayload) {
       body: formData,
     });
 
-    const data = await res.json();
-
     if (!res.ok) {
-      const errorJson = await res.text();
-      throw errorJson;
+      const errorText = await res.text();
+      throw errorText;
     }
-
-    return data;
   } catch (error) {
     console.error("신고 요청 실패:", error);
     throw error;

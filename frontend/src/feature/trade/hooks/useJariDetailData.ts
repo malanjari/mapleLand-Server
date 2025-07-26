@@ -1,10 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
-import { fetchAutocomplete, MapItem } from "@/entity/jari/api/autocomplete";
+import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
+import { MapItem } from "@/entity/map/api/getAllMaps";
 import { DropItem } from "@/entity/jari/api/getMonsterInfo";
 import { DailyPriceStat } from "@/feature/price/model/type";
 import { API_BASE_URL } from "@/shared/config/api";
 
 export const useJariDetailData = (name: string | undefined) => {
+  const { data: allMaps } = useAllMaps();
   const [mapMeta, setMapMeta] = useState<MapItem | null>(null);
   const [dropItems, setDropItems] = useState<DropItem[]>([]);
   const [priceStats, setPriceStats] = useState<DailyPriceStat[]>([]);
@@ -27,9 +29,9 @@ export const useJariDetailData = (name: string | undefined) => {
 
       if (!res.ok) throw new Error("맵 상세 데이터 요청 실패");
 
-      const json = await res.json();
+      const data = await res.json();
 
-      const { dropItemResponse, priceStatDtoList } = json;
+      const { dropItemResponse, priceStatDtoList } = data;
 
       setDropItems(dropItemResponse ?? []);
       setPriceStats(priceStatDtoList ?? []);
@@ -41,7 +43,7 @@ export const useJariDetailData = (name: string | undefined) => {
   }, [name]);
 
   useEffect(() => {
-    if (!name) return;
+    if (!name || !allMaps) return;
 
     const fetchMapData = async () => {
       setLoadingMeta(true);
@@ -49,9 +51,8 @@ export const useJariDetailData = (name: string | undefined) => {
       setLoadingPriceStat(true);
 
       try {
-        const metaDataList = await fetchAutocomplete(name);
         const decodedName = decodeURIComponent(name).replace(/\s/g, "");
-        const matched = metaDataList.find(
+        const matched = allMaps.find(
           (m) => m.mapName.replace(/\s/g, "") === decodedName
         );
 
@@ -75,7 +76,7 @@ export const useJariDetailData = (name: string | undefined) => {
     };
 
     fetchMapData();
-  }, [name, loadLazyData]);
+  }, [name, allMaps, loadLazyData]);
 
   return {
     mapMeta,

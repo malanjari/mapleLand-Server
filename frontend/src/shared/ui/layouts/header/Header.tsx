@@ -6,7 +6,7 @@ import {
   HeaderTradeButton,
 } from "./index";
 import { useProfileMenu } from "@/feature/user/hooks/useProfileMenu";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { SearchInputWithSuggestions } from "@/shared/ui/search/SearchInputWithSuggestions";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
@@ -57,8 +57,8 @@ const Header = () => {
         {user ? (
           <>
             {user.user.role === "ROLE_ADMIN" && (
-              <Button onClick={() => navigate("/admin")} size="sm">
-                어드민
+              <Button asChild size="sm">
+                <Link to="/admin">어드민</Link>
               </Button>
             )}
             <HeaderTradeButton />
