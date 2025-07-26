@@ -12,7 +12,7 @@ public class PopularMapScheduler {
     private final MapPopularityService popularityService;
 
 
-    @Scheduled(fixedRate = 10 * 60 * 1000) // ms 단위 → 5분
+    @Scheduled(fixedRate = 10 * 60 * 1000)
     public void updatePopularMapsHourly() {
         popularityService.refreshPopularMaps();
     }
