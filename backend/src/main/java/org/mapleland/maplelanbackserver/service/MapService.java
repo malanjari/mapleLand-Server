@@ -38,6 +38,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -203,18 +204,12 @@ public class MapService {
     }
 
     public MapResponse searchMapsListKeyword(String keyword){
+//        List<DropItemResponse> dropItemResponses = monsterInfo(keyword);
 
-
-
-        List<DropItemResponse> dropItemResponses = monsterInfo(keyword);
         List<PriceStatDto> priceStatDtos = iqrPriceAvgLast6Hours(keyword);
 
-
-
-        return new MapResponse(dropItemResponses, priceStatDtos);
+        return new MapResponse(priceStatDtos);
     }
-
-
 
     public List<JariResponse> searchMapsByKeyword(String keyword) {
         PageRequest pageRequest = PageRequest.of(0, 100); // 첫 페이지, 100개
@@ -448,18 +443,46 @@ public class MapService {
 
     }
 
-    public MapNameListResponse findAllMaps() {
-        List<MapName> MapNameList = mapleMapRepository.findAll()
-                .stream()
-                .map(e -> new MapName(e.getMapleLandMapListId(),
+//    public MapNameListResponse findAllMaps() {
+//        List<MapInfo> mapInfoList = mapleMapRepository.findAll()
+//                .stream()
+//                .map(e -> new MapInfo(e.getMapleLandMapListId(),
+//                        e.getMapName(),
+//                        e.getMonsterImageUrl(),
+//                        e.getMiniMapImageUrl(),
+//                        e.getMiniMapImageLogoUrl(),
+//                        monsterInfo(e.getMapName())
+//                ))
+//                .toList();
+//
+//        return new MapNameListResponse(mapInfoList);
+//    }
+
+    public MapInfoListResponse findAllMaps() {
+        List<MapleMap> mapList = mapleMapRepository.findAll();
+
+        List<String> mapNames = mapList.stream().map(MapleMap::getMapName).toList();
+
+        List<MonsterDropItem> allDrops = monsterDropItemRepository.findByMapNameIn(mapNames);
+
+        Map<String, List<DropItemResponse>> dropItemsByMap = allDrops.stream().collect(Collectors.groupingBy(
+                MonsterDropItem::getMapName,
+                Collectors.mapping(d -> new DropItemResponse(d.getMapName(), d.getItemName(), d.getItemImageUrl(), d.getDropRate()),
+                        Collectors.toList())
+        ));
+
+        List<MapInfo> mapInfoList = mapList.stream()
+                .map(e -> new MapInfo(
+                        e.getMapleLandMapListId(),
                         e.getMapName(),
                         e.getMonsterImageUrl(),
                         e.getMiniMapImageUrl(),
-                        e.getMiniMapImageLogoUrl()
+                        e.getMiniMapImageLogoUrl(),
+                        dropItemsByMap.getOrDefault(e.getMapName(), List.of())
                 ))
                 .toList();
 
-        return new MapNameListResponse(MapNameList);
+        return new MapInfoListResponse(mapInfoList);
     }
 
     public void bumpJari(UserInformationService userInformationService, Integer jariId) {
