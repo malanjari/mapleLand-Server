@@ -1,11 +1,17 @@
 import { API_BASE_URL } from "@/shared/config/api";
-
+export interface DropItem {
+  mapName: string;
+  itemName: string;
+  itemImageUrl: string;
+  dropRate: number;
+}
 export interface MapItem {
   mapId: number;
   mapName: string;
   miniMapImageLogoUrl: string;
   monsterImageUrl: string;
   miniMapImageUrl: string;
+  dropItems: DropItem[];
 }
 
 export const getAllMaps = async (): Promise<MapItem[]> => {
@@ -23,9 +29,9 @@ export const getAllMaps = async (): Promise<MapItem[]> => {
       throw new Error("전체 맵 정보 불러오기 실패");
     }
 
-    const json = await res.json();
+    const data = await res.json();
 
-    return json.MapNameList;
+    return data.mapInfoList ?? [];
   } catch (err) {
     console.error("fetchAllMaps 에러:", err);
     throw err;
