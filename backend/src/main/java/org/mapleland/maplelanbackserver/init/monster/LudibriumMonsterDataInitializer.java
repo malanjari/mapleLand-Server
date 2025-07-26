@@ -181,50 +181,50 @@ public class LudibriumMonsterDataInitializer {
 
             monsterDropItemRepository.saveAll(List.of(
                     MonsterDropItem.builder()
-                            .mapName("루디브리엄성: 시간의길 <4>")
+                            .mapName("루디브리엄성:시간의길<4>")
                             .itemName("스태프 마력 주문서 10%")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/2043802/icon?resize=2")
                             .dropRate(0.004)
                             .build(),
                     MonsterDropItem.builder()
-                            .mapName("루디브리엄성: 시간의길 <4>")
+                            .mapName("루디브리엄성:시간의길<4>")
                             .itemName("두손 도끼 공격력 주문서 10%")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/2043802/icon?resize=2")
                             .dropRate(0.004)
                             .build(),
                     MonsterDropItem.builder()
-                            .mapName("루디브리엄성: 시간의길 <4>")
+                            .mapName("루디브리엄성:시간의길<4>")
                             .itemName("다크 슬레인")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1472021/icon?resize=2")
                             .dropRate(0.006)
                             .build(),
 
                     MonsterDropItem.builder()
-                            .mapName("루디브리엄성: 시간의길 <4>")
+                            .mapName("루디브리엄성:시간의길<4>")
                             .itemName("토비 표창")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/2070004/icon?resize=2")
                             .dropRate(0.007)
                             .build(),
                     MonsterDropItem.builder()
-                            .mapName("루디브리엄성: 시간의길 <4>")
+                            .mapName("루디브리엄성:시간의길<4>")
                             .itemName("엘릭서")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/2000004/icon?resize=2")
                             .dropRate(1)
                             .build(),
                     MonsterDropItem.builder()
-                            .mapName("루디브리엄성: 시간의길 <4>")
+                            .mapName("루디브리엄성:시간의길<4>")
                             .itemName("다크 칼라스")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1050049/icon?resize=2")
                             .dropRate(0.007)
                             .build(),
                     MonsterDropItem.builder()
-                            .mapName("루디브리엄성: 시간의길 <4>")
+                            .mapName("루디브리엄성:시간의길<4>")
                             .itemName("아이보리 숄더메일")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1041088/icon?resize=2")
                             .dropRate(0.007)
                             .build(),
                     MonsterDropItem.builder()
-                            .mapName("루디브리엄성: 시간의길 <4>")
+                            .mapName("루디브리엄성:시간의길<4>")
                             .itemName("골든 모울")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1422005/icon?resize=2")
                             .dropRate(0.006)
