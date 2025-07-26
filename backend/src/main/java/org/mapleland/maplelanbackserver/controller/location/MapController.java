@@ -67,7 +67,7 @@ public class MapController {
     }
 
     @Operation(summary = "목록 리스트 불러오는 api",
-            description = "IQR 평균 리스트 , MapList, 몬스터 Drop테이블 총 2개 묶어서 불러옴")
+            description = "IQR 평균 리스트 , MapList")
     @GetMapping("/api/mapList")
     public ResponseEntity<MapResponse> searchMapList(@RequestParam String keyword) {
         MapResponse mapResponse = mapService.searchMapsListKeyword(keyword);
