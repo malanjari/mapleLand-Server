@@ -29,9 +29,9 @@ export const useJariDetailData = (name: string | undefined) => {
 
       if (!res.ok) throw new Error("맵 상세 데이터 요청 실패");
 
-      const json = await res.json();
+      const data = await res.json();
 
-      const { dropItemResponse, priceStatDtoList } = json;
+      const { dropItemResponse, priceStatDtoList } = data;
 
       setDropItems(dropItemResponse ?? []);
       setPriceStats(priceStatDtoList ?? []);
