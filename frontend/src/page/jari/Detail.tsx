@@ -28,7 +28,7 @@ const JariDetailPage = () => {
 
   const { data: jari, refetch } = useJariList(name ?? "");
 
-  const mapId = mapMeta?.mapleLandMapListId;
+  const mapId = mapMeta?.mapId;
   const mapName = mapMeta?.mapName.split(":")[1] ?? "";
 
   const { isAlarmOn, toggleAlarm } = useAlertStatus(mapId, mapName);

@@ -27,13 +27,29 @@ interface Props {
 }
 
 export const PriceChart = ({ data }: Props) => {
-  const labels = data.map((d) =>
-    new Date(d.dateTime).toLocaleTimeString("ko-KR", {
+  const formatKoreanPrice = (value: number): string => {
+    if (value >= 1_0000_0000) {
+      const billion = Math.floor(value / 1_0000_0000);
+      const million = Math.floor((value % 1_0000_0000) / 1_0000);
+      if (million === 0) return `${billion}억 `;
+      return `${billion}억 ${million}만 `;
+    }
+
+    if (value >= 1_0000) {
+      return `${Math.floor(value / 1_0000)}만 `;
+    }
+
+    return `${value.toLocaleString()} `;
+  };
+  const labels = data.map((d) => {
+    const utc = new Date(d.dateTime);
+    const kst = new Date(utc.getTime() + 9 * 60 * 60 * 1000); // +9시간
+    return kst.toLocaleTimeString("ko-KR", {
       hour: "2-digit",
       minute: "2-digit",
       hour12: false,
-    })
-  );
+    });
+  });
 
   const prices = data.map((d) => d.price);
 
@@ -67,7 +83,7 @@ export const PriceChart = ({ data }: Props) => {
         bodyColor: "#d1d5db",
         callbacks: {
           label: (context: TooltipItem<"line">) =>
-            `${context.parsed.y.toLocaleString()} 메소`,
+            `${formatKoreanPrice(context.parsed.y)}`,
         },
       },
     },
@@ -89,7 +105,10 @@ export const PriceChart = ({ data }: Props) => {
           font: {
             size: 12,
           },
-          callback: (value: number | string) => `${value}메소`,
+          callback: (value: number | string) => {
+            if (typeof value !== "number") return value;
+            return formatKoreanPrice(value);
+          },
         },
         grid: {
           color: "#374151",
@@ -99,7 +118,7 @@ export const PriceChart = ({ data }: Props) => {
   };
 
   return (
-    <div className="w-full bg-neutral-800 p-6 rounded-xl shadow-md">
+    <div className="w-full bg-neutral-800 p-6 rounded-sm shadow-md">
       <h3 className="text-base font-semibold text-white mb-4">
         ⏱️ 시간별 평균 가격
       </h3>

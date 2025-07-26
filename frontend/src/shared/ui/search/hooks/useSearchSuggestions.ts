@@ -12,15 +12,21 @@ export const useSearchSuggestions = () => {
 
   useEffect(() => {
     if (!keyword.trim()) {
+      setSuggestions([]);
       return;
     }
 
     const delay = setTimeout(() => {
-      const filtered = allMaps.filter((map) =>
-        map.mapName.includes(keyword.trim())
-      );
+      const input = keyword.trim();
+      const inputChars = Array.from(input);
+
+      const filtered = allMaps.filter((map) => {
+        const name = map.mapName;
+        return inputChars.every((char) => name.includes(char));
+      });
+
       setSuggestions(filtered);
-    }, 100); // debounce
+    }, 100);
 
     return () => clearTimeout(delay);
   }, [keyword, allMaps]);

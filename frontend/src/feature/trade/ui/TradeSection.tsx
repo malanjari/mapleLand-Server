@@ -61,7 +61,7 @@ const TradeSection = ({
     <section className=" ">
       <div
         className={clsx(
-          "text-white text-sm font-semibold px-4 py-4 mb-4 rounded-xl shadow-lg transition",
+          "text-white text-sm font-semibold px-4 py-4 mb-4 rounded-sm shadow-lg transition",
           "flex flex-col gap-3",
           {
             "bg-gradient-to-r from-blue-600 to-blue-500": color === "blue",

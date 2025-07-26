@@ -56,6 +56,7 @@ public class SecurityConfiguration {
                 .cors(Customizer -> Customizer.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "swagger-ui.html").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/manager/**").hasAnyRole("MANAGER", "ADMIN")

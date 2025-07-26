@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.mapleland.maplelanbackserver.enumType.Region;
 import org.mapleland.maplelanbackserver.enumType.TradeType;
 
@@ -46,6 +47,10 @@ public class Jari {
     @CreationTimestamp
     @Column(columnDefinition = "DATETIME(0)")
     private LocalDateTime createTime; // 만든 날짜
+
+    @UpdateTimestamp
+    @Column(columnDefinition = "DATETIME(0)")
+    private LocalDateTime updateTime; // 수정 날짜
 
     @Column(length = 60)
     private String comment; // 유저 코멘트

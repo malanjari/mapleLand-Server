@@ -9,7 +9,7 @@ import clsx from "clsx";
 
 interface Props {
   item: JariItem;
-  refetch: () => void;
+  refetch?: () => void;
   showEditButton: boolean;
 }
 
@@ -40,7 +40,7 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
   return (
     <div
       className={clsx(
-        "bg-neutral-800 text-white rounded-md py-4 px-4 flex flex-col gap-3 items-start shadow transition duration-300",
+        "bg-neutral-800 text-white  py-4 px-4 flex flex-col gap-3 items-start shadow transition duration-300",
         {
           "opacity-40 grayscale": item.isCompleted,
         }
@@ -62,7 +62,7 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
 
       {/* 협의 옵션 및 코멘트 */}
       <div className="w-full flex border-b pb-1 border-neutral-700 justify-between">
-        <div className="flex items-center gap-2 w-full">
+        <div className="flex items-center gap-2 w-full pb-1">
           {isOwner && showEditButton && !item.isCompleted && (
             <EditJariPopover
               showEditBox={showEditBox}

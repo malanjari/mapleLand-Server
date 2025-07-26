@@ -1,5 +1,6 @@
 package org.mapleland.maplelanbackserver.controller.admincontroller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.mapleland.maplelanbackserver.dto.BanUserRequest;
 import org.mapleland.maplelanbackserver.dto.report.ReportedPostWithReasonsDto;
@@ -10,6 +11,9 @@ import org.mapleland.maplelanbackserver.service.ReportService;
 import org.mapleland.maplelanbackserver.service.UserService;
 import org.mapleland.maplelanbackserver.service.WebSocketService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +27,7 @@ public class AdminController {
 
     private final ReportService reportService;
     private final UserService userService;
+    private final MapService mapService;
 
     @GetMapping("/api/admin/users")
     public ResponseEntity<List<UserListResponse>> findAllUsersOrderByReportCount(@RequestParam(defaultValue = "0") int page) {
@@ -79,9 +84,17 @@ public class AdminController {
         return ResponseEntity.ok(reportedPostWithReasonsDtos);
     }
 
+    @Operation(summary = "사용자 검색")
     @GetMapping("/api/admin/users/search")
     public ResponseEntity<List<UserResponse>> findUsers(@RequestParam String globalName) {
         List<UserResponse> response = userService.findUsersByGlobalName(globalName);
+        return ResponseEntity.ok(response);
+    }
+
+    @Operation(summary = "모든 자리 조회")
+    @GetMapping("/api/admin/jari")
+    public ResponseEntity<JariListResponse> findAllJari(@PageableDefault(size = 10, sort = "createTime", direction = Sort.Direction.DESC) Pageable pageable) {
+        JariListResponse response = mapService.findAllJari(pageable);
         return ResponseEntity.ok(response);
     }
 
