@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.mapleland.maplelanbackserver.cache.MapPriceStatCacheService;
 import org.mapleland.maplelanbackserver.dto.Map.*;
 import org.mapleland.maplelanbackserver.dto.response.DropItemResponse;
+import org.mapleland.maplelanbackserver.dto.response.JariListResponse;
 import org.mapleland.maplelanbackserver.dto.response.PriceStatDto;
 import org.mapleland.maplelanbackserver.dto.request.JariUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.request.JariIsCompletedRequest;
@@ -199,13 +200,19 @@ public class MapController {
     }
 
 
-    @Operation(summary = "아이템 드랍 테이블 포함 모든 맵 정보를 조회하는 API")
+    @Operation(summary = "아이템 드랍 테이블 포함 모든 맵 정보를 조회")
     @GetMapping("/api/maps/all")
     public ResponseEntity<?> findAllMaps() {
         MapInfoListResponse response = mapCacheService.findAllMapsCache();
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "최근 거래 완료된 거래글 3개 조회")
+    @GetMapping("/api/jari/recent")
+    public ResponseEntity<List<JariResponse>> findRecentCompletedJari() {
+        List<JariResponse> response = mapService.findRecentCompletedJari();
+        return ResponseEntity.ok(response);
+    }
 //    @Operation(summary = "모든 맵 이름을 조회하는 API")
 //    @GetMapping("/api/maps/all")
 //    @Deprecated
