@@ -13,16 +13,13 @@ export const NoticeBanner = () => {
           <span className="font-semibold text-yellow-200">
             맘스터치 싸이버거
           </span>{" "}
-          받아가세요!
+          받아가자!
         </span>
       </div>
 
-      <a
-        href="/event/1"
-        className="text-yellow-400 hover:underline hover:text-yellow-300 ml-4 whitespace-nowrap"
-      >
-        자세히 보기 →
-      </a>
+      <span className="text-yellow-400 hover:underline hover:text-yellow-300 ml-4 whitespace-nowrap">
+        참여하기 →
+      </span>
     </Link>
   );
 };
