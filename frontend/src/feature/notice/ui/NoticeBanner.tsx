@@ -13,7 +13,7 @@ export const NoticeBanner = () => {
           <span className="font-semibold text-yellow-200">
             맘스터치 싸이버거
           </span>{" "}
-          받아가자!
+          받아 가세요!
         </span>
       </div>
 
