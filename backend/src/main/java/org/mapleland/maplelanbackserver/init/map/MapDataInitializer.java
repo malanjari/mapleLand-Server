@@ -1,6 +1,7 @@
 package org.mapleland.maplelanbackserver.init.map;
 
 import lombok.RequiredArgsConstructor;
+import org.mapleland.maplelanbackserver.enumType.Region;
 import org.mapleland.maplelanbackserver.repository.MapleMapRepository;
 import org.mapleland.maplelanbackserver.service.MapPopularityService;
 import org.springframework.boot.CommandLineRunner;
@@ -17,16 +18,23 @@ public class MapDataInitializer implements CommandLineRunner {
     private final LeafreMapInitializer leafreMapInitializer;
     private final MapleMapRepository mapleMapRepository;
     private final MapPopularityService popularityService;
+    private final MuLungGardenMapInitializer muLungGardenMapInitializer;
 
     @Override
     public void run(String... args) throws Exception {
 
-        if(mapleMapRepository.count() == 0){
+        if(!mapleMapRepository.existsByRegion(Region.MuLung)) {
+            muLungGardenMapInitializer.initMuLungGarden();
+        }
 
+        if(mapleMapRepository.count() == 0){
+            muLungGardenMapInitializer.initMuLungGarden();
            ellanasMapInitializer.initEllanas();
            ludibriumMapInitializer.initLudibrium();
            victoriaMapInitializer.VictoriaInit();
            leafreMapInitializer.initLeafre();
+
+
 
         }
     }

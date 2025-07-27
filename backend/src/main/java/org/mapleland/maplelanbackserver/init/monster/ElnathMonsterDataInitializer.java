@@ -299,5 +299,235 @@ public class ElnathMonsterDataInitializer {
                         .dropRate(0.01)
                         .build()));
 
+
+        monsterDropItemRepository.saveAll(List.of(
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역1")
+                        .itemName("일비 표창")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2070006/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역1")
+                        .itemName("청갑충")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472028/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역1")
+                        .itemName("청운검")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1402004/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역1")
+                        .itemName("흑갑충")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472029/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역1")
+                        .itemName("귀 장식 지력 주문서 10%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2040302/icon?resize=2")
+                        .dropRate(0.002)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역1")
+                        .itemName("다크로린")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082100/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역1")
+                        .itemName("아대 공격력 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역1")
+                        .itemName("완드 마력 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
+                        .dropRate(0.006)
+                        .build()));
+
+        monsterDropItemRepository.saveAll(List.of(
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역2")
+                        .itemName("일비 표창")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2070006/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역2")
+                        .itemName("청갑충")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472028/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역2")
+                        .itemName("청운검")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1402004/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역2")
+                        .itemName("흑갑충")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472029/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역2")
+                        .itemName("귀 장식 지력 주문서 10%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2040302/icon?resize=2")
+                        .dropRate(0.002)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역2")
+                        .itemName("다크로린")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082100/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역2")
+                        .itemName("아대 공격력 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역2")
+                        .itemName("완드 마력 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
+                        .dropRate(0.006)
+                        .build()));
+
+        monsterDropItemRepository.saveAll(List.of(
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역3")
+                        .itemName("일비 표창")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2070006/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역3")
+                        .itemName("청갑충")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472028/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역3")
+                        .itemName("청운검")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1402004/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역3")
+                        .itemName("흑갑충")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472029/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역3")
+                        .itemName("귀 장식 지력 주문서 10%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2040302/icon?resize=2")
+                        .dropRate(0.002)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역3")
+                        .itemName("다크로린")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082100/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역3")
+                        .itemName("아대 공격력 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역3")
+                        .itemName("완드 마력 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
+                        .dropRate(0.006)
+                        .build()));
+
+        monsterDropItemRepository.saveAll(List.of(
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역4")
+                        .itemName("일비 표창")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2070006/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역4")
+                        .itemName("청갑충")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472028/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역4")
+                        .itemName("청운검")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1402004/icon?resize=2")
+                        .dropRate(0.007)
+                        .build(),
+
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역4")
+                        .itemName("흑갑충")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1472029/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역4")
+                        .itemName("귀 장식 지력 주문서 10%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2040302/icon?resize=2")
+                        .dropRate(0.002)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역4")
+                        .itemName("다크로린")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/1082100/icon?resize=2")
+                        .dropRate(0.008)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역4")
+                        .itemName("아대 공격력 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
+                        .dropRate(0.006)
+                        .build(),
+                MonsterDropItem.builder()
+                        .mapName("폐광: 늑대의영역4")
+                        .itemName("완드 마력 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2044701/icon?resize=2")
+                        .dropRate(0.006)
+                        .build()));
+
+
     }
 }

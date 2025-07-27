@@ -23,6 +23,7 @@ public interface MapleMapRepository extends JpaRepository<MapleMap, Integer> {
 
     List<MapleMap> findByRegion(Region region);
 
-    @Override
     Optional<MapleMap> findById(Integer integer);
+
+    boolean existsByRegion(Region region);
 }

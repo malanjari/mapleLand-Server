@@ -6,7 +6,7 @@ public class AdminCheckFilter {
 
 
 
-        if (discordId.equals("8212134053600296981") ||
+        if (discordId.equals("821213405360029698") ||
             discordId.equals("1147804753691148318") ||
             discordId.equals("272022728955920384") ||
             discordId.equals("423159863141728256") ||

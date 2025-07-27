@@ -14,7 +14,12 @@ public enum Elnath {
     CLOUD_PARK_4("스카이로드:구름 공원4"),
     CLOUD_PARK_3("스카이로드:구름 공원3"),
     CLOUD_PARK_2("스카이로드:구름 공원2"),
-    CLOUD_PARK_1("스카이로드:구름 공원1");
+    CLOUD_PARK_1("스카이로드:구름 공원1"),
+    Territory_of_the_Wolf_1("폐광: 늑대의영역1"),
+    Territory_of_the_Wolf_2("폐광: 늑대의영역2"),
+    Territory_of_the_Wolf_3("폐광: 늑대의영역3"),
+    Territory_of_the_Wolf_4("폐광: 늑대의영역4");
+
 
 
 

@@ -91,9 +91,9 @@ public class LudibriumMonsterDataInitializer {
 
                     MonsterDropItem.builder()
                             .mapName("루디브리엄성:시간의길<2>")
-                            .itemName("두손 도끼 공격력 주문서 60%")
+                            .itemName("투구 민첩 주문서 60%")
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/2044201/icon?resize=2")
-                            .dropRate(0.004)
+                            .dropRate(0.006)
                             .build(),
                     MonsterDropItem.builder()
                             .mapName("루디브리엄성:시간의길<2>")
@@ -681,7 +681,292 @@ public class LudibriumMonsterDataInitializer {
                             .itemImageUrl("https://maplestory.io/api/gms/62/item/1402015/icon?resize=2")
                             .dropRate(0.008)
                             .build()
+            ));
+
+            monsterDropItemRepository.saveAll(List.of(
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<1>")
+                            .itemName("에스터 실드")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1092029/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<1>")
+                            .itemName("장갑 공격력 주문서 60%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2040804/icon?resize=2")
+                            .dropRate(0.004)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<1>")
+                            .itemName("장팔사모")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1432004/icon?resize=2")
+                            .dropRate(0.005)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<1>")
+                            .itemName("벅")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1312008/icon?resize=2")
+                            .dropRate(0.005)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<1>")
+                            .itemName("쟈드")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1402007/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<1>")
+                            .itemName("다크 클리브")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1082074/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<1>")
+                            .itemName("그린 매티")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1002143/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<1>")
+                            .itemName("레드 스타라이트")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1050036/icon?resize=2")
+                            .dropRate(0.01)
+                            .build()
+            ));
+
+
+            monsterDropItemRepository.saveAll(List.of(
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<2>")
+                            .itemName("미스틱 실드")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1092021/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<2>")
+                            .itemName("완드 마력 주문서 10%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2043702/icon?resize=2")
+                            .dropRate(0.004)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<2>")
+                            .itemName("다크 후르츠")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1051006/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<2>")
+                            .itemName("투구 민첩 주문서 60%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2044201/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<2>")
+                            .itemName("블루 필퍼")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1002182/icon?resize=2")
+                            .dropRate(0.007)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<2>")
+                            .itemName("자진일갑주")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1040085/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<2>")
+                            .itemName("화이트 길티언")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1002155/icon?resize=2")
+                            .dropRate(0.007)
+                            .build(),
+                    MonsterDropItem.builder()
+                            .mapName("루디브리엄성: 잃어버린시간<2>")
+                            .itemName("백진일갑주 바지")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1060074/icon?resize=2")
+                            .dropRate(0.007)
+                            .build()
 
             ));
+
+
+            monsterDropItemRepository.saveAll(List.of(
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 입구")
+                            .itemName("투구 민첩 주문서 60%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2040029/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 입구")
+                            .itemName("신발 점프력 주문서 10%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2040705/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 입구")
+                            .itemName("노란색 우산")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1302016/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 입구")
+                            .itemName("목비 표창")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2070002/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 입구")
+                            .itemName("블루문")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1032011/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 입구")
+                            .itemName("골드 브레이스")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1082072/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 입구")
+                            .itemName("미스릴 티거")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1072112/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 입구")
+                            .itemName("파란색 모험가의 망토")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1102001/icon?resize=2")
+                            .dropRate(0.006)
+                            .build()
+            ));
+
+            monsterDropItemRepository.saveAll(List.of(
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 기슭")
+                            .itemName("투구 민첩 주문서 60%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2040029/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 기슭")
+                            .itemName("신발 점프력 주문서 10%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2040705/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 기슭")
+                            .itemName("노란색 우산")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1302016/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 기슭")
+                            .itemName("장갑 공격력 주문서 60%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2040029/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 기슭")
+                            .itemName("석궁 공격력 주문서 10%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2040705/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 기슭")
+                            .itemName("너클메이스")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1322017/icon?resize=2")
+                            .dropRate(0.005)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 기슭")
+                            .itemName("미스릴 티거")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1072112/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 기슭")
+                            .itemName("파란색 모험가의 망토")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1102001/icon?resize=2")
+                            .dropRate(0.006)
+                            .build()
+            ));
+
+            monsterDropItemRepository.saveAll(List.of(
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 골짜기")
+                            .itemName("망토 행운 주문서 10%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2041023/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 골짜기")
+                            .itemName("토비 표창")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2070004/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 골짜기")
+                            .itemName("두손도끼 공격력 주문서 60%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2044201/icon?resize=2")
+                            .dropRate(0.005)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 골짜기")
+                            .itemName("레드 아나카룬")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1051045/icon?resize=2")
+                            .dropRate(0.006)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 골짜기")
+                            .itemName("하이랜더")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1402006/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 골짜기")
+                            .itemName("타이탄")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1422007/icon?resize=2")
+                            .dropRate(0.01)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 골짜기")
+                            .itemName("청일 바지")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1060084/icon?resize=2")
+                            .dropRate(0.008)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("루더스호수: 까막산 골짜기")
+                            .itemName("청일")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1040095/icon?resize=2")
+                            .dropRate(0.008)
+                            .build()
+            ));
+
+
+
+
+
         }
 }

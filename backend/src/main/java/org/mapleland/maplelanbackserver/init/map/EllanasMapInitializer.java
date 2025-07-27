@@ -137,6 +137,48 @@ public class EllanasMapInitializer{
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/211000000/icon?resize=2")
                     .build());
 
+            mapleMapRepository.save(MapleMap
+                    .builder().
+                    mapName("폐광: 늑대의영역1")
+                    .region(Region.Elnath)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/9500134/icon?resize=2")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/211040800.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/211040300/icon?resize=2")
+                    .subRegion(ElnathRegion.ABANDONED_MINE.getDisplayName())
+                    .build());
+
+            mapleMapRepository.save(MapleMap
+                    .builder().
+                    mapName("폐광: 늑대의영역2")
+                    .region(Region.Elnath)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/9500134/icon?resize=2")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/211040800.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/211040300/icon?resize=2")
+                    .subRegion(ElnathRegion.ABANDONED_MINE.getDisplayName())
+                    .build());
+
+            mapleMapRepository.save(MapleMap
+                    .builder().
+                    mapName("폐광: 늑대의영역3")
+                    .region(Region.Elnath)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/9500134/icon?resize=2")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/211040800.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/211040300/icon?resize=2")
+                    .subRegion(ElnathRegion.ABANDONED_MINE.getDisplayName())
+                    .build());
+
+            mapleMapRepository.save(MapleMap
+                    .builder().
+                    mapName("폐광: 늑대의영역4")
+                    .region(Region.Elnath)
+                    .monsterImageUrl("https://maplestory.io/api/gms/62/mob/9500134/icon?resize=2")
+                    .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/211040800.png")
+                    .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/211040300/icon?resize=2")
+                    .subRegion(ElnathRegion.EL_NATH_MOUNTAINS.getDisplayName())
+                    .build());
+
+
+
             // ----------아쿠아리움 ------------------
 
             mapleMapRepository.save(MapleMap
@@ -199,6 +241,8 @@ public class EllanasMapInitializer{
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/230040400/icon?resize=2")
                     .subRegion(ElnathRegion.Aquarium.getDisplayName())
                     .build());
+
+
 
 
 

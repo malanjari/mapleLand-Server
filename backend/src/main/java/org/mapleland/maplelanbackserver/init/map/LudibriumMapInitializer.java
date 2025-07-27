@@ -141,6 +141,58 @@ public class LudibriumMapInitializer {
                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                     .build());
 
-        }
+
+             mapleMapRepository.save(MapleMap
+                     .builder().
+                     mapName("루디브리엄성: 잃어버린시간<1>")
+                     .region(Region.LudusLake)
+                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/4230114/icon?resize=2")
+                     .subRegion(LudibriumRegion.LUDIBRIUM_CASTLE.getDisplayName())
+                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/220040000.png")
+                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
+                     .build());
+
+             mapleMapRepository.save(MapleMap
+                     .builder().
+                     mapName("루디브리엄성: 잃어버린시간<2>")
+                     .region(Region.LudusLake)
+                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/4230115/icon?resize=2")
+                     .subRegion(LudibriumRegion.LUDIBRIUM_CASTLE.getDisplayName())
+                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/220050200.png")
+                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
+                     .build());
+
+             mapleMapRepository.save(MapleMap
+                     .builder().
+                     mapName("루더스호수: 까막산 입구")
+                     .region(Region.LudusLake)
+                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/4230300/icon?resize=2")
+                     .subRegion(LudibriumRegion.Ludus_Lake.getDisplayName())
+                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/222010000.png")
+                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/222010001/icon?resize=2")
+                     .build());
+
+             mapleMapRepository.save(MapleMap
+                     .builder().
+                     mapName("루더스호수: 까막산 기슭")
+                     .region(Region.LudusLake)
+                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/5100003/icon?resize=2")
+                     .subRegion(LudibriumRegion.Ludus_Lake.getDisplayName())
+                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/222010001.png")
+                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/222010001/icon?resize=2")
+                     .build());
+
+             mapleMapRepository.save(MapleMap
+                     .builder().
+                     mapName("루더스호수: 까막산 골짜기")
+                     .region(Region.LudusLake)
+                     .monsterImageUrl("https://maplestory.io/api/gms/62/mob/5100004/icon?resize=2")
+                     .subRegion(LudibriumRegion.Ludus_Lake.getDisplayName())
+                     .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/222010201.png")
+                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/222010001/icon?resize=2")
+                     .build());
+
+
+         }
     }
 
