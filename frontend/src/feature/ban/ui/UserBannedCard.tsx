@@ -31,15 +31,27 @@ const BannedUserCard = ({ user }: Props) => {
       </p>
       <p className="text-sm text-red-300">
         밴 만료일:{" "}
-        {format(new Date(user.bannedHours), "yyyy.MM.dd a h:mm", {
-          locale: ko,
-        })}
+        {format(
+          new Date(
+            new Date(user.bannedHours).getTime() +
+              (8 * 60 * 60 + 59 * 60 + 50) * 1000
+          ),
+          "yyyy.MM.dd a h:mm",
+          { locale: ko }
+        )}
       </p>
 
       {/* ✅ 가입일 맨 아래 */}
       <p className="text-sm text-neutral-500 mt-3">
         가입일:{" "}
-        {format(new Date(user.createTime), "yyyy.MM.dd a h:mm", { locale: ko })}
+        {format(
+          new Date(
+            new Date(user.createTime).getTime() +
+              (8 * 60 * 60 + 59 * 60 + 50) * 1000
+          ),
+          "yyyy.MM.dd a h:mm",
+          { locale: ko }
+        )}
       </p>
 
       <div className="flex justify-end mt-2">

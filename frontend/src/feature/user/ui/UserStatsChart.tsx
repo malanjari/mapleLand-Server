@@ -53,7 +53,7 @@ export const SignupChart = ({ year, month }: SignupChartProps) => {
       }
     };
     load();
-  }, [year, month]); // ✅ props 의존성 설정
+  }, [year, month]);
 
   const labels = data.map((d) =>
     new Date(d.date).toLocaleDateString("ko-KR", {
