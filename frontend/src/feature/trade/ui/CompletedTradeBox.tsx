@@ -1,32 +1,49 @@
+import { useRecentCompletedTrades } from "@/entity/trade/hooks/useRecentCompletedTrades";
 import { motion, AnimatePresence } from "framer-motion";
-
-import { useLatestCompletedTrade } from "../hooks/useCompletedTrades";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export const CompletedTradeBox = () => {
-  const trade = useLatestCompletedTrade();
+  const { data: trades = [] } = useRecentCompletedTrades();
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    if (trades.length === 0) return;
+
+    const timer = setInterval(() => {
+      setIndex((prev) => (prev + 1) % trades.length);
+    }, 5000); // 5초마다 전환
+
+    return () => clearInterval(timer);
+  }, [trades]);
+
+  const trade = trades[index];
+  if (!trade) return null;
 
   return (
-    <div className="">
+    <div className="relative h-[60px] overflow-hidden">
       <AnimatePresence mode="wait">
-        {trade && (
-          <motion.div
-            key={trade.mapName}
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.3 }}
+        <motion.div
+          key={trade.userMapId}
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          transition={{ duration: 0.4 }}
+          className="absolute w-full"
+        >
+          <Link
+            to={`/jari/${encodeURIComponent(trade.mapName)}`}
+            className="self-start bg-gradient-to-r from-neutral-700 to-neutral-800 border border-green-500 text-green-300 px-4 py-3 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 w-full cursor-pointer hover:from-neutral-600 hover:to-neutral-700 transition-colors"
           >
-            <div className="self-start bg-gradient-to-r from-neutral-700 to-neutral-800 border border-green-500 text-green-300 px-4 py-3 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 w-full">
-              <span className="text-lg">✅</span>
-              <span className="leading-snug">
-                [{trade.mapName}] — {trade.price.toLocaleString()} 메소{" "}
-                <span className="text-green-400 text-sm ml-1">
-                  {trade.tradeType === "SELL" ? "판매 완료" : "구매 완료"}
-                </span>
+            <span className="text-lg">✅</span>
+            <span className="leading-snug truncate">
+              [{trade.mapName}] — {trade.price.toLocaleString()} 메소{" "}
+              <span className="text-green-400 text-sm ml-1">
+                {trade.tradeType === "SELL" ? "판매 완료" : "구매 완료"}
               </span>
-            </div>
-          </motion.div>
-        )}
+            </span>
+          </Link>
+        </motion.div>
       </AnimatePresence>
     </div>
   );
