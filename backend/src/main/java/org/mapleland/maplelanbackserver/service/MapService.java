@@ -517,7 +517,7 @@ public class MapService {
     }
 
     public List<JariResponse> findRecentCompletedJari() {
-        return jariRepository.findRecentCompletedJari(PageRequest.of(0, 3))
+        return jariRepository.findRecentCompletedJari(PageRequest.of(0, 10))
                 .stream().map(JariResponse::from).toList();
     }
 }
