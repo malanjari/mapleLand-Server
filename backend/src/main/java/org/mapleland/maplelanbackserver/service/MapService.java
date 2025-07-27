@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapleland.maplelanbackserver.dto.Map.*;
+import org.mapleland.maplelanbackserver.dto.jari.JariCompletedEvent;
 import org.mapleland.maplelanbackserver.dto.response.DropItemResponse;
 import org.mapleland.maplelanbackserver.dto.request.JariUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.request.JariIsCompletedRequest;
@@ -55,6 +56,7 @@ public class MapService {
     private final MapInterRestRepository interestRepository;
     private final UtilMethod utilMethod;
     private final WebSocketService webSocketService;
+    private final JariSseBroadCaster broadCaster;
 
     String message;
     @Value("${frontend.redirect-url}")
@@ -442,6 +444,7 @@ public class MapService {
         jariRepository.save(jari);
         userRepository.save(user);
 
+        broadCaster.broadcast(JariCompletedEvent.from(jari, user.getGlobalName()));
     }
 
 //    public MapNameListResponse findAllMaps() {
