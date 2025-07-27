@@ -79,8 +79,6 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
               handleDelete={handleDelete}
               handleUpdate={handleUpdate}
               handleBump={handleBump}
-              tradeType={item.tradeType}
-              mapName={item.mapName}
             />
           )}
           <div className="flex-1 flex justify-between items-center">
