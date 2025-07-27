@@ -6,6 +6,7 @@ import { updateCompletionStatus } from "@/entity/jari/api/updateCompletionStatus
 import { JariItem } from "@/entity/jari/model/type";
 import { ServerColor } from "../ui/TradeCard";
 import { bumpJari } from "@/entity/jari/api/bumpJari";
+import { useRecentTradeStore } from "@/entity/trade/store/useRecentTradeStore";
 
 export const useTradeCard = (item: JariItem, refetch?: () => void) => {
   const editBoxRef = useRef<HTMLFormElement>(null);
@@ -18,6 +19,8 @@ export const useTradeCard = (item: JariItem, refetch?: () => void) => {
   const [editNegotiationOption, setEditNegotiationOption] = useState(
     item.negotiationOption
   );
+
+  const { setRecentTrade } = useRecentTradeStore(); // ✅ 전역 상태 setter
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -97,10 +100,19 @@ export const useTradeCard = (item: JariItem, refetch?: () => void) => {
     if (!confirmed) return;
     try {
       await updateCompletionStatus(item.userMapId, true);
+
+      // ✅ 거래 완료 성공 후 상태 업데이트
+      setRecentTrade({
+        mapName: item.mapName,
+        price: item.price,
+        tradeType: item.tradeType,
+      });
+
       toast({
         variant: "success",
         title: "거래 완료 처리가 성공적으로 되었습니다.",
       });
+
       refetch?.();
       setShowEditBox(false);
     } catch (err) {

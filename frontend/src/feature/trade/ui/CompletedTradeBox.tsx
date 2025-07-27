@@ -4,7 +4,7 @@ import { useLatestCompletedTrade } from "../hooks/useCompletedTrades";
 
 export const CompletedTradeBox = () => {
   const trade = useLatestCompletedTrade();
-  console.log(trade);
+
   return (
     <div className="">
       <AnimatePresence mode="wait">
