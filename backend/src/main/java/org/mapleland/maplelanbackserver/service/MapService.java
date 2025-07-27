@@ -18,6 +18,7 @@ import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
 import org.mapleland.maplelanbackserver.exception.coflict.ConflictException;
 import org.mapleland.maplelanbackserver.exception.coflict.CoolDownConflictException;
 import org.mapleland.maplelanbackserver.exception.notfound.NotFoundException;
+import org.mapleland.maplelanbackserver.exception.notfound.jari.JariNotFoundException;
 import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapException;
 import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundMapTicketException;
 import org.mapleland.maplelanbackserver.exception.notfound.jari.NotFoundUserException;
@@ -389,42 +390,35 @@ public class MapService {
         jariRepository.save(byUserId);
     }
 
-    public void mapDelete(int mapId,String token) {
+    public void mapDelete(int mapId, String token) {
+        Jari jari = jariRepository.findByUserMapId(mapId);
+        if (jari == null) {
+            throw new JariNotFoundException();
+        }
 
-
-        Jari byUserId = jariRepository.findByUserMapId(mapId);
         int userId = JwtUtil.getUserId(token);
 
-        if(byUserId.getUser().getUserId() == userId || JwtUtil.getRole(token).equals("ROLE_ADMIN")) {
+        if (jari.getUser().getUserId() == userId || JwtUtil.getRole(token).equals("ROLE_ADMIN")) {
             User user = userRepository.findByUserId(userId).orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없음"));
 
-            String role = JwtUtil.getRole(token);
-
-            if(role.equals("ROLE_USER")) {
-
-                Jari jari = jariRepository.findByUser_UserIdAndUserMapId(userId, mapId).
-                        orElseThrow(() -> new NotFoundException("알 수 없는 에러가 발생 하였습니다."));
-
-                TradeType tradeType = jari.getTradeType();
-
-                switch (tradeType) {
-                    case BUY -> user.setBuyTicket(true);
-                    case SELL -> user.setSellTicket(true);
-                }
+            TradeType tradeType = jari.getTradeType();
+            switch (tradeType) {
+                case BUY -> user.setBuyTicket(true);
+                case SELL -> user.setSellTicket(true);
             }
+
             userRepository.save(user);
-            jariRepository.delete(byUserId);
-        }
-        else throw new UserMismatchException("등록된 게시글과 다른 사용자 입니다.");
+            jariRepository.delete(jari);
+        } else throw new UserMismatchException("등록된 게시글과 다른 사용자 입니다.");
     }
 
-    public void updateIsCompleted(JariIsCompletedRequest dto , String token) {
+    public void updateIsCompleted(JariIsCompletedRequest dto, String token) {
         int userId = JwtUtil.getUserId(token);
         Jari jari = jariRepository.findByUserMapId(dto.mapId());
-        if(jari == null) throw new NotFoundMapException("게시글을 찾을 수 없습니다.");
+        if (jari == null) throw new NotFoundMapException("게시글을 찾을 수 없습니다.");
 
 
-        if(jari.getUser().getUserId() != userId) throw new UserMismatchException("사용자가 다릅니다.");
+        if (jari.getUser().getUserId() != userId) throw new UserMismatchException("사용자가 다릅니다.");
 
         User user = userRepository.findByUserId(userId).
                 orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
