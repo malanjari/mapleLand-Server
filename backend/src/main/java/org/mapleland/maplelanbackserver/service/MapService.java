@@ -76,13 +76,14 @@ public class MapService {
         MapleMap mapleMap = getFirstMatchedMap(dto.getMapId()).
                 orElseThrow(() -> new NotFoundMapException("해당 맵을 찾을 수 없습니다,"));
 
-        jariRepository.findByUser_UserIdAndMapNameAndIsCompletedFalse(userId,dto.getMapName())
-                .ifPresent(j->{
-                    throw new
-                            ConflictException
-                            ("같은 맵에 삽니다/팝니다를 동시에 등록할 수 없습니다. \n 해당 맵에 거래 완료 버튼을 눌러주세요");
-                });
-
+        if(!user.getRole().equals("ROLE_ADMIN")) {
+            jariRepository.findByUser_UserIdAndMapNameAndIsCompletedFalse(userId,dto.getMapName())
+                    .ifPresent(j->{
+                        throw new
+                                ConflictException
+                                ("같은 맵에 삽니다/팝니다를 동시에 등록할 수 없습니다. \n 해당 맵에 거래 완료 버튼을 눌러주세요");
+                    });
+        }
 
         if (user.getRole().equals("ROLE_USER")) {
 
