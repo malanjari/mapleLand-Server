@@ -38,9 +38,7 @@ export const CompletedTradeBox = () => {
             <span className="text-lg">✅</span>
             <span className="leading-snug truncate">
               [{trade.mapName}] — {trade.price.toLocaleString()} 메소{" "}
-              <span className="text-green-400 text-sm ml-1">
-                {trade.tradeType === "SELL" ? "판매 완료" : "구매 완료"}
-              </span>
+              <span className="text-green-400 text-sm ml-1">거래완료</span>
             </span>
           </Link>
         </motion.div>
