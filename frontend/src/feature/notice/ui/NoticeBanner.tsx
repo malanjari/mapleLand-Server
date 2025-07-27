@@ -3,21 +3,26 @@ import { Link } from "react-router-dom";
 export const NoticeBanner = () => {
   return (
     <Link
-      to="/notice"
-      className="block w-full bg-gradient-to-r from-neutral-700 to-neutral-800 border border-neutral-600 text-white text-sm p-4 rounded-lg shadow-md hover:brightness-110 transition"
+      to="/event"
+      className="flex justify-between items-center bg-neutral-800 border border-yellow-600 text-yellow-300 text-sm rounded-lg px-4 py-3 shadow-sm"
     >
-      <div className="flex items-center justify-between">
-        <span className="truncate">
-          📢{" "}
-          <span className="font-semibold text-yellow-300">
-            사이트 이용 안내
-          </span>
-          가 있습니다.
-        </span>
-        <span className="text-xs text-neutral-300 font-semibold">
-          자세히 보기 →
+      <div className="flex items-center gap-2">
+        <span className="text-lg">🎉</span>
+        <span>
+          [이벤트] 거래하고{" "}
+          <span className="font-semibold text-yellow-200">
+            맘스터치 싸이버거
+          </span>{" "}
+          받아가세요!
         </span>
       </div>
+
+      <a
+        href="/event/1"
+        className="text-yellow-400 hover:underline hover:text-yellow-300 ml-4 whitespace-nowrap"
+      >
+        자세히 보기 →
+      </a>
     </Link>
   );
 };
