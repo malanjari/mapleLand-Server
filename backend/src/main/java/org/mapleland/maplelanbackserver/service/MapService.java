@@ -232,6 +232,7 @@ public class MapService {
                             e.getNegotiationOption(),
                             e.getArea(),
                             e.getCreateTime(),
+                            e.getUpdateTime(),
                             e.getComment(),
                             e.getMonsterImageUrl(),
                             user.getGlobalName(),
@@ -279,6 +280,7 @@ public class MapService {
                             e.getNegotiationOption(),
                             e.getArea(),
                             e.getCreateTime(),
+                            e.getUpdateTime(),
                             e.getComment(),
                             e.getMonsterImageUrl(),
                             user.getGlobalName(),
@@ -512,5 +514,10 @@ public class MapService {
     public JariListResponse findAllJari(Pageable pageable) {
         Page<JariResponse> jariResponsePage = jariRepository.findAll(pageable).map(JariResponse::from);
         return JariListResponse.from(jariResponsePage);
+    }
+
+    public List<JariResponse> findRecentCompletedJari() {
+        return jariRepository.findRecentCompletedJari(PageRequest.of(0, 3))
+                .stream().map(JariResponse::from).toList();
     }
 }

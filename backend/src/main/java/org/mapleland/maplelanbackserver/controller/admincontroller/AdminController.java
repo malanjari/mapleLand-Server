@@ -3,13 +3,11 @@ package org.mapleland.maplelanbackserver.controller.admincontroller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.mapleland.maplelanbackserver.dto.BanUserRequest;
+import org.mapleland.maplelanbackserver.dto.Map.MapInfoListResponse;
 import org.mapleland.maplelanbackserver.dto.report.ReportedPostWithReasonsDto;
 import org.mapleland.maplelanbackserver.dto.response.*;
 import org.mapleland.maplelanbackserver.dto.user.UserResponse;
-import org.mapleland.maplelanbackserver.service.MapService;
-import org.mapleland.maplelanbackserver.service.ReportService;
-import org.mapleland.maplelanbackserver.service.UserService;
-import org.mapleland.maplelanbackserver.service.WebSocketService;
+import org.mapleland.maplelanbackserver.service.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,6 +26,7 @@ public class AdminController {
     private final ReportService reportService;
     private final UserService userService;
     private final MapService mapService;
+    private final MapCacheService mapCacheService;
 
     @GetMapping("/api/admin/users")
     public ResponseEntity<List<UserListResponse>> findAllUsersOrderByReportCount(@RequestParam(defaultValue = "0") int page) {
@@ -98,4 +97,10 @@ public class AdminController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "맵 캐시 강제 갱신")
+    @PostMapping("/api/admin/maps/all/refresh")
+    public ResponseEntity<MapInfoListResponse> refreshMapsCache() {
+        MapInfoListResponse response = mapCacheService.putAllMapsCache();
+        return ResponseEntity.ok(response);
+    }
 }
