@@ -4,13 +4,13 @@ import { useLatestCompletedTrade } from "../hooks/useCompletedTrades";
 
 export const CompletedTradeBox = () => {
   const trade = useLatestCompletedTrade();
-
+  console.log(trade);
   return (
     <div className="">
       <AnimatePresence mode="wait">
         {trade && (
           <motion.div
-            key={trade.jariId}
+            key={trade.mapName}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}

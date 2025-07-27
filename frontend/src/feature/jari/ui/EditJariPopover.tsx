@@ -1,7 +1,7 @@
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/shared/ui/button/Button";
 import { ServerColor } from "../../trade/ui/TradeCard";
-
+import { useRecentTradeStore } from "@/entity/trade/store/useRecentTradeStore";
 interface Props {
   editServerColor: ServerColor;
   editPrice: number;
@@ -17,6 +17,8 @@ interface Props {
   showEditBox: boolean;
   setShowEditBox: (open: boolean) => void;
   handleBump: () => void;
+  tradeType: "SELL" | "BUY";
+  mapName: string;
 }
 
 export const EditJariPopover = ({
@@ -34,7 +36,10 @@ export const EditJariPopover = ({
   showEditBox,
   setShowEditBox,
   handleBump,
+  tradeType,
+  mapName,
 }: Props) => {
+  const { setRecentTrade } = useRecentTradeStore();
   return (
     <div className="relative flex items-center">
       <Popover.Root open={showEditBox} onOpenChange={setShowEditBox}>
@@ -123,7 +128,7 @@ export const EditJariPopover = ({
               />
             </div>
 
-            {/* 거래 완료, 삭제 버튼 */}
+            {/* 범프, 거래 완료, 삭제 버튼 */}
             <Button
               variant="outline"
               type="button"
@@ -136,7 +141,14 @@ export const EditJariPopover = ({
               variant="blue"
               type="button"
               className="px-3 py-1 text-xs text-white rounded-sm transition h-auto"
-              onClick={handleMarkAsCompleted}
+              onClick={() => {
+                handleMarkAsCompleted();
+                setRecentTrade({
+                  mapName: mapName,
+                  price: editPrice,
+                  tradeType: tradeType,
+                });
+              }}
             >
               거래 완료
             </Button>
