@@ -33,12 +33,18 @@ export const CompletedTradeBox = () => {
         >
           <Link
             to={`/jari/${encodeURIComponent(trade.mapName)}`}
-            className="self-start bg-gradient-to-r from-neutral-700 to-neutral-800 border border-green-500 text-green-300 px-4 py-3 rounded-lg text-sm font-medium shadow-sm flex items-center gap-2 w-full cursor-pointer hover:from-neutral-600 hover:to-neutral-700 transition-colors"
+            className="flex justify-between items-center bg-gradient-to-r from-neutral-700 to-neutral-800 border border-green-500 text-green-300 px-4 py-3 rounded-lg text-sm font-medium shadow-sm gap-2 w-full cursor-pointer hover:from-neutral-600 hover:to-neutral-700 transition-colors"
           >
-            <span className="text-lg">✅</span>
-            <span className="leading-snug truncate">
-              [{trade.mapName}] — {trade.price.toLocaleString()} 메소{" "}
-              <span className="text-green-400 text-sm ml-1">거래완료</span>
+            <div className="flex items-center gap-2 overflow-hidden">
+              <span className="text-lg">✅</span>
+              <span className="leading-snug truncate">
+                [{trade.mapName}] — {trade.price.toLocaleString()} 메소{" "}
+                <span className="text-green-400 text-sm ml-1">거래완료</span>
+              </span>
+            </div>
+
+            <span className="text-green-300 hover:underline text-sm whitespace-nowrap ml-4">
+              거래글 보기 →
             </span>
           </Link>
         </motion.div>
