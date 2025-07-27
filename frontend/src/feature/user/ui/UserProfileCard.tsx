@@ -84,18 +84,7 @@ export const UserProfileCard = ({ userInfo, isMyProfile, refetch }: Props) => {
             + 자리 등록하기
           </Button>
         )}
-        <Button
-          variant="discord"
-          onClick={() =>
-            window.open(
-              `https://discord.com/users/${userInfo.discordId}`,
-              "_blank"
-            )
-          }
-          className="w-full font-semibold text-xs"
-        >
-          디스코드 프로필 (Web)
-        </Button>
+
         <Button
           variant="discord"
           onClick={() => {
@@ -103,7 +92,7 @@ export const UserProfileCard = ({ userInfo, isMyProfile, refetch }: Props) => {
           }}
           className="w-full text-white font-semibold text-center text-xs"
         >
-          디스코드 프로필 (PC)
+          디스코드 프로필 (앱)
         </Button>
       </div>
     </div>

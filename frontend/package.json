@@ -26,6 +26,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
+    "framer-motion": "^12.23.9",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.524.0",
     "node-fetch": "^3.3.2",
