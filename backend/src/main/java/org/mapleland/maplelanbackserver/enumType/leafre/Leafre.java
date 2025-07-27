@@ -21,7 +21,8 @@ public enum Leafre {
     Sky_Nest_2("미나르숲:하늘 둥지2"),
     Abandoned_Dragon_Nest("미나르숲:남겨진 용의 둥지"),
     Forest_of_Manon("미나르숲:마뇽의 숲"),
-    Forest_of_Griffey("미나르숲:그리프의 숲");
+    Forest_of_Griffey("미나르숲:그리프의 숲"),
+    Nest_of_the_Dead_Dragon("미나르숲:죽은 용의 둥지");
     private final String displayName;
 
     Leafre(String displayName) {

@@ -14,6 +14,7 @@ const OAuthBannedPage = lazy(() => import("@/page/oauth/OAuthBanned"));
 const ProfilePage = lazy(() => import("@/page/Profile"));
 const NotificationGuide = lazy(() => import("@/page/notice/NotificationGuide"));
 const Notice = lazy(() => import("@/page/notice/Notice"));
+const Event = lazy(() => import("@/page/Event"));
 
 // 자리 관련
 const JariDetailPage = lazy(() => import("@/page/jari/Detail"));
@@ -66,6 +67,7 @@ const router = createBrowserRouter([
       // 📢 공지/가이드
       { path: "notification-guide", element: <NotificationGuide /> },
       { path: "notice", element: <Notice /> },
+      { path: "event", element: <Event /> },
 
       // 🔐 OAuth 관련
       { path: "oauth2/success", element: <OAuthSuccessPage /> },

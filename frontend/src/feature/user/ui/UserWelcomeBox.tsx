@@ -4,7 +4,7 @@ export const UserWelcomeBox = () => {
   return (
     <Link
       to="/notification-guide"
-      className="self-start ] bg-[#5865F2] hover:bg-[#4752c4] text-white px-4 py-3 rounded-lg text-sm font-medium shadow transition cursor-pointer flex items-center gap-3"
+      className="self-start bg-[#5865F2] hover:bg-[#4752c4] text-white px-4 py-3 rounded-lg text-sm font-medium shadow transition cursor-pointer flex items-center gap-3"
     >
       <div className="flex-1 leading-snug">
         <span className="text-white/90 text-xs sm:text-sm ">

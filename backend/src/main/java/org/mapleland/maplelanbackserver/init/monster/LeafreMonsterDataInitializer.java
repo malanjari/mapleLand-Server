@@ -968,5 +968,56 @@ public class LeafreMonsterDataInitializer {
                         .dropRate(0.01)
                         .build()
                 ));
+
+        monsterDropItemRepository.saveAll(List.of(
+                MonsterDropItem.builder()
+                        .mapName("미나르숲:죽은 용의 둥지")
+                        .itemName("[마스터리북] 샤프 아이즈 30")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2290053/icon?resize=2")
+                        .dropRate(0.0002)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("미나르숲:죽은 용의 둥지")
+                        .itemName("[마스터리북]어드밴스드 콤보 30")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2290053/icon?resize=2")
+                        .dropRate(0.0003)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("미나르숲:죽은 용의 둥지")
+                        .itemName("드래곤의 비늘")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/4000245/icon?resize=2")
+                        .dropRate(0.0004)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("미나르숲:죽은 용의 둥지")
+                        .itemName("드래곤의 영혼")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/4000244/icon?resize=2")
+                        .dropRate(0.0004)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("미나르숲:죽은 용의 둥지")
+                        .itemName("망토 힘 주문서 60%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2041013/icon?resize=2")
+                        .dropRate(0.001)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("미나르숲:죽은 용의 둥지")
+                        .itemName("장갑 공격력 주문서 10%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2040805/icon?resize=2")
+                        .dropRate(0.004)
+                        .build(),
+
+                MonsterDropItem.builder()
+                        .mapName("미나르숲:죽은 용의 둥지")
+                        .itemName("전신 갑옷 힘 주문서 10%")
+                        .itemImageUrl("https://maplestory.io/api/gms/62/item/2040805/icon?resize=2")
+                        .dropRate(0.004)
+                        .build()
+        ));
     }
 }

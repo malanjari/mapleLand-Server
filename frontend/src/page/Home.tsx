@@ -4,6 +4,7 @@ import { UserWelcomeBox } from "@/feature/user/ui/UserWelcomeBox";
 import { lazy, Suspense } from "react";
 
 import { NoticeBanner } from "@/feature/notice/ui/NoticeBanner";
+// import { CompletedTradeBox } from "@/feature/trade/ui/CompletedTradeBox";
 
 const PopularJariGrid = lazy(
   () => import("@/feature/popularJari/ui/PopularJariGrid")
@@ -14,6 +15,7 @@ const HomePage = () => {
     <div className="py-10   flex flex-col gap-10">
       <UserWelcomeBox />
       <NoticeBanner />
+      {/* <CompletedTradeBox /> */}
       <WorldSearchGrid />
       <Suspense
         fallback={

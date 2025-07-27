@@ -192,6 +192,17 @@ public class LeafreMapInitializer{
                          .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
                          .build());
 
+                 mapleMapRepository.save(MapleMap
+                         .builder().
+                         mapName("미나르숲:죽은 용의 둥지")
+                         .region(Region.MinarForest)
+                         .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8190004/icon?resize=2")
+                         .subRegion("미나르 숲")
+                         .miniMapImageUrl("https://mapledb.kr/Assets/image/minimaps/240040510.png")
+                         .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/240010500/icon?resize=2")
+                         .build());
+
+
 
 
 

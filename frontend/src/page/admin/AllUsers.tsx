@@ -112,7 +112,14 @@ const AdminUserPage = () => {
                   신고당한 횟수: {user.reportedCount}
                 </p>
                 <p className="text-sm text-neutral-500 mt-1">
-                  가입일: {new Date(user.createTime).toLocaleString("ko-KR")}
+                  가입일:{" "}
+                  {(() => {
+                    const koreaTime = new Date(
+                      new Date(user.createTime).getTime() +
+                        (8 * 60 * 60 + 59 * 60 + 50) * 1000
+                    );
+                    return koreaTime.toLocaleString("ko-KR");
+                  })()}
                 </p>
                 <div className="flex justify-end">
                   <Button
@@ -168,7 +175,13 @@ const AdminUserPage = () => {
                     </p>
                     <p className="text-sm text-neutral-500 mt-1">
                       가입일:{" "}
-                      {new Date(user.createTime).toLocaleString("ko-KR")}
+                      {(() => {
+                        const koreaTime = new Date(
+                          new Date(user.createTime).getTime() +
+                            (8 * 60 * 60 + 59 * 60 + 50) * 1000
+                        );
+                        return koreaTime.toLocaleString("ko-KR");
+                      })()}
                     </p>
                     <div className="flex justify-end">
                       <Button
