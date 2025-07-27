@@ -5,6 +5,7 @@ import org.mapleland.maplelanbackserver.enumType.Region;
 import org.mapleland.maplelanbackserver.repository.MapleMapRepository;
 import org.mapleland.maplelanbackserver.repository.MonsterDropItemRepository;
 import org.mapleland.maplelanbackserver.service.MapService;
+import org.mapleland.maplelanbackserver.table.MonsterDropItem;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -26,9 +27,9 @@ public class MonsterDataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        if(!mapleMapRepository.existsByRegion(Region.MuLung)) {
+        if(!monsterDropItemRepository.existsByMapName("무릉도원: 빨간코 해적단 소굴2"))
             muLungGardenMonsterDataInitializer.initMuLungGardMonsterData();
-        }
+
 
         if (monsterDropItemRepository.count() == 0) {
             try {

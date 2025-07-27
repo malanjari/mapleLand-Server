@@ -17,4 +17,6 @@ public interface MonsterDropItemRepository extends JpaRepository<MonsterDropItem
     List<MonsterDropItem> findByMapName(String mapName);
 
     List<MonsterDropItem> findByMapNameIn(Collection<String> mapNames);
+
+    boolean existsByMapName(String mapName);
 }
