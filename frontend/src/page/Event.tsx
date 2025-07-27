@@ -1,6 +1,7 @@
 const EventPage = () => {
   return (
     <div className="max-w-2xl mx-auto px-4 py-10 text-white space-y-8">
+      {/* 거래 완료 이벤트 */}
       <section className="space-y-2">
         <h1 className="text-2xl font-bold">🎉 거래 완료 이벤트</h1>
         <p className="text-sm text-neutral-400">
@@ -36,9 +37,36 @@ const EventPage = () => {
         </ul>
       </section>
 
+      {/* 회원가입 축하 이벤트 */}
+      <section className="bg-neutral-800 border border-yellow-700 rounded-lg p-5 space-y-3">
+        <h2 className="text-lg font-semibold text-yellow-300">
+          🆕 회원가입 축하 이벤트
+        </h2>
+        <p className="text-sm text-neutral-300">
+          🎉{" "}
+          <span className="text-white font-semibold">700번째 회원가입자</span>와{" "}
+          <span className="text-white font-semibold">1000번째 회원가입자</span>
+          에게는
+          <br />
+          <span className="text-yellow-400 font-semibold">
+            맘스터치 싸이버거 세트
+          </span>
+          를 드립니다!
+        </p>
+        <p className="text-sm text-neutral-400">
+          ※ 단, 해당 회원이{" "}
+          <span className="text-green-300 font-semibold">
+            자리 거래를 완료한 경우에만
+          </span>{" "}
+          지급됩니다.
+          <br />※ 해당 인원 도달 시 자동으로 지급되며, 별도 신청은 필요하지
+          않습니다.
+        </p>
+      </section>
+
       <div className="text-center pt-4">
         <p className="text-sm text-neutral-400">
-          * 별도의 신청 없이, 거래 완료 시 자동 참여 처리됩니다.
+          * 모든 이벤트는 별도의 신청 없이 조건 충족 시 자동 참여 처리됩니다.
         </p>
       </div>
     </div>
