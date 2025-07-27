@@ -29,7 +29,14 @@ const ReportDetailPage = () => {
       <p className="mb-2">📍 서버 색상: {post.serverColor}</p>
       <p className="mb-2">🌍 지역: {post.area}</p>
       <p className="mb-2">
-        🕒 등록일: {format(new Date(post.createTime), "yyyy.MM.dd HH:mm")}
+        🕒 등록일:{" "}
+        {format(
+          new Date(
+            new Date(post.createTime).getTime() +
+              (8 * 60 * 60 + 59 * 60 + 50) * 1000
+          ),
+          "yyyy.MM.dd HH:mm"
+        )}
       </p>
 
       <div className="mt-6">
@@ -43,7 +50,13 @@ const ReportDetailPage = () => {
               <p>📝 사유: {reason.reason}</p>
               <p className="text-neutral-400 text-xs mb-2">
                 🕒 일시:{" "}
-                {format(new Date(reason.createTime), "yyyy.MM.dd HH:mm")}
+                {format(
+                  new Date(
+                    new Date(reason.createTime).getTime() +
+                      (8 * 60 * 60 + 59 * 60 + 50) * 1000
+                  ),
+                  "yyyy.MM.dd HH:mm"
+                )}
               </p>
               {reason.reportImageUrl && (
                 <img
