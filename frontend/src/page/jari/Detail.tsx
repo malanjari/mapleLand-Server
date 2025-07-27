@@ -26,7 +26,6 @@ const JariDetailPage = () => {
   } = useJariDetailData(name);
 
   const { data: jari, refetch } = useJariList(name ?? "");
-  console.log(jari);
   const mapId = mapMeta?.mapId;
   const mapName = mapMeta?.mapName.split(":")[1] ?? "";
 
