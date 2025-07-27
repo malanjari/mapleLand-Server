@@ -515,4 +515,9 @@ public class MapService {
         Page<JariResponse> jariResponsePage = jariRepository.findAll(pageable).map(JariResponse::from);
         return JariListResponse.from(jariResponsePage);
     }
+
+    public List<JariResponse> findRecentCompletedJari() {
+        return jariRepository.findRecentCompletedJari(PageRequest.of(0, 3))
+                .stream().map(JariResponse::from).toList();
+    }
 }
