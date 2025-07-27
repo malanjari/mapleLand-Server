@@ -1,7 +1,6 @@
 import * as Popover from "@radix-ui/react-popover";
 import { Button } from "@/shared/ui/button/Button";
 import { ServerColor } from "../../trade/ui/TradeCard";
-
 interface Props {
   editServerColor: ServerColor;
   editPrice: number;
@@ -123,7 +122,7 @@ export const EditJariPopover = ({
               />
             </div>
 
-            {/* 거래 완료, 삭제 버튼 */}
+            {/* 범프, 거래 완료, 삭제 버튼 */}
             <Button
               variant="outline"
               type="button"
