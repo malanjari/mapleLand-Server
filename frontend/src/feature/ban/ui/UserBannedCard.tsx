@@ -41,7 +41,6 @@ const BannedUserCard = ({ user }: Props) => {
         )}
       </p>
 
-      {/* ✅ 가입일 맨 아래 */}
       <p className="text-sm text-neutral-500 mt-3">
         가입일:{" "}
         {format(
