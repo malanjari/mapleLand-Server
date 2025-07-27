@@ -54,7 +54,13 @@ const EventPage = () => {
           를 드립니다!
         </p>
         <p className="text-sm text-neutral-400">
-          ※ 해당 인원 도달 시 자동으로 지급되며, 별도 신청은 필요하지 않습니다.
+          ※ 단, 해당 회원이{" "}
+          <span className="text-green-300 font-semibold">
+            자리 거래를 완료한 경우에만
+          </span>{" "}
+          지급됩니다.
+          <br />※ 해당 인원 도달 시 자동으로 지급되며, 별도 신청은 필요하지
+          않습니다.
         </p>
       </section>
 
