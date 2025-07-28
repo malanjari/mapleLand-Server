@@ -17,5 +17,5 @@ export interface JariItem {
   miniMapImageLogo?: string;
   userId: number;
   isCompleted: boolean;
-  updateTime: string;
+  updateTime?: string;
 }
