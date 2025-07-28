@@ -1,6 +1,7 @@
 import { Input } from "@/shared/ui/input/Input";
 import { Search } from "lucide-react";
 import { useSearchSuggestions } from "./hooks/useSearchSuggestions";
+import { useState, useEffect } from "react";
 
 interface Props {
   placeholder?: string;
@@ -16,18 +17,44 @@ export const SearchInputWithSuggestions = ({
   const { keyword, setKeyword, suggestions, setSuggestions, wrapperRef } =
     useSearchSuggestions();
 
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+
   const handleSelect = (val: string) => {
     setKeyword(val);
     onSelect?.(val);
-    setKeyword(""); // 2. 그 후 초기화
     setSuggestions([]);
+    setKeyword("");
+    setFocusedIndex(-1);
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (suggestions.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setFocusedIndex((prev) => (prev + 1) % suggestions.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setFocusedIndex((prev) =>
+        prev <= 0 ? suggestions.length - 1 : prev - 1
+      );
+    } else if (e.key === "Enter" && focusedIndex >= 0) {
+      e.preventDefault();
+      handleSelect(suggestions[focusedIndex].mapName);
+    }
+  };
+
+  // 🔄 키워드가 바뀌면 index 초기화
+  useEffect(() => {
+    setFocusedIndex(-1);
+  }, [keyword]);
 
   return (
     <div ref={wrapperRef} className={`relative w-full ${className}`}>
       <Input
         value={keyword}
         onChange={(e) => setKeyword(e.target.value)}
+        onKeyDown={handleKeyDown}
         placeholder={placeholder}
         className="h-12 pr-10"
       />
@@ -40,7 +67,9 @@ export const SearchInputWithSuggestions = ({
           {suggestions.map((map, idx) => (
             <li
               key={map.mapId ?? idx}
-              className="px-4 py-2 text-sm hover:bg-neutral-700 cursor-pointer rounded-md text-left flex items-center gap-2"
+              className={`px-4 py-2 text-sm text-left flex items-center gap-2 cursor-pointer rounded-md ${
+                idx === focusedIndex ? "bg-neutral-700" : "hover:bg-neutral-700"
+              }`}
               onClick={() => handleSelect(map.mapName)}
             >
               <img

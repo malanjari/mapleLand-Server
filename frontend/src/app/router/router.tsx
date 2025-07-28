@@ -28,6 +28,7 @@ const AllUsersPage = lazy(() => import("@/page/admin/AllUsers"));
 const UserStatsPage = lazy(() => import("@/page/admin/UserStatsPage"));
 const ReportPage = lazy(() => import("@/page/admin/Report"));
 const ReportDetailPage = lazy(() => import("@/page/admin/ReportDetail"));
+const NoticeWritePage = lazy(() => import("@/page/admin/NoticeWrite"));
 
 const router = createBrowserRouter([
   {
@@ -106,6 +107,14 @@ const router = createBrowserRouter([
             element: (
               <RequireAdmin>
                 <ReportPage />
+              </RequireAdmin>
+            ),
+          },
+          {
+            path: "notice/new",
+            element: (
+              <RequireAdmin>
+                <NoticeWritePage />
               </RequireAdmin>
             ),
           },
