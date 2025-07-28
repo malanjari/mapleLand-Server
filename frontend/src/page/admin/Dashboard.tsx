@@ -48,6 +48,7 @@ const DashboardPage = () => {
         <SummaryCard title="총 회원" to="/admin/users" sumUsers={sumUsers} />
         <SummaryCard title="월간 가입자 통계" to="/admin/signupcount" />
         <SummaryCard title="신고된 게시글" to="/admin/reports" />
+        <SummaryCard title="공지사항 쓰기" to="/admin/notice/new" />
       </div>
 
       {/* 자리 목록 */}

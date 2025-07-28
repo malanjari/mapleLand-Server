@@ -39,8 +39,9 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
 
   return (
     <div
+      id={`trade-${item.userMapId}`}
       className={clsx(
-        "bg-neutral-800 text-white  py-4 px-4 flex flex-col gap-3 items-start shadow transition duration-300",
+        "bg-neutral-800 text-white  py-4 px-4 flex flex-col gap-3 items-start shadow transition duration-300 rounded-sm",
         {
           "opacity-40 grayscale": item.isCompleted,
         }
