@@ -56,8 +56,10 @@ const TradeCard = ({ item, refetch, showEditButton }: Props) => {
         createTime={item.createTime}
         discordId={item.discordId}
         isAdmin={isAdmin}
+        isCompleted={item.isCompleted}
         refetch={refetch}
         mapId={item.userMapId}
+        updateTime={item.updateTime}
       />
 
       {/* 협의 옵션 및 코멘트 */}

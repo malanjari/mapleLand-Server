@@ -17,6 +17,8 @@ interface Props {
   isAdmin: boolean;
   refetch?: () => void;
   mapId: number;
+  isCompleted: boolean;
+  updateTime: string;
 }
 
 export const TradeCardHeader = ({
@@ -31,9 +33,14 @@ export const TradeCardHeader = ({
   isAdmin,
   refetch,
   mapId,
+  isCompleted,
+  updateTime,
 }: Props) => {
   const koreaTime = new Date(
     new Date(createTime).getTime() + (8 * 60 * 60 + 59 * 60 + 50) * 1000
+  );
+  const updateKoreaTime = new Date(
+    new Date(updateTime).getTime() + (8 * 60 * 60 + 59 * 60 + 50) * 1000
   );
   return (
     <div className="flex items-center justify-center gap-3 w-full">
@@ -86,10 +93,15 @@ export const TradeCardHeader = ({
             />
           </div>
           <span className="text-xs">
-            {formatDistanceToNow(koreaTime, {
-              addSuffix: true,
-              locale: ko,
-            })}
+            {isCompleted
+              ? formatDistanceToNow(updateKoreaTime, {
+                  addSuffix: true,
+                  locale: ko,
+                })
+              : formatDistanceToNow(koreaTime, {
+                  addSuffix: true,
+                  locale: ko,
+                })}
           </span>
         </div>
       </div>
