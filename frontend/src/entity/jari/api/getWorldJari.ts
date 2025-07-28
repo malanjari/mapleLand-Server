@@ -17,6 +17,7 @@ export interface RegionMap {
   userImage: string;
   userMapId: number;
   isCompleted: boolean;
+  updateTime: string;
 }
 export const getWorldJari = async (keyword: string): Promise<RegionMap[]> => {
   try {
