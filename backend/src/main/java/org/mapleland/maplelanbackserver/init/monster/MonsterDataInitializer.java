@@ -28,7 +28,7 @@ public class MonsterDataInitializer implements CommandLineRunner {
     public void run(String... args) {
 
         if(!monsterDropItemRepository.existsByMapName("무릉도원: 빨간코 해적단 소굴2"))
-            muLungGardenMonsterDataInitializer.initMuLungGardMonsterData();
+
 
 
         if (monsterDropItemRepository.count() == 0) {

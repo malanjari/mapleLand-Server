@@ -74,7 +74,7 @@ public class MapController {
         return ResponseEntity.ok(mapResponse);
     }
 
-        //  --------- 현재 사용 X ----------------------------------
+        //  --------- 현재 사용 X ----------------------------------루더스호수: 까막산 입구
     @Deprecated
     @GetMapping("/api/monsterInfo")
     @Operation(summary = "목록 리스트에서 몬스터 드랍 테이블 가져오는 api" ,
@@ -205,12 +205,4 @@ public class MapController {
         MapInfoListResponse response = mapCacheService.findAllMapsCache();
         return ResponseEntity.ok(response);
     }
-
-//    @Operation(summary = "모든 맵 이름을 조회하는 API")
-//    @GetMapping("/api/maps/all")
-//    @Deprecated
-//    public ResponseEntity<?> findAllMaps() {
-//        MapInfoListResponse response = mapService.findAllMaps();
-//        return ResponseEntity.ok(response);
-//    }
 }

@@ -3,6 +3,7 @@ package org.mapleland.maplelanbackserver.utilmethod;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapleland.maplelanbackserver.dto.Map.JariCreatedRequest;
+import org.mapleland.maplelanbackserver.dto.request.AlarmRegisterRequest;
 import org.mapleland.maplelanbackserver.enumType.Region;
 import org.mapleland.maplelanbackserver.enumType.TradeType;
 import org.mapleland.maplelanbackserver.exception.coflict.ConflictException;
@@ -25,6 +26,7 @@ import org.mapleland.maplelanbackserver.table.MapleMap;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 @Component
 @RequiredArgsConstructor
@@ -35,6 +37,8 @@ public class UtilMethod {
     private final UserRepository userRepository;
     private final MapleMapRepository mapleMapRepository;
     private final MapInterRestRepository interestRepository;
+    private final JariRepository jariRepository;
+
 
 
 
@@ -93,5 +97,50 @@ public class UtilMethod {
             }
         }
         return AlertStatus.INVALID_REQUEST;
+    }
+
+
+    public void DiscordAlertInterest(AlarmRegisterRequest request) {
+
+        User user = userRepository.findByDiscordId(request.discordId()).
+                orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없음"));
+
+        long count = interestRepository.countByUser(user);
+
+        if (count >= 2) {
+            // ❌ 2개 초과 등록은 불가
+            throw new MaxMapInterestLimitException("알림은 최대 두개까지 등록 가능합니다. \n 알람 해제를 통해 맵을 삭제하세요.");
+        }
+
+        List<MapleMap> byMapName = mapleMapRepository.findByMapName(request.mapName());
+
+        boolean exists = interestRepository.existsByUser_UserIdAndMapleMap_MapleLandMapListId
+                (user.getUserId(),byMapName.get(0).getMapleLandMapListId());
+        if (exists) {
+            throw new DuplicatedMapInterRestException("⛔ 이미 등록된 맵입니다.");
+        }
+
+
+        MapInterRest mapInterRest = new MapInterRest();
+
+        mapInterRest.setUser(user);
+        mapInterRest.setMapleMap(byMapName.get(0));
+
+        interestRepository.save(mapInterRest);
+
+    }
+    public void DiscordAlertInterestOut(AlarmRegisterRequest request) {
+        User user = userRepository.findByDiscordId(request.discordId()).
+                orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없음"));
+
+        List<MapleMap> byMapName = mapleMapRepository.findByMapName(request.mapName());
+
+        if(byMapName.isEmpty()) throw new NotFoundMapException("알람 등록한 맵이 아닙니다!");
+
+        MapInterRest mapInterRest = interestRepository.findByUser_UserIdAndMapleMap_MapName(user.getUserId(), request.mapName())
+                .orElseThrow(() -> new NotFoundUserException("관심 등록한 맵을 찾을 수 없습니다."));
+
+        interestRepository.delete(mapInterRest);
+
     }
 }

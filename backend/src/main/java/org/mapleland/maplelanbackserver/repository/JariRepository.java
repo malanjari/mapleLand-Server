@@ -120,6 +120,8 @@ FROM Jari j ORDER BY j.createTime desc
 
     Optional<Jari> findByUser_UserIdAndUserMapId(Integer userId, Integer mapId);
 
+    Optional<Jari> findByMapName(String mapName);
+
 
 
 }

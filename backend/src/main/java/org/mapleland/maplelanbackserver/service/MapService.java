@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mapleland.maplelanbackserver.dto.Map.*;
 import org.mapleland.maplelanbackserver.dto.jari.JariCompletedEvent;
+import org.mapleland.maplelanbackserver.dto.request.AlarmRegisterRequest;
 import org.mapleland.maplelanbackserver.dto.response.DropItemResponse;
 import org.mapleland.maplelanbackserver.dto.request.JariUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.request.JariIsCompletedRequest;
@@ -66,6 +67,8 @@ public class MapService {
 
     public void mapRegisterServiceMethod(JariCreatedRequest dto, String token) {
 
+        log.info("dto 아이디 = {}",dto.getMapId());
+
         int userId = JwtUtil.getUserId(token);
         //사용자 검색 -> 사용자 값 꺼내옴
         User user = userRepository.findByUserId(userId)
@@ -75,9 +78,11 @@ public class MapService {
         // 지역 정보 추출
         Region region = RegionResolver.getRegionEnumByMapName(dto.getMapName());
 
+
         // 매칭 맵 정보 추출
         MapleMap mapleMap = getFirstMatchedMap(dto.getMapId()).
                 orElseThrow(() -> new NotFoundMapException("해당 맵을 찾을 수 없습니다,"));
+
 
         if(!user.getRole().equals("ROLE_ADMIN")) {
             jariRepository.findByUser_UserIdAndMapNameAndIsCompletedFalse(userId,dto.getMapName())
@@ -200,6 +205,10 @@ public class MapService {
                 dmService.sendToUser(discordId, selfMessage);
             }
         }
+    }
+    public void DiscordAlertService(AlarmRegisterRequest request){
+
+
     }
 
     public AlertStatus MapInterRestServiceMethod(AlertRequest dto, String token) {
