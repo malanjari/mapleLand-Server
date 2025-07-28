@@ -34,7 +34,9 @@ export const CompletedTradeBox = () => {
           className="absolute w-full"
         >
           <Link
-            to={`/jari/${encodeURIComponent(trade.mapName)}`}
+            to={`/jari/${encodeURIComponent(trade.mapName)}?focus=${
+              trade.userMapId
+            }`}
             className="flex justify-between items-center bg-gradient-to-r from-neutral-700 to-neutral-800 border border-green-500 text-green-300 px-4 py-3 rounded-lg text-sm font-medium shadow-sm gap-2 w-full cursor-pointer hover:from-neutral-600 hover:to-neutral-700 transition-colors"
           >
             <div className="flex items-center gap-2 overflow-hidden flex-1 min-w-0">
