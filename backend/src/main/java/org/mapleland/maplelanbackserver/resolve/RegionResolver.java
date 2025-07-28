@@ -1,6 +1,7 @@
 package org.mapleland.maplelanbackserver.resolve;
 
 import lombok.extern.slf4j.Slf4j;
+import org.mapleland.maplelanbackserver.enumType.mulung.MuLungGardenRegion;
 import org.mapleland.maplelanbackserver.exception.badrequest.MapNameMismatchException;
 import org.mapleland.maplelanbackserver.enumType.aquarium.Aquarium;
 import org.mapleland.maplelanbackserver.enumType.elnath.Elnath;
@@ -40,13 +41,14 @@ public class RegionResolver {
         }
         else if(belongsToVictoria(normalized)) {
             return Region.Victoria;
+        } else if (belongsToMuLung(normalized)) {
+            return Region.MuLung;
         }
 
         throw new MapNameMismatchException("해당 맵을 찾을 수 없습니다.");
     }
 
     private static boolean belongsToLeafre(String normalized) {
-
 
         return Arrays.stream(Leafre.values())
                 .anyMatch(m -> normalize(m.getDisplayName()).equals(normalized));
@@ -65,6 +67,7 @@ public class RegionResolver {
 //        return Arrays.stream(Orbis.values())
 //                .anyMatch(m -> normalize(m.getDisplayName()).equals(normalized));
 //    }
+
     private static boolean belongsToAquarium(String normalized) {
         return Arrays.stream(Aquarium.values())
                 .anyMatch(m -> normalize(m.getDisplayName()).equals(normalized));
@@ -74,8 +77,12 @@ public class RegionResolver {
                 .anyMatch(m -> normalize(m.getDisplayName()).equals(normalized));
     }
 
+    private static boolean belongsToMuLung(String normalized) {
+        return Arrays.stream(MuLungGardenRegion.values())
+                .anyMatch(m -> normalize(m.getDisplayName()).equals(normalized));
+    }
+
     private static String normalize(String str) {
         return str.replaceAll("\\s+", "");
     }
-
 }
