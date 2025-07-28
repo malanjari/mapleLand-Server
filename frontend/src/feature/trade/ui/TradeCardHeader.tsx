@@ -18,7 +18,7 @@ interface Props {
   refetch?: () => void;
   mapId: number;
   isCompleted: boolean;
-  updateTime: string;
+  updateTime?: string;
 }
 
 export const TradeCardHeader = ({
@@ -39,9 +39,22 @@ export const TradeCardHeader = ({
   const koreaTime = new Date(
     new Date(createTime).getTime() + (8 * 60 * 60 + 59 * 60 + 50) * 1000
   );
-  const updateKoreaTime = new Date(
-    new Date(updateTime).getTime() + (8 * 60 * 60 + 59 * 60 + 50) * 1000
-  );
+  const updateKoreaTime = (() => {
+    if (!updateTime || updateTime === "null" || updateTime === "") {
+      return koreaTime;
+    }
+    try {
+      const updateDate = new Date(updateTime);
+      if (isNaN(updateDate.getTime())) {
+        return koreaTime;
+      }
+      return new Date(
+        updateDate.getTime() + (8 * 60 * 60 + 59 * 60 + 50) * 1000
+      );
+    } catch {
+      return koreaTime;
+    }
+  })();
   return (
     <div className="flex items-center justify-center gap-3 w-full">
       {/* 몬스터 이미지 */}
