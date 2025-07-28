@@ -23,9 +23,9 @@ public class MapDataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        if(!mapleMapRepository.existsByRegion(Region.MuLung)) {
-            muLungGardenMapInitializer.initMuLungGarden();
-        }
+//        if(!mapleMapRepository.existsByRegion(Region.MuLung)) {
+//
+//        }
 
         if(mapleMapRepository.count() == 0){
             muLungGardenMapInitializer.initMuLungGarden();
@@ -33,6 +33,7 @@ public class MapDataInitializer implements CommandLineRunner {
            ludibriumMapInitializer.initLudibrium();
            victoriaMapInitializer.VictoriaInit();
            leafreMapInitializer.initLeafre();
+            muLungGardenMapInitializer.initMuLungGarden();
 
 
 

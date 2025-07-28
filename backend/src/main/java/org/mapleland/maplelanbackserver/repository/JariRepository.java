@@ -120,6 +120,8 @@ FROM Jari j ORDER BY j.createTime desc
 
     Optional<Jari> findByUser_UserIdAndUserMapId(Integer userId, Integer mapId);
 
-    @Query("SELECT j FROM Jari j WHERE j.isCompleted = true ORDER BY j.updateTime DESC")
-    List<Jari> findRecentCompletedJari(Pageable pageable);
+    Optional<Jari> findByMapName(String mapName);
+
+
+
 }

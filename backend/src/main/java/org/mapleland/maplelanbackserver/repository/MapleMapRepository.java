@@ -26,4 +26,5 @@ public interface MapleMapRepository extends JpaRepository<MapleMap, Integer> {
     Optional<MapleMap> findById(Integer integer);
 
     boolean existsByRegion(Region region);
+
 }
