@@ -38,30 +38,44 @@ const EventPage = () => {
       </section>
 
       {/* 회원가입 축하 이벤트 */}
-      <section className="bg-neutral-800 border border-yellow-700 rounded-lg p-5 space-y-3">
-        <h2 className="text-lg font-semibold text-yellow-300">
-          🆕 회원가입 축하 이벤트
-        </h2>
-        <p className="text-sm text-neutral-300">
-          🎉{" "}
-          <span className="text-white font-semibold">700번째 회원가입자</span>와{" "}
-          <span className="text-white font-semibold">1000번째 회원가입자</span>
-          에게는
-          <br />
+      <section className="space-y-2">
+        <h1 className="text-2xl font-bold">🆕 회원가입 축하 이벤트</h1>
+        <p className="text-sm text-neutral-400">
+          이벤트 기간:{" "}
+          <span className="text-yellow-300">700명 ~ 1000명 도달 시까지</span>
+        </p>
+        <p>
+          mashop.kr에 <span className="font-semibold text-white">700번째</span>{" "}
+          또는 <span className="font-semibold text-white">1000번째</span>로
+          회원가입하고,{" "}
+          <span className="font-semibold text-green-300">자리 거래를 완료</span>
+          하면{" "}
           <span className="text-yellow-400 font-semibold">
             맘스터치 싸이버거 세트
           </span>
           를 드립니다!
         </p>
-        <p className="text-sm text-neutral-400">
-          ※ 단, 해당 회원이{" "}
-          <span className="text-green-300 font-semibold">
-            자리 거래를 완료한 경우에만
-          </span>{" "}
-          지급됩니다.
-          <br />※ 해당 인원 도달 시 자동으로 지급되며, 별도 신청은 필요하지
-          않습니다.
+      </section>
+
+      <section className="bg-neutral-800  rounded-lg p-5 space-y-3">
+        <h2 className="text-lg font-semibold text-yellow-300">🎁 경품 안내</h2>
+        <p className="text-sm text-neutral-300">
+          ✅{" "}
+          <span className="text-white">
+            맘스터치 싸이버거 세트 (총 2명 – 700번째 & 1000번째 가입자)
+          </span>
+          <br />
+          📢 지급 방식: 조건 충족 시 자동 지급 / 개별 연락 또는 공지사항
         </p>
+      </section>
+
+      <section className="bg-neutral-800   rounded-lg p-5 space-y-3">
+        <h2 className="text-lg font-semibold text-yellow-300">⚠️ 유의사항</h2>
+        <ul className="list-disc list-inside text-sm text-neutral-400 space-y-1">
+          <li>회원가입 후 거래를 완료해야 경품 지급 대상이 됩니다.</li>
+          <li>중복 가입 등 부정한 방식은 무효 처리됩니다.</li>
+          <li>이벤트는 조기 마감되거나 변경될 수 있습니다.</li>
+        </ul>
       </section>
 
       <div className="text-center pt-4">
