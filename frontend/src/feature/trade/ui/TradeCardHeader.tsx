@@ -57,7 +57,13 @@ export const TradeCardHeader = ({
       <div className="flex flex-col w-full relative">
         <div className="flex justify-between items-center pb-1 border-b border-neutral-700">
           <p className="text-xs lg:text-base font-bold">
-            {mapName.includes(":") ? mapName.split(":")[1].trim() : mapName}
+            <Link
+              to={`/jari/${mapName}`}
+              title={`${mapName} 자리 페이지로 이동`}
+              className="hover:underline"
+            >
+              {mapName.includes(":") ? mapName.split(":")[1].trim() : mapName}
+            </Link>
           </p>
           <Link
             to={`/profile/${userId}`}
