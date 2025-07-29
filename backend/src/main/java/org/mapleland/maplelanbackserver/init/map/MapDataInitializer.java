@@ -19,6 +19,7 @@ public class MapDataInitializer implements CommandLineRunner {
     private final MapleMapRepository mapleMapRepository;
     private final MapPopularityService popularityService;
     private final MuLungGardenMapInitializer muLungGardenMapInitializer;
+    private final MagatiaMapInitializer magatiaMapInitializer;
 
     @Override
     public void run(String... args) throws Exception {
@@ -34,6 +35,7 @@ public class MapDataInitializer implements CommandLineRunner {
            victoriaMapInitializer.VictoriaInit();
            leafreMapInitializer.initLeafre();
             muLungGardenMapInitializer.initMuLungGarden();
+            magatiaMapInitializer.initMagatia();
 
 
 
