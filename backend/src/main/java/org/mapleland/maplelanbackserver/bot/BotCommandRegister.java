@@ -120,7 +120,7 @@ public class BotCommandRegister extends ListenerAdapter {
 
         //명령어 새로 등록 or 업데이트
         guild.upsertCommand("빅토리아", "빅토리아 지역 알람 등록")
-                .addOptions(aquariumOption)
+                .addOptions(victoriaOption)
                 .queue(cmd -> System.out.println("✅ /빅토리아 등록 완료"));
 
         OptionData magatiaOption = new OptionData(OptionType.STRING,"map","맵 이름을 선택하세요.",true);
