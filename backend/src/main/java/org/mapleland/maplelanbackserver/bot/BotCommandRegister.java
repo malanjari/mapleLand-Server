@@ -109,7 +109,7 @@ public class BotCommandRegister extends ListenerAdapter {
 
         //명령어 새로 등록 or 업데이트
         guild.upsertCommand("무릉도원", "무릉도원 지역 알람 등록")
-                .addOptions(aquariumOption)
+                .addOptions(muLungGardenOption)
                 .queue(cmd -> System.out.println("✅ /무릉도원 등록 완료"));
 
         OptionData victoriaOption = new OptionData(OptionType.STRING,"map","맵 이름을 선택하세요",true);
