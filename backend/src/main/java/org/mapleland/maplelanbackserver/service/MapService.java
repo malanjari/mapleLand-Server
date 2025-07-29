@@ -16,6 +16,7 @@ import org.mapleland.maplelanbackserver.dto.update.ServerColorRequest;
 import org.mapleland.maplelanbackserver.enumType.Region;
 import org.mapleland.maplelanbackserver.enumType.TradeType;
 import org.mapleland.maplelanbackserver.enumType.alert.AlertStatus;
+import org.mapleland.maplelanbackserver.exception.badrequest.BadRequestException;
 import org.mapleland.maplelanbackserver.exception.coflict.ConflictException;
 import org.mapleland.maplelanbackserver.exception.coflict.CoolDownConflictException;
 import org.mapleland.maplelanbackserver.exception.notfound.NotFoundException;
@@ -213,7 +214,8 @@ public class MapService {
 
     public AlertStatus MapInterRestServiceMethod(AlertRequest dto, String token) {
 
-        return utilMethod.updateAlertInterest(dto,token);
+        throw new BadRequestException("현재 사용할 수 없는 기능입니다. \n 알람기능은 디스코드 서버에서 가능합니다.");
+
     }
 
     public MapResponse searchMapsListKeyword(String keyword){

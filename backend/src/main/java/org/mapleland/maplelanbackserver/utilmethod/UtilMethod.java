@@ -6,6 +6,7 @@ import org.mapleland.maplelanbackserver.dto.Map.JariCreatedRequest;
 import org.mapleland.maplelanbackserver.dto.request.AlarmRegisterRequest;
 import org.mapleland.maplelanbackserver.enumType.Region;
 import org.mapleland.maplelanbackserver.enumType.TradeType;
+import org.mapleland.maplelanbackserver.exception.badrequest.BadRequestException;
 import org.mapleland.maplelanbackserver.exception.coflict.ConflictException;
 import org.mapleland.maplelanbackserver.exception.coflict.DuplicatedMapInterRestException;
 import org.mapleland.maplelanbackserver.exception.badrequest.MaxMapInterestLimitException;
@@ -44,6 +45,8 @@ public class UtilMethod {
 
 
     public AlertStatus updateAlertInterest(AlertRequest dto, String token) {
+
+
 
         int userId = JwtUtil.getUserId(token);
 
