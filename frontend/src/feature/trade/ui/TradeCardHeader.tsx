@@ -4,6 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 import { ko } from "date-fns/locale";
 import mesoIcon from "@/shared/assets/icon/mesoIcon.webp";
 import AdminKebabMenu from "@/feature/delete/ui/DeleteKebabMenu";
+import { convertToKoreaTime } from "../../../shared/utils/date";
 
 interface Props {
   mapName: string;
@@ -36,9 +37,7 @@ export const TradeCardHeader = ({
   isCompleted,
   updateTime,
 }: Props) => {
-  const koreaTime = new Date(
-    new Date(createTime).getTime() + (8 * 60 * 60 + 59 * 60 + 50) * 1000
-  );
+  const koreaTime = convertToKoreaTime(createTime);
   const updateKoreaTime = (() => {
     if (!updateTime || updateTime === "null" || updateTime === "") {
       return koreaTime;
@@ -48,9 +47,7 @@ export const TradeCardHeader = ({
       if (isNaN(updateDate.getTime())) {
         return koreaTime;
       }
-      return new Date(
-        updateDate.getTime() + (8 * 60 * 60 + 59 * 60 + 50) * 1000
-      );
+      return convertToKoreaTime(updateTime);
     } catch {
       return koreaTime;
     }

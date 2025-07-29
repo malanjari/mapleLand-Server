@@ -10,6 +10,7 @@ import { UserBanDialog } from "../../ban/ui/UserBanDialog";
 import clsx from "clsx";
 
 import { useUserBanControl } from "../hooks/useUserBanControl";
+import { convertToKoreaTime } from "../../../shared/utils/date";
 
 interface Props {
   userInfo: User;
@@ -23,10 +24,7 @@ export const UserProfileCard = ({ userInfo, isMyProfile, refetch }: Props) => {
     ? `https://cdn.discordapp.com/avatars/${userInfo.discordId}/${userInfo.image}.png`
     : "https://cdn.discordapp.com/embed/avatars/0.png";
 
-  const koreaTime = new Date(
-    new Date(userInfo.createTime).getTime() +
-      (8 * 60 * 60 + 59 * 60 + 50) * 1000
-  );
+  const koreaTime = convertToKoreaTime(userInfo.createTime);
   const formattedDate = format(koreaTime, "yyyy.MM.dd");
   const auth = useUser();
   const user = auth?.user;

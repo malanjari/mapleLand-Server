@@ -34,7 +34,7 @@ public class AdminController {
         return ResponseEntity.ok(allUsersOrderByReportCount);
     }
 
-    @GetMapping("/admin/users/{userId}")
+    @GetMapping("/api/admin/reports/users/{userId}")
     public ResponseEntity<ReportDetailsListResponse> findReportsByUserId(@PathVariable Integer userId) {
         ReportDetailsListResponse response = reportService.findReportsByUserId(userId);
         return ResponseEntity.ok(response);
