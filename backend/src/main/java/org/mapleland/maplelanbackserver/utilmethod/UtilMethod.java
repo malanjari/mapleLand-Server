@@ -45,10 +45,7 @@ public class UtilMethod {
 
     public AlertStatus updateAlertInterest(AlertRequest dto, String token) {
 
-          if(dto != null) {
-            throw new BadRequestException("현재 사용할 수 없는 기능입니다. \n 알람기능은 디스코드 서버에서 가능합니다.");
-        }
-    
+       
         int userId = JwtUtil.getUserId(token);
 
         if(userId != dto.userId()) throw new UserMismatchException("사용자가 다릅니다."); // 401
