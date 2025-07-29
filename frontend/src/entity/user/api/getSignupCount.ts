@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/shared/config/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 
 export const getMonthlySignupStats = async (year: number, month: number) => {
   const token = localStorage.getItem("accessToken");

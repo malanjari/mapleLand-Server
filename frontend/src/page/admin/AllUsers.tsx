@@ -1,10 +1,8 @@
-import { useState } from "react";
 import { useAdminUsers } from "@/feature/admin/ui/hooks/useAdminUsers";
-import { getUserByGlobalName } from "@/entity/user/api/getUserByGlobalName";
-import { AdminUsersInfo } from "@/entity/user/model/type";
 
-import { AdminUserSearchBar } from "@/feature/admin/ui/UserSearchBar";
+import { UserSearchBar } from "@/feature/admin/ui/UserSearchBar";
 import { UserListSection } from "@/feature/admin/ui/UserListSection";
+import { useUserSearch } from "@/feature/admin/ui/hooks/useUserSearch";
 
 const AdminUserPage = () => {
   const {
@@ -16,33 +14,15 @@ const AdminUserPage = () => {
     loading,
   } = useAdminUsers();
 
-  const [search, setSearch] = useState("");
-  const [searchResult, setSearchResult] = useState<AdminUsersInfo[] | null>(
-    null
-  );
-  const [searchLoading, setSearchLoading] = useState(false);
-  const [searchError, setSearchError] = useState("");
-
-  const handleSearch = async () => {
-    if (!search) return;
-    setSearchLoading(true);
-    setSearchError("");
-    try {
-      const result = await getUserByGlobalName(search);
-      setSearchResult(result as AdminUsersInfo[]);
-    } catch (err: unknown) {
-      setSearchResult(null);
-      setSearchError(err instanceof Error ? err.message : "검색 실패");
-    } finally {
-      setSearchLoading(false);
-    }
-  };
-
-  const handleClearSearch = () => {
-    setSearch("");
-    setSearchResult(null);
-    setSearchError("");
-  };
+  const {
+    search,
+    setSearch,
+    searchResult,
+    searchLoading,
+    searchError,
+    handleSearch,
+    handleClearSearch,
+  } = useUserSearch();
 
   return (
     <div>
@@ -52,7 +32,7 @@ const AdminUserPage = () => {
           : `전체 사용자 목록 (페이지 ${page + 1})`}
       </h1>
 
-      <AdminUserSearchBar
+      <UserSearchBar
         search={search}
         onChange={setSearch}
         onSearch={handleSearch}

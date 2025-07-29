@@ -11,6 +11,8 @@ import clsx from "clsx";
 
 import { useUserBanControl } from "../hooks/useUserBanControl";
 import { convertToKoreaTime } from "../../../shared/utils/date";
+import { toast } from "@/shared/hooks/use-toast";
+import { Copy } from "lucide-react";
 
 interface Props {
   userInfo: User;
@@ -66,7 +68,20 @@ export const UserProfileCard = ({ userInfo, isMyProfile, refetch }: Props) => {
           >
             {userInfo.globalName}
           </p>
-          <p className="text-sm text-gray-400">@{userInfo.userName}</p>
+          <p
+            onClick={() => {
+              navigator.clipboard.writeText(`${userInfo.userName}`);
+              toast({
+                title: "클립보드에 복사됨",
+                description: `${userInfo.userName}`,
+                variant: "success",
+              });
+            }}
+            className="flex items-center gap-1  text-gray-400 cursor-pointer hover:text-white transition"
+          >
+            @{userInfo.userName}
+            <Copy className="w-4 h-4 text-gray-400" />
+          </p>
           <p className="text-xs text-gray-500">{formattedDate} 가입</p>
         </div>
       </div>
@@ -90,7 +105,19 @@ export const UserProfileCard = ({ userInfo, isMyProfile, refetch }: Props) => {
           }}
           className="w-full text-white font-semibold text-center text-xs"
         >
-          디스코드 프로필 (앱)
+          디스코드 프로필 (PC)
+        </Button>
+        <Button
+          variant="discord"
+          onClick={() =>
+            window.open(
+              `https://discord.com/users/${userInfo.discordId}`,
+              "_blank"
+            )
+          }
+          className="w-full text-white font-semibold text-center text-xs"
+        >
+          디스코드 프로필 (WEB)
         </Button>
       </div>
     </div>
