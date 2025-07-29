@@ -3,6 +3,7 @@ import { Button } from "@/shared/ui/button/Button";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
+import { convertToKoreaTime } from "@/shared/utils/date";
 
 interface Props {
   user: BannedUserInfo;
@@ -31,26 +32,16 @@ const BannedUserCard = ({ user }: Props) => {
       </p>
       <p className="text-sm text-red-300">
         밴 만료일:{" "}
-        {format(
-          new Date(
-            new Date(user.bannedHours).getTime() +
-              (8 * 60 * 60 + 59 * 60 + 50) * 1000
-          ),
-          "yyyy.MM.dd a h:mm",
-          { locale: ko }
-        )}
+        {format(convertToKoreaTime(user.bannedHours), "yyyy.MM.dd a h:mm", {
+          locale: ko,
+        })}
       </p>
 
       <p className="text-sm text-neutral-500 mt-3">
         가입일:{" "}
-        {format(
-          new Date(
-            new Date(user.createTime).getTime() +
-              (8 * 60 * 60 + 59 * 60 + 50) * 1000
-          ),
-          "yyyy.MM.dd a h:mm",
-          { locale: ko }
-        )}
+        {format(convertToKoreaTime(user.createTime), "yyyy.MM.dd a h:mm", {
+          locale: ko,
+        })}
       </p>
 
       <div className="flex justify-end mt-2">

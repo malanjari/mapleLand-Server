@@ -11,6 +11,7 @@ import {
 import { Line } from "react-chartjs-2";
 import { DailyPriceStat } from "@/feature/price/model/type";
 import { TooltipItem } from "chart.js";
+import { convertToKST } from "../../../shared/utils/date";
 
 ChartJS.register(
   LineElement,
@@ -42,8 +43,7 @@ export const PriceChart = ({ data }: Props) => {
     return `${value.toLocaleString()} `;
   };
   const labels = data.map((d) => {
-    const utc = new Date(d.dateTime);
-    const kst = new Date(utc.getTime() + 9 * 60 * 60 * 1000); // +9시간
+    const kst = convertToKST(d.dateTime);
     return kst.toLocaleTimeString("ko-KR", {
       hour: "2-digit",
       minute: "2-digit",
