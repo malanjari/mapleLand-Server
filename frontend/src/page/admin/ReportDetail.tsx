@@ -5,6 +5,7 @@ import { format } from "date-fns";
 
 import { useReportedPostDetail } from "@/feature/report/hooks/useReportedPostDetail";
 import { useJariDeleteHandler } from "@/feature/delete/hooks/useJariDeleteHandler";
+import { convertToKoreaTime } from "../../shared/utils/date";
 
 const ReportDetailPage = () => {
   const navigate = useNavigate();
@@ -30,13 +31,7 @@ const ReportDetailPage = () => {
       <p className="mb-2">🌍 지역: {post.area}</p>
       <p className="mb-2">
         🕒 등록일:{" "}
-        {format(
-          new Date(
-            new Date(post.createTime).getTime() +
-              (8 * 60 * 60 + 59 * 60 + 50) * 1000
-          ),
-          "yyyy.MM.dd HH:mm"
-        )}
+        {format(convertToKoreaTime(post.createTime), "yyyy.MM.dd HH:mm")}
       </p>
 
       <div className="mt-6">
@@ -51,10 +46,7 @@ const ReportDetailPage = () => {
               <p className="text-neutral-400 text-xs mb-2">
                 🕒 일시:{" "}
                 {format(
-                  new Date(
-                    new Date(reason.createTime).getTime() +
-                      (8 * 60 * 60 + 59 * 60 + 50) * 1000
-                  ),
+                  convertToKoreaTime(reason.createTime),
                   "yyyy.MM.dd HH:mm"
                 )}
               </p>

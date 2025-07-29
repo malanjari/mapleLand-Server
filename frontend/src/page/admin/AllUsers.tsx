@@ -5,6 +5,7 @@ import BannedUserCard from "@/feature/ban/ui/UserBannedCard";
 import { useAdminUsers } from "@/feature/admin/ui/hooks/useAdminUsers";
 import { useState } from "react";
 import { getUserByGlobalName } from "@/entity/user/api/getUserByGlobalName";
+import { convertToKoreaTime } from "@/shared/utils/date";
 
 const AdminUserPage = () => {
   const {
@@ -114,10 +115,7 @@ const AdminUserPage = () => {
                 <p className="text-sm text-neutral-500 mt-1">
                   가입일:{" "}
                   {(() => {
-                    const koreaTime = new Date(
-                      new Date(user.createTime).getTime() +
-                        (8 * 60 * 60 + 59 * 60 + 50) * 1000
-                    );
+                    const koreaTime = convertToKoreaTime(user.createTime);
                     return koreaTime.toLocaleString("ko-KR");
                   })()}
                 </p>
@@ -176,10 +174,7 @@ const AdminUserPage = () => {
                     <p className="text-sm text-neutral-500 mt-1">
                       가입일:{" "}
                       {(() => {
-                        const koreaTime = new Date(
-                          new Date(user.createTime).getTime() +
-                            (8 * 60 * 60 + 59 * 60 + 50) * 1000
-                        );
+                        const koreaTime = convertToKoreaTime(user.createTime);
                         return koreaTime.toLocaleString("ko-KR");
                       })()}
                     </p>
