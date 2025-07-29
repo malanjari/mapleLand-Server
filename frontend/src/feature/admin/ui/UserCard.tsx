@@ -1,5 +1,5 @@
 import { AdminUsersInfo } from "@/entity/user/model/type";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
 import { convertToKoreaTime } from "@/shared/utils/date";
 
@@ -8,7 +8,6 @@ interface UserCardProps {
 }
 
 export const UserCard = ({ user }: UserCardProps) => {
-  const navigate = useNavigate();
   const koreaTime = convertToKoreaTime(user.createTime);
 
   return (
@@ -26,12 +25,20 @@ export const UserCard = ({ user }: UserCardProps) => {
       <p className="text-sm text-neutral-500 mt-1">
         가입일: {koreaTime.toLocaleString("ko-KR")}
       </p>
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2">
         <Button
-          onClick={() => navigate(`/profile/${user.userId}`)}
+          asChild
           className="px-2 py-1 h-6 text-xs bg-blue-500 hover:bg-blue-600 rounded text-white"
         >
-          프로필 보기
+          <Link to={`/profile/${user.userId}`}>프로필 보기</Link>
+        </Button>
+        <Button
+          asChild
+          className="px-2 py-1 h-6 text-xs bg-red-500 hover:bg-red-600 rounded text-white"
+        >
+          <Link to={`/admin/user-reports?userId=${user.userId}`}>
+            신고 내역
+          </Link>
         </Button>
       </div>
     </li>
