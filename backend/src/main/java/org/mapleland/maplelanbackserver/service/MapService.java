@@ -213,7 +213,7 @@ public class MapService {
 
     public AlertStatus MapInterRestServiceMethod(AlertRequest dto, String token) {
 
-        return utilMethod.updateAlertInterest(dto,token);
+     throw new BadRequestException("⛔ 현재 이 알람 등록 API는 사용할 수 없습니다.\n디스코드 서버 내 Slash 명령어 `/알림등록`을 이용해주세요.");
     }
 
     public MapResponse searchMapsListKeyword(String keyword){
