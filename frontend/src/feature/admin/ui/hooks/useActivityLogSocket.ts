@@ -1,7 +1,7 @@
 // feature/admin/hooks/useActivityLogSocket.ts
 import { useEffect, useRef, useState } from "react";
 import { Client } from "@stomp/stompjs";
-import { API_BASE_URL } from "@/shared/config/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 import { ActivityLogItem } from "@/page/admin/Dashboard";
 
 export const useActivityLogSocket = () => {

@@ -1,7 +1,7 @@
 // src/entity/report/api/getReportedPosts.ts
 
-import { API_BASE_URL } from "@/shared/config/api";
 import { ReportedPostsResponse } from "../model/type";
+import { API_BASE_URL } from "@/shared/constants/api";
 
 export const getReportedPosts = async (
   page: number

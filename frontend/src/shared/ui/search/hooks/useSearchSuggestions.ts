@@ -19,11 +19,11 @@ export const useSearchSuggestions = () => {
     }
 
     const delay = setTimeout(() => {
-      const input = keyword.trim();
+      const input = keyword.trim().toLowerCase();
       const inputChars = Array.from(input);
 
       const filtered = allMaps.filter((map) => {
-        const name = map.mapName;
+        const name = map.mapName.toLowerCase();
         return inputChars.every((char) => name.includes(char));
       });
 

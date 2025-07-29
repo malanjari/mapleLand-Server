@@ -11,32 +11,32 @@ export const useScrollToTrade = (focusId: string | null) => {
       if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "center" });
         el.classList.add(
-          "ring",
-          "ring-4",
-          "ring-pink-500",
-          "ring-offset-2",
-          "ring-offset-neutral-800",
           "bg-pink-500/20",
-          "scale-105",
-          "transition",
+          "transition-all",
           "duration-500",
           "rounded-sm",
           "opacity-100",
-          "grayscale-0"
+          "grayscale-0",
+          "border-2",
+          "border-pink-500"
         );
+
+        // 2.5초 후에 테두리를 투명하게 만들어 부드럽게 사라지게 함
+        setTimeout(() => {
+          el.classList.remove("border-2", "border-pink-500");
+          el.classList.add("border-transparent");
+        }, 2500);
+
+        // 3초 후에 모든 클래스 제거
         setTimeout(() => {
           el.classList.remove(
-            "ring",
-            "ring-4",
-            "ring-pink-500",
-            "ring-offset-2",
-            "ring-offset-neutral-800",
             "bg-pink-500/20",
-            "scale-105",
             "rounded-sm",
             "opacity-100",
-            "grayscale-0"
+            "grayscale-0",
+            "border-transparent"
           );
+          el.style.opacity = ""; // 인라인 스타일 제거
         }, 3000);
         return true;
       }

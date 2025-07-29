@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/shared/config/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 
 export async function bumpJari(jariId: number) {
   const token = localStorage.getItem("accessToken");
