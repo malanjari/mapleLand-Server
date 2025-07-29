@@ -1,5 +1,6 @@
 package org.mapleland.maplelanbackserver.resolve;
 import lombok.extern.slf4j.Slf4j;
+import org.mapleland.maplelanbackserver.enumType.mulung.MuLungGarden;
 import org.mapleland.maplelanbackserver.enumType.mulung.MuLungGardenRegion;
 import org.mapleland.maplelanbackserver.exception.badrequest.MapNameMismatchException;
 import org.mapleland.maplelanbackserver.enumType.aquarium.Aquarium;
@@ -63,7 +64,7 @@ public class RegionResolver {
     }
 
     private static boolean belongsToMuLung(String normalized) {
-        return Arrays.stream(MuLungGardenRegion.values())
+        return Arrays.stream(MuLungGarden.values())
                 .anyMatch(m -> normalize(m.getDisplayName()).equals(normalized));
     }
 
