@@ -45,8 +45,9 @@ public interface JariRepository extends JpaRepository<Jari, Integer> {
     }
 
     @Query("""
-    SELECT m FROM Jari m
-    WHERE m.createTime >= :oneWeekAgo
+SELECT m FROM Jari m
+WHERE m.createTime >= :oneWeekAgo
+AND m.isCompleted = false
 """)
     List<Jari> findAllWithinOneWeek(@Param("oneWeekAgo") LocalDateTime oneWeekAgo);
 
