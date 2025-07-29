@@ -4,7 +4,7 @@ import elnath from "./elnath.webp";
 import ludusLake from "./ludusLake.webp";
 import aquaRoad from "./aquaRoad.webp";
 import nihalDesert from "./nihalDesert.webp";
-import mulung from "./mulung.webp";
+import mulung from "./muLung.webp";
 
 export {
   victoria,
