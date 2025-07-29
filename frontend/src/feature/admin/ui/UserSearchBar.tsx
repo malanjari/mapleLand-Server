@@ -1,18 +1,18 @@
 import { Button } from "@/shared/ui/button/Button";
 
-interface AdminUserSearchBarProps {
+interface UserSearchBarProps {
   search: string;
   onChange: (value: string) => void;
   onSearch: () => void;
   onClear: () => void;
 }
 
-export const AdminUserSearchBar = ({
+export const UserSearchBar = ({
   search,
   onChange,
   onSearch,
   onClear,
-}: AdminUserSearchBarProps) => {
+}: UserSearchBarProps) => {
   return (
     <div className="flex items-center gap-2 mb-4">
       <input

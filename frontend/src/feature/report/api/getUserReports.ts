@@ -1,17 +1,15 @@
-// src/entity/report/api/getReportedPosts.ts
-
-import { ReportedPostsResponse } from "../model/type";
 import { API_BASE_URL } from "@/shared/constants/api";
+import { UserReportsResponse } from "../model/type";
 
-export const getReportedPosts = async (
-  page: number
-): Promise<ReportedPostsResponse> => {
+export const getUserReports = async (
+  userId: string
+): Promise<UserReportsResponse> => {
   try {
     const token = localStorage.getItem("accessToken");
     if (!token) throw new Error("인증 토큰이 없습니다.");
 
     const res = await fetch(
-      `${API_BASE_URL}/api/admin/reports/posts?page=${page}`,
+      `${API_BASE_URL}/api/admin/reports/users/${userId}`,
       {
         method: "GET",
         headers: {
@@ -29,7 +27,7 @@ export const getReportedPosts = async (
     const data = await res.json();
     return data;
   } catch (error) {
-    console.error("❌ 신고 게시글 불러오기 실패:", error);
+    console.error("❌ 사용자 신고 내역 불러오기 실패:", error);
     throw error;
   }
 };

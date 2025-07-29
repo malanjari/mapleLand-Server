@@ -3,7 +3,7 @@ import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
 import { MapItem } from "@/entity/map/api/getAllMaps";
 import { DropItem } from "@/entity/jari/api/getMonsterInfo";
 import { DailyPriceStat } from "@/feature/price/model/type";
-import { API_BASE_URL } from "@/shared/config/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 
 export const useJariDetailData = (name: string | undefined) => {
   const { data: allMaps } = useAllMaps();

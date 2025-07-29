@@ -6,6 +6,8 @@ import {
   elnath,
   ludusLake,
   aquaRoad,
+  nihalDesert,
+  mulung,
 } from "@/shared/assets/world";
 
 const worlds = [
@@ -34,13 +36,23 @@ const worlds = [
     keyword: "AquaRoad",
     image: aquaRoad,
   },
+  {
+    name: "니할 사막",
+    keyword: "NihalDesert",
+    image: nihalDesert,
+  },
+  {
+    name: "무릉도원",
+    keyword: "MuLung",
+    image: mulung,
+  },
 ];
 
 export const WorldSearchGrid = () => {
   return (
     <div className=" p-4 mb:p-8 rounded-lg bg-neutral-700">
       <h2 className="text-xl font-bold mb-5">🗺️ 월드별 검색</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
         {worlds.map((world) => (
           <Link
             to={`/jari/world/${world.keyword}`}

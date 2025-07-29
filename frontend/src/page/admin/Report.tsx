@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
 import { useReportedPosts } from "@/feature/report/hooks/useReportedPosts";
+import { convertToKoreaTime } from "@/shared/utils/date";
 
 const ReportPage = () => {
   const { reports, page, setPage, lastPage, loading } = useReportedPosts();
@@ -31,7 +32,7 @@ const ReportPage = () => {
               </p>
               <p className="text-sm text-neutral-500">
                 최근 신고일:{" "}
-                {new Date(
+                {convertToKoreaTime(
                   post.reasons[post.reasons.length - 1]?.createTime
                 ).toLocaleString("ko-KR")}
               </p>
