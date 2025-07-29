@@ -228,8 +228,9 @@ public class MapService {
     }
 
     public List<JariResponse> searchMapsByKeyword(String keyword) {
+        LocalDateTime oneDayAgo = LocalDateTime.now().minusDays(1);
         PageRequest pageRequest = PageRequest.of(0, 100); // 첫 페이지, 100개
-        List<Jari> results = jariRepository.findTop100ByMapNameWithUser(keyword,pageRequest);
+        List<Jari> results = jariRepository.findTop100ByMapNameWithUser(keyword, oneDayAgo, pageRequest);
 
 
         return results.stream()

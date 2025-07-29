@@ -55,9 +55,10 @@ AND m.isCompleted = false
     SELECT m FROM Jari m
     JOIN FETCH m.user
     WHERE REPLACE(m.mapName, ' ', '') = REPLACE(:keyword, ' ', '')
+      AND m.createTime >= :oneDayAgo
     ORDER BY m.createTime DESC
 """)
-    List<Jari> findTop100ByMapNameWithUser(@Param("keyword") String keyword, Pageable pageable);
+    List<Jari> findTop100ByMapNameWithUser(@Param("keyword") String keyword, @Param("oneDayAgo") LocalDateTime oneDayAgo, Pageable pageable);
 
     List<Jari> findByArea(Region area);
 

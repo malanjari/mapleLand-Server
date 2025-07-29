@@ -2,6 +2,7 @@ package org.mapleland.maplelanbackserver.resolve;
 import lombok.extern.slf4j.Slf4j;
 import org.mapleland.maplelanbackserver.enumType.mulung.MuLungGarden;
 import org.mapleland.maplelanbackserver.enumType.mulung.MuLungGardenRegion;
+import org.mapleland.maplelanbackserver.enumType.nihaldesert.Magatia;
 import org.mapleland.maplelanbackserver.exception.badrequest.MapNameMismatchException;
 import org.mapleland.maplelanbackserver.enumType.aquarium.Aquarium;
 import org.mapleland.maplelanbackserver.enumType.elnath.Elnath;
@@ -42,6 +43,9 @@ public class RegionResolver {
         else if(belongsToMuLung(normalized)) {
             return Region.MuLung;
         }
+        else if(belongsToMagatia(normalized)) {
+            return Region.NihalDesert;
+        }
 
         throw new MapNameMismatchException("해당 맵을 찾을 수 없습니다.");
     }
@@ -67,6 +71,12 @@ public class RegionResolver {
         return Arrays.stream(MuLungGarden.values())
                 .anyMatch(m -> normalize(m.getDisplayName()).equals(normalized));
     }
+
+    private static boolean belongsToMagatia(String normalized) {
+        return Arrays.stream(Magatia.values())
+                .anyMatch(m -> normalize(m.getDisplay()).equals(normalized));
+    }
+
 
     private static boolean belongsToAquarium(String normalized) {
         return Arrays.stream(Aquarium.values())

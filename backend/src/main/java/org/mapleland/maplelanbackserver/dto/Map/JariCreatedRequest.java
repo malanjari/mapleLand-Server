@@ -13,7 +13,7 @@ import org.mapleland.maplelanbackserver.enumType.TradeType;
  public class JariCreatedRequest {
 
       @NotBlank(message = "맵 이름은 필수입니다.")
-      @Size(max = 20, message = "맵 이름은 최대 20자까지 가능합니다.")
+      @Size(max = 30, message = "맵 이름은 최대 20자까지 가능합니다.")
       @Schema(description = "맵 이름", example = "미나르숲: 남겨진 용의 둥지")
       private String mapName;
 

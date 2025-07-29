@@ -13,6 +13,7 @@ import org.mapleland.maplelanbackserver.enumType.elnath.Elnath;
 import org.mapleland.maplelanbackserver.enumType.leafre.Leafre;
 import org.mapleland.maplelanbackserver.enumType.ludibrium.Ludibrium;
 import org.mapleland.maplelanbackserver.enumType.mulung.MuLungGardenRegion;
+import org.mapleland.maplelanbackserver.enumType.nihaldesert.Magatia;
 import org.mapleland.maplelanbackserver.enumType.victoria.VictoriaLoad;
 import org.mapleland.maplelanbackserver.repository.MapInterRestRepository;
 import org.springframework.stereotype.Component;
@@ -119,8 +120,18 @@ public class BotCommandRegister extends ListenerAdapter {
 
         //명령어 새로 등록 or 업데이트
         guild.upsertCommand("빅토리아", "빅토리아 지역 알람 등록")
-                .addOptions(aquariumOption)
+                .addOptions(victoriaOption)
                 .queue(cmd -> System.out.println("✅ /빅토리아 등록 완료"));
+
+        OptionData magatiaOption = new OptionData(OptionType.STRING,"map","맵 이름을 선택하세요.",true);
+
+        for(Magatia magatia : Magatia.values()) {
+            magatiaOption.addChoice(magatia.getDisplay(),magatia.getDisplay());
+        }
+
+        guild.upsertCommand("마가티아","마가티아 지역 알람 등록")
+                .addOptions(magatiaOption)
+                .queue(cmd-> System.out.println("/마가티아 등록 완료"));
 
         // ------------- 알람 해제 ---------------------------------------------
 

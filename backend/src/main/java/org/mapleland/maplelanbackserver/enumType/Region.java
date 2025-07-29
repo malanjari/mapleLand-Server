@@ -10,7 +10,8 @@ public enum Region {
     MinarForest("리프레"),
     Orbis("오르비스"),
     AquaRoad("아쿠아리움"),
-    MuLung("무릉도원");
+    MuLung("무릉도원"),
+    NihalDesert("니할사막");
     private final String displayName;
     Region(String displayName) {
         this.displayName = displayName;
