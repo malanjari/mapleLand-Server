@@ -412,17 +412,16 @@ public class MapService {
         }
 
         int userId = JwtUtil.getUserId(token);
+        User jariUser = jari.getUser();
 
-        if (jari.getUser().getUserId() == userId || JwtUtil.getRole(token).equals("ROLE_ADMIN")) {
-            User user = userRepository.findByUserId(userId).orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없음"));
-
+        if (jariUser.getUserId() == userId || JwtUtil.getRole(token).equals("ROLE_ADMIN")) {
             TradeType tradeType = jari.getTradeType();
             switch (tradeType) {
-                case BUY -> user.setBuyTicket(true);
-                case SELL -> user.setSellTicket(true);
+                case BUY -> jariUser.setBuyTicket(true);
+                case SELL -> jariUser.setSellTicket(true);
             }
 
-            userRepository.save(user);
+            userRepository.save(jariUser);
             jariRepository.delete(jari);
         } else throw new UserMismatchException("등록된 게시글과 다른 사용자 입니다.");
     }

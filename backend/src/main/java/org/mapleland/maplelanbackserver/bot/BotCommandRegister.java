@@ -12,6 +12,7 @@ import org.mapleland.maplelanbackserver.enumType.aquarium.Aquarium;
 import org.mapleland.maplelanbackserver.enumType.elnath.Elnath;
 import org.mapleland.maplelanbackserver.enumType.leafre.Leafre;
 import org.mapleland.maplelanbackserver.enumType.ludibrium.Ludibrium;
+import org.mapleland.maplelanbackserver.enumType.mulung.MuLungGarden;
 import org.mapleland.maplelanbackserver.enumType.mulung.MuLungGardenRegion;
 import org.mapleland.maplelanbackserver.enumType.nihaldesert.Magatia;
 import org.mapleland.maplelanbackserver.enumType.victoria.VictoriaLoad;
@@ -103,13 +104,13 @@ public class BotCommandRegister extends ListenerAdapter {
 
         OptionData muLungGardenOption = new OptionData(OptionType.STRING,"map","맵 이름을 선택하세요.",true);
 
-        for(MuLungGardenRegion muLungGardenRegion : MuLungGardenRegion.values()) {
-            muLungGardenOption.addChoice(muLungGardenRegion.getDisplayName(), muLungGardenRegion.getDisplayName());
+        for(MuLungGarden muLung : MuLungGarden.values()) {
+            muLungGardenOption.addChoice(muLung.getDisplayName(), muLung.getDisplayName());
         }
 
         //명령어 새로 등록 or 업데이트
         guild.upsertCommand("무릉도원", "무릉도원 지역 알람 등록")
-                .addOptions(aquariumOption)
+                .addOptions(muLungGardenOption)
                 .queue(cmd -> System.out.println("✅ /무릉도원 등록 완료"));
 
         OptionData victoriaOption = new OptionData(OptionType.STRING,"map","맵 이름을 선택하세요",true);

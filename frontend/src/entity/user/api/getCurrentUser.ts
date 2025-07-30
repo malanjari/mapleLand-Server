@@ -1,5 +1,5 @@
 import { AuthResponse } from "../model/type";
-import { API_BASE_URL } from "@/shared/config/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 export const getCurrentUser = async (): Promise<AuthResponse> => {
   const token = localStorage.getItem("accessToken");
 

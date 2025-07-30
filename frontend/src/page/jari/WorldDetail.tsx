@@ -15,7 +15,7 @@ const WorldDetailPage = () => {
     error,
     refetch,
   } = useRegionMaps(world || ""); // keyword로 world 전달
-
+  console.log(jari);
   const buyJari = jari.filter((item) => item.tradeType === "BUY");
   const sellJari = jari.filter((item) => item.tradeType === "SELL");
   const top5 = useMemo(() => {

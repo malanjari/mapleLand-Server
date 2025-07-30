@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
-import { WORLDS } from "@/shared/config/worlds";
+import { WORLDS } from "@/shared/constants/worlds";
 
 interface Props {
   worldKey?: string;
@@ -8,6 +8,8 @@ interface Props {
 
 export const WorldInfoPanel = ({ worldKey }: Props) => {
   const matched = WORLDS.find((w) => w.keyword === worldKey);
+  console.log("worldKey", worldKey);
+  console.log("매치", matched);
   if (!matched) return null;
 
   return (
