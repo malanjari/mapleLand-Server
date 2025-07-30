@@ -50,8 +50,6 @@ WHERE m.createTime >= :oneDayAgo
 AND m.isCompleted = false
 """)
     List<Jari> findAllWithinOneDay(@Param("oneDayAgo") LocalDateTime oneDayAgo);
-    List<Jari> findAllWithinValidTimeRange(@Param("oneDayAgo") LocalDateTime oneDayAgo,
-                                           @Param("twoHoursAgo") LocalDateTime twoHoursAgo);
 
     @Query("""
     SELECT m FROM Jari m
