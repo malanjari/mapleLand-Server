@@ -11,7 +11,7 @@ import {
 import { Line } from "react-chartjs-2";
 import { DailyPriceStat } from "@/feature/price/model/type";
 import { TooltipItem } from "chart.js";
-import { convertToKST } from "../../../shared/utils/date";
+import { convertToKST } from "@/shared/utils/date";
 
 ChartJS.register(
   LineElement,

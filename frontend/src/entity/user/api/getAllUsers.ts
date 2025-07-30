@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "@/shared/config/api";
+import { API_BASE_URL } from "@/shared/constants/api";
 import { AdminUsersInfo } from "../model/type";
 
 export const getAdminallUsers = async (

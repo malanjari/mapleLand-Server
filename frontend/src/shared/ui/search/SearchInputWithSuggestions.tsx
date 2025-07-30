@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const SearchInputWithSuggestions = ({
-  placeholder = "검색어를 입력하세요...",
+  placeholder = "자리를 검색하세요",
   onSelect,
   className = "",
 }: Props) => {
@@ -44,7 +44,7 @@ export const SearchInputWithSuggestions = ({
     }
   };
 
-  // 🔄 키워드가 바뀌면 index 초기화
+  // 키워드가 바뀌면 index 초기화
   useEffect(() => {
     setFocusedIndex(-1);
   }, [keyword]);
