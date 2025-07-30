@@ -39,8 +39,10 @@ public class MapPopularityService {
     }
 
     public void refreshPopularMaps() {
-        LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(1);
-        List<Jari> entities = mapRegisterRepository.findAllWithinOneWeek(oneWeekAgo);
+        LocalDateTime oneDayAgo = LocalDateTime.now().minusDays(1);
+        LocalDateTime twoHoursAgo = LocalDateTime.now().minusHours(2);
+        List<Jari> entities = mapRegisterRepository.findAllWithinValidTimeRange(oneDayAgo, twoHoursAgo);
+
 
         System.out.println("🕒 [인기맵 갱신] 최근 일주일 등록 수: " + entities.size());
 
