@@ -18,7 +18,8 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
            "JOIN FETCH r.reporter " +    // 신고자(reporter) 엔티티를 함께 Fetch
            "JOIN FETCH r.reported " +    // 신고당한 사용자(reported) 엔티티를 함께 Fetch
            "JOIN FETCH r.jari " +        // 자리(jari) 엔티티를 함께 Fetch
-           "WHERE r.reported.userId = :reportedId")
+           "WHERE r.reported.userId = :reportedId " +
+           "AND r.jari.deleted = false")
     List<Report> findByReportedId(Integer reportedId);
 
 
@@ -28,6 +29,7 @@ SELECT new org.mapleland.maplelanbackserver.dto.report.ReportReasonDto(
 )
 FROM Report r
 WHERE r.jari.userMapId = :jariId
+AND r.jari.deleted = false
 ORDER BY r.createTime DESC
 """)
     List<ReportReasonDto> findReportReasonsByJariId(@Param("jariId") Integer jariId);
