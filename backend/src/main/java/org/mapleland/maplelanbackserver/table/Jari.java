@@ -2,12 +2,12 @@ package org.mapleland.maplelanbackserver.table;
 
 
 import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 import org.mapleland.maplelanbackserver.enumType.Region;
 import org.mapleland.maplelanbackserver.enumType.TradeType;
 
@@ -19,6 +19,8 @@ import java.util.List;
 @Builder
 @Setter
 @AllArgsConstructor
+@SQLDelete(sql = "UPDATE jari SET deleted = true WHERE user_map_id = ?")
+@SQLRestriction("deleted = false")
 public class Jari {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +63,8 @@ public class Jari {
 
     @OneToMany(mappedBy = "jari", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Report> reports;
+
+    private Boolean deleted = false;
 
     public Jari() {
 

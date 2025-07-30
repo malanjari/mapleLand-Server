@@ -20,15 +20,16 @@ public interface JariRepository extends JpaRepository<Jari, Integer> {
 
 
     @Query("""
-    SELECT m.mapName AS mapName,
-           MAX(m.area) AS area,
-           MAX(m.monsterImageUrl) AS monsterImageUrl,
-           COUNT(m) AS registerCount
-    FROM Jari m
-    WHERE m.createTime >= :oneWeekAgo
-    GROUP BY m.mapName
-    ORDER BY registerCount DESC
-""")
+        SELECT m.mapName AS mapName,
+               MAX(m.area) AS area,
+               MAX(m.monsterImageUrl) AS monsterImageUrl,
+               COUNT(m) AS registerCount
+        FROM Jari m
+        WHERE m.createTime >= :oneWeekAgo
+          AND m.deleted = false
+        GROUP BY m.mapName
+        ORDER BY registerCount DESC
+            """)
     List<MapPopularityProjection> findTopPopularMaps(
             @Param("oneWeekAgo") LocalDateTime oneWeekAgo,
             Pageable pageable
@@ -45,9 +46,10 @@ public interface JariRepository extends JpaRepository<Jari, Integer> {
     }
 
     @Query("""
-SELECT m FROM Jari m
-WHERE m.createTime >= :oneWeekAgo
-AND m.isCompleted = false
+        SELECT m FROM Jari m
+        WHERE m.createTime >= :oneWeekAgo
+        AND m.isCompleted = false
+        AND m.deleted = false
 """)
     List<Jari> findAllWithinOneWeek(@Param("oneWeekAgo") LocalDateTime oneWeekAgo);
 
@@ -56,6 +58,7 @@ AND m.isCompleted = false
     JOIN FETCH m.user
     WHERE REPLACE(m.mapName, ' ', '') = REPLACE(:keyword, ' ', '')
       AND m.createTime >= :oneDayAgo
+      AND m.deleted = false
     ORDER BY m.createTime DESC
 """)
     List<Jari> findTop100ByMapNameWithUser(@Param("keyword") String keyword, @Param("oneDayAgo") LocalDateTime oneDayAgo, Pageable pageable);
@@ -66,6 +69,7 @@ AND m.isCompleted = false
     @Query("""
     SELECT m FROM Jari m
     WHERE m.user.userId = :userId
+    AND m.deleted = false
     ORDER BY m.createTime DESC
 """)
     List<Jari> findByMapleJariUserEntity_UserId(@Param("userId") Integer userId);
@@ -74,6 +78,7 @@ AND m.isCompleted = false
     SELECT m FROM Jari m
     WHERE m.mapName = :mapName
     AND m.isCompleted = true
+    AND m.deleted = true
     AND m.createTime BETWEEN :start AND :end
 """)
     List<Jari> findCompletedByMapNameIgnoreSpaceAndDate(
@@ -81,16 +86,17 @@ AND m.isCompleted = false
             @Param("start") LocalDateTime start,
             @Param("end") LocalDateTime end
     );
-    @Query("SELECT m FROM Jari m WHERE m.userMapId = :userMapId")
+    @Query("SELECT m FROM Jari m WHERE m.userMapId = :userMapId AND m.deleted = false")
     Jari findByUserMapId(@Param("userMapId") int mapId);
 
-    @Query("SELECT m FROM Jari m WHERE m.userMapId = :userMapId")
+    @Query("SELECT m FROM Jari m WHERE m.userMapId = :userMapId AND m.deleted = false")
     Optional<Jari> OPTIONALFindByUserMapId(@Param("userMapId") int userMapId);
 
     @Query("""
         SELECT j
         FROM Jari j
         JOIN Report r ON r.jari = j
+        WHERE j.deleted = false
         GROUP BY j
         HAVING COUNT(r) > 0
     """)
@@ -100,6 +106,7 @@ AND m.isCompleted = false
     SELECT COUNT(DISTINCT j)
     FROM Jari j
     JOIN Report r ON r.jari = j
+    WHERE j.deleted = false
 """)
     long countReportedJari();
 
@@ -110,7 +117,7 @@ SELECT new org.mapleland.maplelanbackserver.dto.response.ResponseWebSocketPostDt
   j.mapName,
   j.createTime
 )
-FROM Jari j ORDER BY j.createTime desc
+FROM Jari j WHERE j.deleted = false ORDER BY j.createTime desc
 """)
     List<ResponseWebSocketPostDto> findLatestPost(Pageable pageable);
 
