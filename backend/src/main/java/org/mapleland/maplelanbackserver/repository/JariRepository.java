@@ -47,9 +47,9 @@ public interface JariRepository extends JpaRepository<Jari, Integer> {
     @Query("""
 SELECT m FROM Jari m
 WHERE m.createTime >= :oneDayAgo
-AND m.createTime >= :twoHoursAgo
 AND m.isCompleted = false
 """)
+    List<Jari> findAllWithinOneDay(@Param("oneDayAgo") LocalDateTime oneDayAgo);
     List<Jari> findAllWithinValidTimeRange(@Param("oneDayAgo") LocalDateTime oneDayAgo,
                                            @Param("twoHoursAgo") LocalDateTime twoHoursAgo);
 

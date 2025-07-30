@@ -197,9 +197,9 @@ public class LudibriumMapInitializer {
                      mapName("시계탑최하층: 시간의 근원")
                      .region(Region.LudusLake)
                      .monsterImageUrl("https://maplestory.io/api/gms/62/mob/8500001/icon?resize=2")
-                     .subRegion(LudibriumRegion.Ludus_Lake.getDisplayName())
+                     .subRegion(LudibriumRegion.LOWER_CLOCKTOWER.getDisplayName())
                      .miniMapImageUrl("https://maplestory.io/api/gms/70/map/220080001/render")
-                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/222010001/icon?resize=2")
+                     .miniMapImageLogoUrl("https://maplestory.io/api/gms/62/map/220040000/icon?resize=2")
                      .build());
 
 
