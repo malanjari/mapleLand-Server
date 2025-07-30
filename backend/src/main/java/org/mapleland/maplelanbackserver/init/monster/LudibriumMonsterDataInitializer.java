@@ -965,6 +965,65 @@ public class LudibriumMonsterDataInitializer {
             ));
 
 
+            monsterDropItemRepository.saveAll(List.of(
+                    MonsterDropItem.builder()
+                            .mapName("시계탑최하층: 시간의 근원")
+                            .itemName("귀 장식 민첩 주문서 10%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2040318/icon?resize=2")
+                            .dropRate(0.2)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("시계탑최하층: 시간의 근원")
+                            .itemName("귀 장식 행운 주문서 60%")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2040321/icon?resize=2")
+                            .dropRate(0.2)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("시계탑최하층: 시간의 근원")
+                            .itemName("[마스터리 북] 브랜디쉬 30")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2290011/icon?resize=2")
+                            .dropRate(0.2)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("시계탑최하층: 시간의 근원")
+                            .itemName("[마스터리 북] 스피릿 자벨린 30")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2290011/icon?resize=2")
+                            .dropRate(0.4)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("시계탑최하층: 시간의 근원")
+                            .itemName("[마스터리 북] 부메랑 스텝 30")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2290011/icon?resize=2")
+                            .dropRate(0.4)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("시계탑최하층: 시간의 근원")
+                            .itemName("[마스터리 북] 폭풍의 시 30")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2290011/icon?resize=2")
+                            .dropRate(0.5)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("시계탑최하층: 시간의 근원")
+                            .itemName("[마스터리 북] 스탠스 20")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/2290011/icon?resize=2")
+                            .dropRate(0.6)
+                            .build(),
+
+                    MonsterDropItem.builder()
+                            .mapName("시계탑최하층: 시간의 근원")
+                            .itemName("마기 코라스")
+                            .itemImageUrl("https://maplestory.io/api/gms/62/item/1372009/icon?resize=2")
+                            .dropRate(0.9)
+                            .build()
+            ));
+
+
 
 
 

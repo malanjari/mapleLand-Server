@@ -20,7 +20,10 @@ public enum Ludibrium {
     TWISTED_TIME("시계탑최하층:꼬여버린 시간"),
     Kkamak_Mountain_Entrance("루더스호수: 까막산 입구"),
     Foothills_of_Kkamak_Temple("루더스호수: 까막산 기슭"),
-    Kkamak_Valley("루더스호수: 까막산 골짜기");
+    Kkamak_Valley("루더스호수: 까막산 골짜기"),
+    Origin_of_Time("시계탑최하층: 시간의 근원");
+
+
 
 
 
