@@ -12,7 +12,7 @@ export const CompletedTradeBox = () => {
 
     const timer = setInterval(() => {
       setIndex((prev) => (prev + 1) % trades.length);
-    }, 5000);
+    }, 3000);
 
     return () => clearInterval(timer);
   }, [trades]);
