@@ -108,6 +108,7 @@ public class UtilMethod {
         User user = userRepository.findByDiscordId(request.discordId()).
                 orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없음"));
 
+
         long count = interestRepository.countByUser(user);
 
         if (count >= 2) {
@@ -122,6 +123,7 @@ public class UtilMethod {
         if (exists) {
             throw new DuplicatedMapInterRestException("⛔ 이미 등록된 맵입니다.");
         }
+
 
 
         MapInterRest mapInterRest = new MapInterRest();

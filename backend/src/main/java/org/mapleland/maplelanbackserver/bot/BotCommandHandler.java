@@ -30,7 +30,8 @@ public class BotCommandHandler extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
 
-        Set<String> validCommands = Set.of("리프레", "무릉도원", "아쿠아리움", "루디브리엄", "엘나스", "빅토리아","알람해제");
+        Set<String> validCommands = Set.of("리프레", "무릉도원", "아쿠아리움", "루디브리엄",
+                "엘나스", "빅토리아","알람해제","마가티아");
 
         if (!validCommands.contains(event.getName())) return;
 
