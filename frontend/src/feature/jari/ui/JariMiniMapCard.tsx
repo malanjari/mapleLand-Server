@@ -3,8 +3,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/shared/ui/button/Button";
 import { MapItem } from "@/entity/map/api/getAllMaps";
-import { AlertButton } from "@/feature/alert/ui/AlertButton";
-import { useUser } from "@/entity/user/hooks/useUser";
 
 interface Props {
   mapMeta: MapItem | null;
@@ -13,14 +11,7 @@ interface Props {
   onToggle: () => void;
 }
 
-export const JariMiniMapCard = ({
-  mapMeta,
-  name,
-  isAlarmOn,
-  onToggle,
-}: Props) => {
-  const user = useUser();
-  const loggedIn = user?.loggedIn;
+export const JariMiniMapCard = ({ mapMeta, name }: Props) => {
   if (!mapMeta) return null;
 
   return (
@@ -57,7 +48,6 @@ export const JariMiniMapCard = ({
             + 자리 등록하기
           </Link>
         </Button>
-        {loggedIn && <AlertButton isAlarmOn={isAlarmOn} onToggle={onToggle} />}
       </div>
     </div>
   );
