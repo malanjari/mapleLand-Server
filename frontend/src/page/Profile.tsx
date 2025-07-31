@@ -6,12 +6,20 @@ import { useUserInfo } from "@/entity/user/hooks/useUserInfo";
 import { Spinner } from "@/shared/ui/spinner/Spinner";
 import { lazy, Suspense } from "react";
 import { UserProfileCard } from "@/feature/user/ui/UserProfileCard";
+import { useAllMaps } from "@/entity/map/hooks/useAllMaps";
 
+import { AlertMapSection } from "@/feature/alert/ui/AlertMapSection";
 const TradeSection = lazy(() => import("@/feature/trade/ui/TradeSection"));
 const ProfilePage = () => {
   const { userId } = useParams();
 
   const me = useUser();
+
+  const { data: allMaps } = useAllMaps();
+  const alertMaps =
+    allMaps?.filter((map) =>
+      me?.alertDtoList?.some((alert) => alert.mapId === map.mapId)
+    ) ?? [];
 
   const { data: user, isLoading, error, refetch } = useUserInfo(userId);
 
@@ -48,6 +56,9 @@ const ProfilePage = () => {
         />
       </div>
       <div className="col-span-8 lg:col-span-6">
+        {isMyProfile && (
+          <AlertMapSection isMyProfile={isMyProfile} alertMaps={alertMaps} />
+        )}{" "}
         {/* 오른쪽: 자리 거래 */}
         <Suspense>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-3 mt-16 lg:mt-0 lg:mb-5">
