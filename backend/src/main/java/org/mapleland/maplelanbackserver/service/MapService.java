@@ -69,7 +69,6 @@ public class MapService {
 
     public void mapRegisterServiceMethod(JariCreatedRequest dto, String token) {
 
-        log.info("dto 아이디 = {}",dto.getMapId());
 
         int userId = JwtUtil.getUserId(token);
         //사용자 검색 -> 사용자 값 꺼내옴
@@ -162,13 +161,20 @@ public class MapService {
 
             if(targetUser.getUserId().equals(userId)) {
                 message =  String.format("""
-                📢 **%s** 맵이(가) 등록되었습니다!
+                📢 **%s** 맵을 등록하셨습니다.
                         
                 💰 가격: %,d 메소 \s
-                
-                🔗 바로가기: <%s>
                         
                 ⚠️ 분쟁 자리 또는 허위 매물 등록 시 제재될 수 있습니다.
+                
+                현재 이 알람은 디스코드 봇이 자리를 등록한 자신에게 보내는
+                것이며 , 이 메세지는 "자리 등록"을 했다면 "반드시" 가는
+                알림입니다.
+                
+                알람신청과는 무관한 기능이며 , 해당 디스코드 봇은 
+                이용자에게 규칙을 준수하기 위해 보내는 알람 메시지입니다.
+          
+                
                 """, dto.getMapName(), dto.getPrice(), url);
             }else  {
                 message =  String.format("""
