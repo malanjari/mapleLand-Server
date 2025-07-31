@@ -19,7 +19,6 @@ export const AlertMapSection = ({ isMyProfile, alertMaps }: Props) => {
       {/* 타이틀 */}
       <div
         className={clsx(
-
           "text-white text-sm font-semibold px-4 py-4 mb-4 rounded-sm shadow-lg transition",
 
           "flex flex-col gap-3",
@@ -30,9 +29,9 @@ export const AlertMapSection = ({ isMyProfile, alertMaps }: Props) => {
           <span className="text-lg font-bold tracking-tight">
             🔔 알림 설정한 맵 ({alertMaps.length})
           </span>
-          <span className="text-xs font-normal text-white/90">
+          {/* <span className="text-xs font-normal text-white/90">
             최대 2개까지 설정 가능
-          </span>
+          </span> */}
         </div>
       </div>
 
