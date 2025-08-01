@@ -23,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -40,7 +42,15 @@ public class ReportService {
 
         int reporterId = user.getUserId(); // 신고자
 
+        reportRepository.findTopByReporter_UserIdOrderByCreateTimeDesc(reporterId)
+                .ifPresent(latestReport -> {
+                    LocalDateTime lastReportTime = latestReport.getCreateTime();
+                    LocalDateTime now = LocalDateTime.now();
 
+                    if (Duration.between(lastReportTime, now).toMinutes() < 30) {
+                        throw new DuplicateReportException("신고는 30분에 한 번만 가능합니다."); // 409
+                    }
+                });
 
         if(request.getUserId() != user.getUserId()) throw new NotFoundUserException("사용자가 아닙니다."); // 401
 

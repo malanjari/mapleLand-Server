@@ -47,7 +47,7 @@ public class UserService {
 
 
     public void userBan(BanUserRequest request) {
-        LocalDateTime permanentBan = LocalDateTime.of(9999, 12, 31, 23, 59, 59);
+        LocalDateTime permanentBan = LocalDateTime.of(9000, 12, 31, 23, 59, 59);
         User banuser = userRepository.findByUserId(request.userId())
                 .orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
         if (request.bannedHours() == 999) {

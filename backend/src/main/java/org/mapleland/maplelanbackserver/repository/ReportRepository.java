@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
     // 중복 신고 검사를 위한 메서드
@@ -33,6 +35,8 @@ ORDER BY r.createTime DESC
     List<ReportReasonDto> findReportReasonsByJariId(@Param("jariId") Integer jariId);
 
     Report findByJari_UserMapId(Integer jariUserMapId);
+
+    Optional<Report> findTopByReporter_UserIdOrderByCreateTimeDesc(Integer reporterId);
 
 }
 
