@@ -14,7 +14,7 @@ const OAuthBannedPage = lazy(() => import("@/page/oauth/OAuthBanned"));
 const ProfilePage = lazy(() => import("@/page/Profile"));
 const NotificationGuide = lazy(() => import("@/page/notice/NotificationGuide"));
 const Notice = lazy(() => import("@/page/notice/Notice"));
-const Event = lazy(() => import("@/page/Event"));
+const Event = lazy(() => import("@/page/notice/Event"));
 
 // 자리 관련
 const JariDetailPage = lazy(() => import("@/page/jari/Detail"));
