@@ -8,8 +8,7 @@ interface Props {
 
 export const WorldInfoPanel = ({ worldKey }: Props) => {
   const matched = WORLDS.find((w) => w.keyword === worldKey);
-  console.log("worldKey", worldKey);
-  console.log("매치", matched);
+
   if (!matched) return null;
 
   return (

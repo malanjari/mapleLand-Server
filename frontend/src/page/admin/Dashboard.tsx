@@ -47,6 +47,7 @@ const DashboardPage = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <SummaryCard title="총 회원" to="/admin/users" sumUsers={sumUsers} />
         <SummaryCard title="월간 가입자 통계" to="/admin/signupcount" />
+        <SummaryCard title="월간 거래 완료 통계" to="/admin/trade-stats" />
         <SummaryCard title="신고된 게시글" to="/admin/reports" />
         <SummaryCard title="공지사항 쓰기" to="/admin/notice/new" />
       </div>
