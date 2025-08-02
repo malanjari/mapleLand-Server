@@ -272,26 +272,19 @@ public class MapService {
     }
 
     public List<PriceStatDto> iqrPriceAvgLast6Hours(String keyword) {
-        // 1. 최근 6시간 시간대 기준 정의
-        LocalDateTime now = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0); // 현재 정각
-        LocalDateTime startTime = now.minusHours(6);
-        LocalDateTime endTime = now;
-
-        log.info("키워드 = {}",keyword);
-
+        // 1. 최근 6개 완료된 시간대 기준 정의 (다음 시간대만 제외)
+        LocalDateTime currentHour = LocalDateTime.now().withMinute(0).withSecond(0).withNano(0); // 현재 정각
+        LocalDateTime endTime = currentHour.plusHours(1); // 다음 시간대 시작점까지 (다음 시간대만 제외)
+        LocalDateTime startTime = currentHour.minusHours(6); // 현재시각 6시간 이전부터 시작해서 6개 완료된 시간대 확보
 
         // 2. 최근 6시간 거래 조회 (isCompleted = true)
         List<Jari> completed =
                 jariRepository.findCompletedByMapNameIgnoreSpaceAndDate(keyword, startTime, endTime);
 
-        for(Jari j : completed) {
-            log.info("키 값 = {}",j.getMapName());
-        }
-
-        // 3. 시간 슬롯 생성 (6개)
+        // 3. 시간 슬롯 생성 (6개 완료된 시간대)
         List<LocalDateTime> hourlySlots = new ArrayList<>();
         LocalDateTime time = startTime;
-        while (!time.isAfter(endTime.minusHours(1))) {
+        while (!time.plusHours(1).isAfter(endTime)) {
             hourlySlots.add(time);
             time = time.plusHours(1);
         }
