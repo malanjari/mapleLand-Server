@@ -72,6 +72,12 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(signupCountPerDay);
     }
 
+    @GetMapping("/api/admin/users/completed-count")
+    public ResponseEntity<List<CompletedTradeCountDto>> getCompletedTradeCountPerDay(@RequestParam int year, @RequestParam int month) {
+        List<CompletedTradeCountDto> completedTradeCountPerDay = mapService.getCompletedTradeCountPerDay(year, month);
+        return ResponseEntity.status(HttpStatus.OK).body(completedTradeCountPerDay);
+    }
+
     @GetMapping("/api/admin/users/banned")
     public ResponseEntity<List<ResponseBannedUserDto>> lockedUsers() {
         List<ResponseBannedUserDto> responseBannedUserDtos = userService.callLockedUser();
