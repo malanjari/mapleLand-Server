@@ -12,7 +12,7 @@ export const getMonthlyCompletedTradeStats = async (
   const token = localStorage.getItem("accessToken");
   try {
     const res = await fetch(
-      `${API_BASE_URL}/api/admin/trades/completed?year=${year}&month=${month}`,
+      `${API_BASE_URL}/api/admin/trade/completed-count?year=${year}&month=${month}`,
       {
         method: "GET",
         headers: {

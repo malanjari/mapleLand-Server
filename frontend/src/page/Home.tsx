@@ -3,7 +3,7 @@ import { UserWelcomeBox } from "@/feature/user/ui/UserWelcomeBox";
 
 import { lazy, Suspense } from "react";
 
-import { NoticeBanner } from "@/feature/notice/ui/NoticeBanner";
+// import { NoticeBanner } from "@/feature/notice/ui/NoticeBanner";
 import { CompletedTradeBox } from "@/feature/trade/ui/CompletedTradeBox";
 // import { AlertBanner } from "@/feature/notice/ui/AlertBanner";
 
@@ -16,7 +16,7 @@ const HomePage = () => {
     <div className="py-10   flex flex-col gap-10">
       {/* <AlertBanner /> */}
       <UserWelcomeBox />
-      <NoticeBanner />
+      {/* <NoticeBanner /> */}
       <CompletedTradeBox />
 
       <WorldSearchGrid />
