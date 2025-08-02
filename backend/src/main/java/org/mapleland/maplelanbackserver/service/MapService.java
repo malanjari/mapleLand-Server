@@ -142,81 +142,38 @@ public class MapService {
         return redirectUrl + "/jari/" + encoded;
     }
     public void interRestUser(JariCreatedRequest dto, int userId){
-
         Set<Integer> alreadySendCheck = new HashSet<>();
 
-
+        //해당키에 관심맵에 등록된 관심맵 테이블 꺼내옴
         List<MapInterRest> allByMapName = interestRepository.
                 findByMapleMap_MapleLandMapListId(dto.getMapId());
 
+        //바로가기 인코딩
         String url = buildMapUrl(dto.getMapName());
 
-        for(MapInterRest user : allByMapName) {
-            String discordId = user.getUser().getDiscordId();
+        for (MapInterRest user : allByMapName) {
+            User targetUser = user.getUser(); //알람신청한 유저
+            int targetUserId = targetUser.getUserId(); //알림신청한 유저 id
 
-            User targetUser = user.getUser();
-            int targetUserId = targetUser.getUserId();
+            //  본인에게는 보내지 않음
+            if (targetUserId == userId) continue;
 
-            if (alreadySendCheck.contains(targetUserId)) continue;
+            if (alreadySendCheck.contains(targetUserId)) continue; // 이중장치 해당 해쉬맵에 키 들어가있으면 이미 보낸걸로
+                                                                    //판단 두번 보내기 위함 방지
 
-            if(targetUser.getUserId().equals(userId)) {
-                message =  String.format("""
-                📢 **%s** 맵을 등록하셨습니다.
-                        
-                💰 가격: %,d 메소 \s
-                        
-                ⚠️ 분쟁 자리 또는 허위 매물 등록 시 제재될 수 있습니다.
-                
-                현재 이 알람은 디스코드 봇이 자리를 등록한 자신에게 보내는
-                것이며 , 이 메세지는 "자리 등록"을 했다면 "반드시" 가는
-                알림입니다.
-                
-                알람신청과는 무관한 기능이며 , 해당 디스코드 봇은 
-                이용자에게 규칙을 준수하기 위해 보내는 알람 메시지입니다.
-          
-                
-                """, dto.getMapName(), dto.getPrice(), url);
-            }else  {
-                message =  String.format("""
-               📢 관심맵 : **%s** 맵이(가) 등록되었습니다!
-                        
-                💰 가격: %,d 메소 \s
-                
-                🔗 바로가기: <%s>
-                        
-                        
-            """, dto.getMapName(), dto.getPrice(),url);
-            }
+            String discordId = targetUser.getDiscordId();
 
+            String message = String.format("""
+            📢 관심맵 : **%s** 맵이(가) 등록되었습니다!
+            
+            💰 가격: %,d 메소
+            
+            🔗 바로가기: <%s>
+        """, dto.getMapName(), dto.getPrice(), url);
 
-            dmService.sendToUser(discordId,message);
-            alreadySendCheck.add(targetUser.getUserId());
+            dmService.sendToUser(discordId, message);
+            alreadySendCheck.add(targetUserId);
         }
-
-        if(!alreadySendCheck.contains(userId)) {
-            User user = userRepository.findByUserId(userId).
-                    orElseThrow(() -> new NotFoundUserException("사용자를 찾을 수 없습니다."));
-
-            String discordId = user.getDiscordId();
-
-            if(discordId!= null) {
-                String selfMessage = String.format("""
-                 📢  **%s** 맵이(가) 등록되었습니다!
-                        
-                  💰 가격: %,d 메소 \s
-                  
-                  🔗 바로가기: <%s>
-                        
-                  ⚠️ 분쟁 자리 또는 허위 매물 등록 시 제재될 수 있습니다.
-            """, dto.getMapName(), dto.getPrice(),url);
-
-                dmService.sendToUser(discordId, selfMessage);
-            }
-        }
-    }
-    public void DiscordAlertService(AlarmRegisterRequest request){
-
-
     }
 
     public AlertStatus MapInterRestServiceMethod(AlertRequest dto, String token) {
