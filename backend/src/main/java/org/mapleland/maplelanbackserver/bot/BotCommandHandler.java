@@ -78,7 +78,7 @@ public class BotCommandHandler extends ListenerAdapter {
             String json = String.format("{\"discordId\":\"%s\", \"mapName\":\"%s\"}", discordId, mapName);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://bug-known-goblin.ngrok-free.app/api/optin"))
+                    .uri(URI.create("https://mashop.kr//api/optin"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
@@ -104,7 +104,7 @@ public class BotCommandHandler extends ListenerAdapter {
             String json = String.format("{\"discordId\":\"%s\", \"mapName\":\"%s\"}", discordId, mapName);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://bug-known-goblin.ngrok-free.app/api/optout"))
+                    .uri(URI.create("https://mashop.kr//api/optout"))
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
