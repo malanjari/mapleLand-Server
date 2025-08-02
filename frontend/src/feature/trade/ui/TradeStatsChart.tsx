@@ -51,7 +51,7 @@ export const TradeStatsChart = ({ year, month }: TradeStatsChartProps) => {
   }, [year, month]);
 
   const labels = data.map((d) =>
-    new Date(d.date).toLocaleDateString("ko-KR", {
+    new Date(d.completiontime).toLocaleDateString("ko-KR", {
       month: "numeric",
       day: "numeric",
     })
