@@ -1,7 +1,7 @@
 import { API_BASE_URL } from "@/shared/constants/api";
 
 export interface CompletedTradeStats {
-  date: string;
+  completiontime: string;
   count: number;
 }
 
