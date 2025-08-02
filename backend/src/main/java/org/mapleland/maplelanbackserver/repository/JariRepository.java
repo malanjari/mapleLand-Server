@@ -103,6 +103,17 @@ AND m.isCompleted = false
 """)
     long countReportedJari();
 
+    @Query("""
+    SELECT FUNCTION('DATE', j.updateTime), COUNT(j)
+    FROM Jari j
+    WHERE j.updateTime BETWEEN :start AND :end
+      AND j.isCompleted = true
+    GROUP BY FUNCTION('DATE', j.updateTime)
+""")
+    List<Object[]> countCompletedTradeByUpdateDateBetweenGroupByDay(
+            @Param("start") LocalDateTime start,
+            @Param("end") LocalDateTime end
+    );
 
     @Query("""
 SELECT new org.mapleland.maplelanbackserver.dto.response.ResponseWebSocketPostDto(

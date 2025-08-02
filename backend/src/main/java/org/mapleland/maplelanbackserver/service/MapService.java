@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapleland.maplelanbackserver.dto.Map.*;
 import org.mapleland.maplelanbackserver.dto.jari.JariCompletedEvent;
 import org.mapleland.maplelanbackserver.dto.request.AlarmRegisterRequest;
+import org.mapleland.maplelanbackserver.dto.response.CompletedTradeCountDto;
 import org.mapleland.maplelanbackserver.dto.response.DropItemResponse;
 import org.mapleland.maplelanbackserver.dto.request.JariUpdateRequest;
 import org.mapleland.maplelanbackserver.dto.request.JariIsCompletedRequest;
@@ -41,6 +42,7 @@ import org.springframework.stereotype.Service;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.*;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
@@ -484,6 +486,34 @@ public class MapService {
 
         jari.bump(now);
 
+    }
+
+    public List<CompletedTradeCountDto> getCompletedTradeCountPerDay(int year, int month) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
+        LocalDateTime start = startDate.atStartOfDay(); // 00:00:00
+        LocalDateTime end = endDate.atTime(23, 59, 59); // 23:59:59
+
+        // DB 조회 - 완료된 거래만 조회
+        List<Object[]> result = jariRepository.countCompletedTradeByUpdateDateBetweenGroupByDay(start, end);
+
+        // 결과 맵 초기화 - 해당 월의 모든 날짜를 0으로 초기화
+        Map<LocalDate, Long> map = new LinkedHashMap<>();
+        for (int i = 0; i < startDate.lengthOfMonth(); i++) {
+            map.put(startDate.plusDays(i), 0L);
+        }
+
+        for (Object[] row : result) {
+            java.sql.Date sqlDate = (java.sql.Date) row[0];
+            LocalDate date = sqlDate.toLocalDate();
+            Long count = (Long) row[1];
+            map.put(date, count);
+        }
+
+        return map.entrySet().stream()
+                .map(entry -> new CompletedTradeCountDto(entry.getKey(), entry.getValue()))
+                .collect(Collectors.toList());
     }
 
     public JariListResponse findAllJari(Pageable pageable) {
