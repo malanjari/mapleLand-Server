@@ -72,9 +72,9 @@ AND m.isCompleted = false
 
     @Query("""
     SELECT m FROM Jari m
-    WHERE m.mapName = :mapName
+    WHERE REPLACE(m.mapName, ' ', '') = REPLACE(:mapName, ' ', '')
     AND m.isCompleted = true
-    AND m.createTime BETWEEN :start AND :end
+    AND m.updateTime BETWEEN :start AND :end
 """)
     List<Jari> findCompletedByMapNameIgnoreSpaceAndDate(
             @Param("mapName") String mapName,
